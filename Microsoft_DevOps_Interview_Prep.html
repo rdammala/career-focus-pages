@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft DevOps Engineer Interview Prep Guide</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f8; color: #1a1a2e; line-height: 1.7; padding: 0; }
+        .header { background: linear-gradient(135deg, #0078d4, #005a9e); color: white; padding: 40px 30px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .nav { background: white; border-radius: 10px; padding: 20px 25px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .nav h2 { color: #0078d4; margin-bottom: 12px; font-size: 1.2em; }
+        .nav a { display: inline-block; margin: 4px 8px 4px 0; padding: 6px 14px; background: #e8f4fd; color: #005a9e; text-decoration: none; border-radius: 20px; font-size: 0.9em; transition: all 0.2s; }
+        .nav a:hover { background: #0078d4; color: white; }
+        .section { background: white; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+        .section-header { padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fafbfc; border-bottom: 1px solid #eee; transition: background 0.2s; }
+        .section-header:hover { background: #e8f4fd; }
+        .section-header h2 { font-size: 1.15em; color: #1a1a2e; }
+        .section-header .arrow { font-size: 1.2em; transition: transform 0.3s; color: #0078d4; }
+        .section-header.active .arrow { transform: rotate(180deg); }
+        .section-content { padding: 0 25px 25px; display: none; }
+        .section-content.show { display: block; }
+        .question { margin-top: 20px; padding: 15px 18px; background: #f8f9fa; border-left: 4px solid #0078d4; border-radius: 0 8px 8px 0; }
+        .question h3 { font-size: 1em; color: #0078d4; margin-bottom: 8px; }
+        .level { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 600; margin-left: 8px; }
+        .level-junior { background: #e8f5e9; color: #2e7d32; }
+        .level-senior { background: #fff3e0; color: #e65100; }
+        .level-principal { background: #fce4ec; color: #c62828; }
+        .answer { margin-top: 10px; padding: 12px 15px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; }
+        .answer h4 { color: #333; margin-bottom: 6px; font-size: 0.9em; }
+        .answer p, .answer li { font-size: 0.95em; color: #444; }
+        .answer ul { padding-left: 20px; margin-top: 5px; }
+        .answer li { margin-bottom: 4px; }
+        .answer code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.88em; color: #c62828; }
+        .tip { margin-top: 12px; padding: 10px 14px; background: #e8f4fd; border-radius: 6px; font-size: 0.9em; }
+        .tip strong { color: #0078d4; }
+        .star { margin-top: 10px; padding: 12px 15px; background: #f3e5f5; border-radius: 6px; border-left: 3px solid #7b1fa2; }
+        .star h4 { color: #7b1fa2; font-size: 0.9em; margin-bottom: 5px; }
+        .star p { font-size: 0.9em; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; background: #0078d4; color: white; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; font-size: 1.2em; box-shadow: 0 3px 10px rgba(0,0,0,0.3); transition: opacity 0.3s; opacity: 0; z-index: 999; }
+        .back-to-top.visible { opacity: 1; }
+        .back-to-top:hover { background: #005a9e; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Microsoft DevOps Engineer Interview Prep</h1>
+        <p>Comprehensive Guide — All Levels (L61 to L65+)</p>
+    </div>
+
+    <div class="container">
+        <div class="nav" id="nav">
+            <h2>&#x1F4CB; Quick Navigation</h2>
+            <a href="#scripting">Scripting &amp; Coding</a>
+            <a href="#cicd">CI/CD &amp; Pipelines</a>
+            <a href="#iac">IaC &amp; Cloud</a>
+            <a href="#security">Security</a>
+            <a href="#systemdesign">System Design</a>
+            <a href="#observability">Observability</a>
+            <a href="#kubernetes">Kubernetes</a>
+            <a href="#behavioral">Behavioral</a>
+            <a href="#scenario">Scenario-Based</a>
+        </div>
+
+        <!-- SECTION 1: Scripting -->
+        <div class="section" id="scripting">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F527; Scripting, Automation &amp; Coding</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: Parse a log file and find the top 10 most frequent IP addresses <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <h4>Sample Answer (Python):</h4>
+<pre>from collections import Counter
+import re
+
+def top_ips(log_file, n=10):
+    ip_pattern = re.compile(r'\b\d{1,3}(?:\.\d{1,3}){3}\b')
+    ip_counts = Counter()
+    
+    with open(log_file) as f:
+        for line in f:
+            ips = ip_pattern.findall(line)
+            ip_counts.update(ips)
+    
+    return ip_counts.most_common(n)</pre>
+                        <div class="tip"><strong>&#x1F4A1; Key Points:</strong> Mention streaming (line-by-line) for large files, regex efficiency, and how you'd handle IPv6. At senior level, discuss parallelization with multiprocessing for multi-GB logs.</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: Write a script to recursively find all files larger than 100MB <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <h4>Bash:</h4>
+<pre>find /path -type f -size +100M -exec ls -lh {} \;</pre>
+                        <h4>PowerShell:</h4>
+<pre>Get-ChildItem -Path C:\ -Recurse -File |
+    Where-Object { $_.Length -gt 100MB } |
+    Select-Object FullName, @{N='SizeMB';E={[math]::Round($_.Length/1MB,1)}} |
+    Sort-Object SizeMB -Descending</pre>
+                        <div class="tip"><strong>&#x1F4A1; Follow-up:</strong> How would you schedule this as a monitoring job? (Cron/Task Scheduler to Azure Function to alert via Logic App or PagerDuty)</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: Design a script that monitors disk usage and auto-remediates <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Approach:</h4>
+                        <ul>
+                            <li>Check disk usage with <code>df -h</code> or <code>Get-PSDrive</code></li>
+                            <li>If threshold &gt;85%: purge temp files, rotate logs, notify via webhook</li>
+                            <li>If &gt;95%: escalate to PagerDuty, stop non-critical services</li>
+                            <li>Log all actions for audit trail</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Senior angle:</strong> Discuss idempotency, dry-run mode, integration with Azure Monitor custom metrics, and how you'd test this in a staging env without real disk pressure.</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q4: Implement a rate limiter for an API endpoint <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <h4>Approach — Token Bucket / Sliding Window:</h4>
+                        <ul>
+                            <li><strong>Token Bucket:</strong> Fixed capacity, tokens replenish at steady rate. Each request consumes a token.</li>
+                            <li><strong>Sliding Window:</strong> Track requests in a time window (e.g., Redis sorted set with timestamps)</li>
+                            <li><strong>Distributed:</strong> Use Redis INCR + EXPIRE for cluster-wide rate limiting</li>
+                        </ul>
+<pre># Redis-based sliding window (pseudocode)
+def is_allowed(user_id, limit=100, window=60):
+    key = f"rate:{user_id}"
+    now = time.time()
+    pipe = redis.pipeline()
+    pipe.zremrangebyscore(key, 0, now - window)
+    pipe.zadd(key, {str(now): now})
+    pipe.zcard(key)
+    pipe.expire(key, window)
+    _, _, count, _ = pipe.execute()
+    return count &lt;= limit</pre>
+                        <div class="tip"><strong>&#x1F4A1; Principal angle:</strong> Discuss trade-offs (memory vs accuracy), graceful degradation, per-tenant vs global limits, and how Azure API Management handles this natively.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: CI/CD -->
+        <div class="section" id="cicd">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F504; CI/CD &amp; Pipeline Architecture</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: What is CI vs CD vs Continuous Deployment? <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>CI (Continuous Integration):</strong> Developers merge code frequently — automated build + unit tests run on every commit. Catches integration issues early.</li>
+                            <li><strong>CD (Continuous Delivery):</strong> Code is always in a deployable state. Artifacts pass through staging gates but deployment to production requires manual approval.</li>
+                            <li><strong>Continuous Deployment:</strong> Every change that passes all pipeline stages is automatically deployed to production — no human gate.</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Microsoft context:</strong> Most Microsoft teams use Continuous Delivery with ring-based deployments (Ring 0 = internal dogfood, Ring 1 = canary %, Ring 2 = broad).</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: Design a CI/CD pipeline for 15+ microservices on AKS <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Architecture:</h4>
+                        <ul>
+                            <li><strong>Repo strategy:</strong> Polyrepo (1 repo per service) with shared pipeline templates in a central repo</li>
+                            <li><strong>Branching:</strong> Trunk-based development, short-lived feature branches, PR to main triggers CI</li>
+                            <li><strong>CI Stage:</strong> Build &rarr; Unit tests &rarr; SAST (CodeQL) &rarr; Container scan (Trivy) &rarr; Push to ACR</li>
+                            <li><strong>CD Stage:</strong> Helm chart update &rarr; Deploy to dev &rarr; Integration tests &rarr; Deploy to staging &rarr; Smoke tests &rarr; Production (blue-green)</li>
+                            <li><strong>Rollback:</strong> Automatic rollback if health check fails within 5 min; Helm rollback to previous revision</li>
+                            <li><strong>Observability:</strong> Each deploy emits telemetry to App Insights; deployment markers in Grafana dashboards</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Key differentiators:</strong> Mention pipeline templates (DRY), service mesh for canary (Istio traffic splitting), contract testing between services (Pact), and GitOps with Flux/ArgoCD.</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: How would you handle database migrations in a CI/CD pipeline? <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Tool:</strong> Flyway or Liquibase for versioned migrations</li>
+                            <li><strong>Strategy:</strong> Expand-contract pattern — add new columns/tables first (expand), deploy new code, then remove old schema (contract)</li>
+                            <li><strong>Pipeline integration:</strong> Migration runs as a pre-deployment step in a separate job with its own approval gate</li>
+                            <li><strong>Rollback:</strong> Every migration has a corresponding rollback script; tested in staging before prod</li>
+                            <li><strong>Zero downtime:</strong> Never rename/drop columns directly — use views or dual-write patterns</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q4: Design a release strategy for a platform serving 100M+ users <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Ring-based deployment:</strong> Ring 0 (team) &rarr; Ring 1 (1% canary) &rarr; Ring 2 (10%) &rarr; Ring 3 (full)</li>
+                            <li><strong>Feature flags:</strong> LaunchDarkly/Azure App Configuration for gradual rollout independent of deployment</li>
+                            <li><strong>Bake time:</strong> Each ring has mandatory bake period (4h/12h/24h) with automated health scoring</li>
+                            <li><strong>Automatic promotion/rollback:</strong> Based on error rate, latency P99, and customer-reported issues (ICM integration)</li>
+                            <li><strong>Safe deployment practices:</strong> One-box &rarr; region-pair &rarr; global; never deploy to paired regions simultaneously</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Microsoft-specific:</strong> Reference Azure Safe Deployment Practices (SDP), Express V2 deployment system, and how Xbox/Azure use progressive exposure.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: IaC -->
+        <div class="section" id="iac">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x2601;&#xFE0F; Infrastructure as Code &amp; Cloud</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: Terraform vs Bicep vs ARM Templates — when to use which? <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>ARM:</strong> Native Azure JSON templates. Verbose but fully supported. Good for Azure Policy and Blueprints.</li>
+                            <li><strong>Bicep:</strong> DSL that compiles to ARM. Cleaner syntax, first-party Azure support, great for Azure-only shops.</li>
+                            <li><strong>Terraform:</strong> Multi-cloud, declarative HCL, mature ecosystem with providers for AWS/GCP/Azure/K8s. Best for hybrid or multi-cloud.</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Microsoft teams mostly use:</strong> Bicep for pure-Azure resources, Terraform for multi-cloud or when existing modules exist. ARM is legacy but still seen in older services.</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: Describe your Terraform workflow for a production environment <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>State:</strong> Remote backend in Azure Storage with state locking (lease blob)</li>
+                            <li><strong>Workspaces/Environments:</strong> Separate state files per environment (dev/staging/prod) or use Terragrunt</li>
+                            <li><strong>PR workflow:</strong> <code>terraform plan</code> output posted as PR comment &rarr; reviewer approves &rarr; merge triggers <code>terraform apply</code></li>
+                            <li><strong>Modules:</strong> Shared modules in private registry, versioned with semver</li>
+                            <li><strong>Drift detection:</strong> Scheduled <code>terraform plan</code> in CI to detect manual changes</li>
+                            <li><strong>Security:</strong> <code>tfsec</code> / <code>checkov</code> in pipeline, no secrets in state (use Key Vault references)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: How do you handle Terraform state conflicts in a large team? <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>State locking:</strong> Backend-native locking (Azure blob lease, S3 DynamoDB)</li>
+                            <li><strong>State splitting:</strong> Decompose monolithic state into domain-specific states (networking, compute, data) with <code>terraform_remote_state</code> data sources for cross-references</li>
+                            <li><strong>Ownership model:</strong> Each team owns their state; shared infrastructure managed by platform team</li>
+                            <li><strong>Import/Move:</strong> Use <code>terraform state mv</code> and <code>moved</code> blocks for refactoring without destroy/recreate</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Security -->
+        <div class="section" id="security">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F512; Security &amp; Secrets Management</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: How do you manage secrets in CI/CD pipelines? <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Never:</strong> Hardcode secrets in code, pipeline YAML, or Docker images</li>
+                            <li><strong>Azure DevOps:</strong> Variable groups linked to Azure Key Vault; secrets auto-masked in logs</li>
+                            <li><strong>GitHub Actions:</strong> Repository/org secrets + OIDC for passwordless Azure auth</li>
+                            <li><strong>Runtime:</strong> Workload Identity (AKS) or Managed Identity for service-to-service auth</li>
+                            <li><strong>Rotation:</strong> Automated key rotation via Key Vault policies + Event Grid notifications</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: A secret was accidentally committed to a repo. What do you do? <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Immediate Response (within minutes):</h4>
+                        <ul>
+                            <li><strong>1. Revoke:</strong> Immediately rotate/revoke the exposed credential</li>
+                            <li><strong>2. Assess blast radius:</strong> Check audit logs for unauthorized usage</li>
+                            <li><strong>3. Remove from history:</strong> <code>git filter-branch</code> or BFG Repo-Cleaner (force-push required)</li>
+                            <li><strong>4. Invalidate caches:</strong> Clear CI caches, CDN caches, any mirrors</li>
+                        </ul>
+                        <h4>Prevention:</h4>
+                        <ul>
+                            <li>Pre-commit hooks (detect-secrets, git-secrets)</li>
+                            <li>Pipeline gate: CredScan / GitHub secret scanning</li>
+                            <li>Branch protection: require PR reviews</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: Design a zero-trust security model for a microservices platform <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Identity:</strong> Every service has a Managed Identity; no shared secrets</li>
+                            <li><strong>Network:</strong> Service mesh (Istio) with mTLS for all east-west traffic</li>
+                            <li><strong>Authorization:</strong> OPA/Gatekeeper policies for fine-grained RBAC</li>
+                            <li><strong>Supply chain:</strong> Signed container images (Notation/Cosign), admission controllers verify signatures</li>
+                            <li><strong>Data:</strong> Encryption at rest + in transit; customer-managed keys where required</li>
+                            <li><strong>Audit:</strong> Centralized audit trail (Azure Monitor + Sentinel SIEM)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: System Design -->
+        <div class="section" id="systemdesign">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F3D7;&#xFE0F; System Design</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: Design a centralized logging system ingesting TBs/day <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Architecture:</h4>
+                        <ul>
+                            <li><strong>Ingestion:</strong> Event Hubs (partitioned by service) &rarr; Stream Analytics or Azure Data Explorer (ADX)</li>
+                            <li><strong>Storage:</strong> Hot tier (ADX, 30 days) &rarr; Warm (Azure Data Lake, 1 year) &rarr; Cold (Archive blob)</li>
+                            <li><strong>Query:</strong> KQL in ADX for real-time; Spark in Synapse for batch analytics</li>
+                            <li><strong>Scale:</strong> Event Hubs auto-inflate; ADX cluster autoscale on CPU/ingestion rate</li>
+                            <li><strong>Cost optimization:</strong> Sampling at ingestion for verbose logs; full fidelity for errors/security events</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Microsoft uses:</strong> Geneva (internal) &rarr; Kusto/ADX clusters. External equivalent: Azure Monitor + Log Analytics workspace with data collection rules.</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: What happens when you type www.microsoft.com in a browser? <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>DNS Resolution:</strong> Browser cache &rarr; OS cache &rarr; Recursive resolver &rarr; Root &rarr; .com TLD &rarr; Authoritative NS &rarr; A/AAAA record</li>
+                            <li><strong>TCP + TLS:</strong> 3-way handshake &rarr; TLS 1.3 handshake (ALPN, certificate validation, session key)</li>
+                            <li><strong>HTTP/2 Request:</strong> GET / with headers &rarr; Azure Front Door (CDN/WAF) &rarr; Origin (App Service/AKS)</li>
+                            <li><strong>Server processing:</strong> Load balancer &rarr; web server &rarr; application logic &rarr; database/cache</li>
+                            <li><strong>Response:</strong> HTML &rarr; browser parses DOM &rarr; fetches CSS/JS/images (parallel) &rarr; renders page</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: Design a multi-region HA deployment with &lt;5min RPO <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Traffic:</strong> Azure Front Door with priority routing (active-passive) or weighted (active-active)</li>
+                            <li><strong>Compute:</strong> AKS clusters in 2+ regions with identical Helm releases via GitOps</li>
+                            <li><strong>Data:</strong> Cosmos DB (multi-region writes, strong consistency for critical paths) or SQL with auto-failover groups</li>
+                            <li><strong>Stateless design:</strong> Session state in Redis (geo-replicated); no local disk dependencies</li>
+                            <li><strong>Failover testing:</strong> Monthly chaos engineering (Azure Chaos Studio) — simulate region failure</li>
+                            <li><strong>RPO &lt;5min:</strong> Async replication with WAL shipping; Cosmos DB guarantees &lt;5s with session consistency</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: Observability -->
+        <div class="section" id="observability">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F4CA; Observability &amp; Incident Response</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: Set up end-to-end monitoring for a cloud-native app <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Three Pillars:</h4>
+                        <ul>
+                            <li><strong>Metrics:</strong> Azure Monitor / Prometheus &rarr; Grafana dashboards. Key metrics: latency (P50/P95/P99), error rate, throughput, saturation</li>
+                            <li><strong>Logs:</strong> Structured logging (JSON) &rarr; Log Analytics workspace. Correlation IDs across services.</li>
+                            <li><strong>Traces:</strong> OpenTelemetry SDK &rarr; Application Insights. Distributed tracing shows request flow across services.</li>
+                        </ul>
+                        <h4>Alerting Strategy:</h4>
+                        <ul>
+                            <li>SLO-based alerts (burn rate) over threshold-based</li>
+                            <li>Severity mapping: P99 latency breach = Sev3; error rate &gt;1% = Sev2; total outage = Sev1</li>
+                            <li>Escalation: PagerDuty/ICM &rarr; on-call &rarr; bridge &rarr; incident commander</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: Walk me through handling a Sev1 production incident <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Incident Lifecycle:</h4>
+                        <ul>
+                            <li><strong>Detect (TTD):</strong> Alert fires &rarr; on-call acknowledges within 5 min</li>
+                            <li><strong>Triage (TTA):</strong> Assess scope and customer impact &rarr; declare Sev1 if broad impact</li>
+                            <li><strong>Mitigate (TTM):</strong> First priority is restore service — rollback, failover, traffic shift, or hotfix</li>
+                            <li><strong>Communicate:</strong> Status page update, stakeholder notification, bridge call</li>
+                            <li><strong>Root Cause (TTR):</strong> After mitigation — deep dive, timeline, 5-whys analysis</li>
+                            <li><strong>Postmortem:</strong> Blameless review within 48h. Repair items tracked in backlog with owners/dates.</li>
+                        </ul>
+                        <div class="star">
+                            <h4>&#x1F31F; Your STAR Example (from Xbox SRE):</h4>
+                            <p><strong>S:</strong> Sev2 ICM on Triage-Data service — 40+ alerts fired simultaneously for ADF pipeline failures.<br>
+                            <strong>T:</strong> As on-call SRE, needed to triage, mitigate, and coordinate across teams.<br>
+                            <strong>A:</strong> Used Kusto queries to isolate root cause (storage account throttling), redirected traffic, engaged storage team. Created automated runbook for future.<br>
+                            <strong>R:</strong> TTM reduced from 45 min to 12 min for similar incidents. Runbook adopted team-wide.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: Design an SLO/SLA framework for a platform team <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>SLI (Indicator):</strong> Measurable signal — e.g., "proportion of successful HTTP requests"</li>
+                            <li><strong>SLO (Objective):</strong> Target — e.g., 99.9% availability (allows 43 min downtime/month)</li>
+                            <li><strong>Error Budget:</strong> 100% - SLO = budget for experimentation/deployments. If budget exhausted &rarr; freeze deployments, focus on reliability.</li>
+                            <li><strong>Burn rate alerts:</strong> Alert when consuming error budget 14.4x faster than sustainable (= will exhaust in 1 hour)</li>
+                            <li><strong>SLA (Agreement):</strong> Customer-facing promise with financial penalties. Always set SLA &lt; SLO (buffer).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: Kubernetes -->
+        <div class="section" id="kubernetes">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x2638;&#xFE0F; Kubernetes &amp; Containers</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: Pods vs Deployments vs StatefulSets <span class="level level-junior">L61-62</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Pod:</strong> Smallest deployable unit. One or more containers sharing network/storage. Ephemeral.</li>
+                            <li><strong>Deployment:</strong> Manages ReplicaSets of identical Pods. Handles rolling updates, rollbacks, scaling. Use for stateless apps.</li>
+                            <li><strong>StatefulSet:</strong> Like Deployment but with stable network identity and persistent storage per Pod. Use for databases.</li>
+                            <li><strong>DaemonSet:</strong> One Pod per node (monitoring agents, log collectors).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: How do you implement zero-downtime deployments in AKS? <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Rolling update:</strong> <code>maxSurge: 25%</code>, <code>maxUnavailable: 0</code> — always have full capacity</li>
+                            <li><strong>Readiness probes:</strong> New pods only receive traffic after passing health checks</li>
+                            <li><strong>Pre-stop hooks:</strong> Graceful shutdown — drain connections before termination (<code>preStop: sleep 15</code>)</li>
+                            <li><strong>PDB (Pod Disruption Budget):</strong> <code>minAvailable: 80%</code> prevents too many pods being evicted during upgrades</li>
+                            <li><strong>Blue-green with Istio:</strong> VirtualService routes 100% to v1 &rarr; shift 10% to v2 &rarr; monitor &rarr; shift 100%</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: Design AKS cluster architecture for a multi-tenant SaaS platform <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Isolation model:</strong> Namespace-per-tenant with NetworkPolicies (deny-all default) + ResourceQuotas</li>
+                            <li><strong>Node pools:</strong> System pool (control plane) + User pools (per-tier) with taints/tolerations</li>
+                            <li><strong>Networking:</strong> Azure CNI with private cluster, egress via Azure Firewall, ingress via AGIC + WAF</li>
+                            <li><strong>Security:</strong> Azure Policy (OPA Gatekeeper) — no privileged containers, no latest tag, mandatory resource limits</li>
+                            <li><strong>Cost:</strong> Cluster autoscaler + KEDA for event-driven scaling; spot instances for batch workloads</li>
+                            <li><strong>Upgrades:</strong> Blue-green node pools — create new pool at N+1 version, cordon/drain old pool, delete</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: Behavioral -->
+        <div class="section" id="behavioral">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F91D; Behavioral Questions (Microsoft Growth Mindset)</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="tip" style="margin-top:15px;"><strong>Microsoft Values:</strong> Growth Mindset | Customer Obsession | Diversity &amp; Inclusion | One Microsoft | Making a Difference</div>
+
+                <div class="question">
+                    <h3>Q1: Tell me about a time you caused (or nearly caused) a production outage</h3>
+                    <div class="star">
+                        <h4>&#x1F31F; STAR Framework:</h4>
+                        <p><strong>S:</strong> During a routine Terraform apply for Azure Data Factory pipelines, a misconfigured variable caused all 12 production pipelines to be destroyed and recreated.<br>
+                        <strong>T:</strong> Needed to restore service within SLA (30 min TTM) and prevent recurrence.<br>
+                        <strong>A:</strong> Immediately triggered ADF backup restoration from ARM export (15 min). Implemented prevent_destroy lifecycle rules, added terraform plan diff review as mandatory PR gate, and created a shared dangerous operations checklist.<br>
+                        <strong>R:</strong> Service restored in 18 min. Zero repeat incidents since. The plan-review gate caught 3 potentially destructive changes in the following month.</p>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: Describe a time you disagreed with a developer about a deployment approach</h3>
+                    <div class="star">
+                        <h4>&#x1F31F; STAR Framework:</h4>
+                        <p><strong>S:</strong> A dev team wanted to deploy a major database schema change (column rename) during peak hours with a single big-bang migration.<br>
+                        <strong>T:</strong> Needed to find a compromise that met their deadline without risking customer-facing downtime.<br>
+                        <strong>A:</strong> Proposed an expand-contract pattern: add new column &rarr; dual-write in code &rarr; backfill &rarr; switch reads &rarr; drop old column. Presented latency data showing the big-bang approach would cause 8+ min of 500 errors.<br>
+                        <strong>R:</strong> Team adopted expand-contract. Migration completed across 3 deploys with zero downtime. Pattern became the team standard for all schema changes.</p>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: How do you prioritize when multiple Sev1/Sev2 incidents fire simultaneously?</h3>
+                    <div class="star">
+                        <h4>&#x1F31F; STAR Framework:</h4>
+                        <p><strong>S:</strong> Three Sev2 ICMs fired within 10 minutes: ADF pipeline failures, App Insights alerting on elevated latency, and a certificate expiry warning.<br>
+                        <strong>T:</strong> As sole on-call, needed to triage and act on all three within SLA.<br>
+                        <strong>A:</strong> Applied impact-based triage: (1) Certificate = highest urgency (hard deadline, full outage if expired), (2) ADF = customer-visible data delay, (3) Latency = elevated but not erroring. Renewed cert first (3 min), then investigated ADF (found upstream dependency, escalated), then latency (auto-resolved after ADF fix).<br>
+                        <strong>R:</strong> All three resolved within SLA. Created a triage priority matrix that the team now uses for multi-incident scenarios.</p>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q4: Tell me about a time you learned something new to solve a problem</h3>
+                    <div class="star">
+                        <h4>&#x1F31F; STAR Framework (Growth Mindset):</h4>
+                        <p><strong>S:</strong> Team needed to automate ICM triage for 250+ monthly incidents but had no ML/AI expertise in-house.<br>
+                        <strong>T:</strong> I volunteered to build an AI-driven triage agent despite having no prior experience with Azure OpenAI or agentic frameworks.<br>
+                        <strong>A:</strong> Self-taught prompt engineering and Azure OpenAI API over 2 weeks. Built a prototype SRE Agent that classifies incoming ICMs, suggests runbooks, and auto-routes to the correct crew. Iterated based on team feedback.<br>
+                        <strong>R:</strong> Agent now handles initial triage for 70% of incidents, reducing human TTA from 15 min to 2 min. Presented at team all-hands; being evaluated for broader adoption.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 9: Scenario -->
+        <div class="section" id="scenario">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>&#x1F3AF; Scenario-Based Questions</h2>
+                <span class="arrow">&#x25BC;</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <h3>Q1: Your deployment pipeline takes 45 minutes. How would you optimize it? <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <h4>Investigation &amp; Optimization:</h4>
+                        <ul>
+                            <li><strong>Measure:</strong> Add timing to each stage — identify the bottleneck</li>
+                            <li><strong>Parallelize:</strong> Run unit tests, linting, and security scans in parallel stages</li>
+                            <li><strong>Cache:</strong> Docker layer caching, dependency caching (node_modules, pip cache), Terraform provider cache</li>
+                            <li><strong>Test optimization:</strong> Run only affected tests (test impact analysis), move integration tests to post-deploy</li>
+                            <li><strong>Build optimization:</strong> Multi-stage Docker builds, distroless base images (smaller = faster push/pull)</li>
+                            <li><strong>Infrastructure:</strong> Self-hosted agents with warm caches, larger VM SKUs for build agents</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Target:</strong> CI should be &lt;10 min for fast feedback. CD can be longer but with manual gates between stages.</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q2: A team keeps manually SSH-ing into production servers. How do you change this? <span class="level level-senior">L63-64</span></h3>
+                    <div class="answer">
+                        <ul>
+                            <li><strong>Immediate:</strong> Implement Azure Bastion (no direct SSH), require JIT access with time-limited PIM elevation</li>
+                            <li><strong>Short-term:</strong> Convert manual fixes into automated runbooks (Azure Automation/Ansible)</li>
+                            <li><strong>Medium-term:</strong> Immutable infrastructure — replace fix-in-place with redeploy-from-image</li>
+                            <li><strong>Culture:</strong> Make manual changes visible (audit logs in dashboard), celebrate "cattle not pets" wins</li>
+                            <li><strong>Guardrails:</strong> Remove standing SSH access entirely; all changes via pipeline with approval gate</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Q3: You inherit a legacy monolith with no tests, no CI/CD. What's your 90-day plan? <span class="level level-principal">L65+</span></h3>
+                    <div class="answer">
+                        <h4>Week 1-2: Assess &amp; Quick Wins</h4>
+                        <ul>
+                            <li>Map deployment process (who does what, how long, failure rate)</li>
+                            <li>Set up basic CI: build on every commit, even without tests</li>
+                            <li>Containerize the monolith (lift-and-shift to Docker)</li>
+                        </ul>
+                        <h4>Week 3-6: Foundation</h4>
+                        <ul>
+                            <li>Add smoke tests and integration tests for critical paths (80/20 rule)</li>
+                            <li>Implement CD to staging environment with single-click prod deploy</li>
+                            <li>Set up monitoring (App Insights, health endpoints, alerting)</li>
+                        </ul>
+                        <h4>Week 7-12: Maturity</h4>
+                        <ul>
+                            <li>Progressive delivery (canary deploys)</li>
+                            <li>IaC for all infrastructure (Terraform/Bicep)</li>
+                            <li>Begin strangler-fig pattern: extract one bounded context as a microservice</li>
+                            <li>Document Architecture Decision Records (ADRs)</li>
+                        </ul>
+                        <div class="tip"><strong>&#x1F4A1; Key principle:</strong> Don't rewrite everything. Incrementally improve. Ship value while improving the system. Every deployment should be boring.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#x2191;</button>
+
+    <script>
+        function toggleSection(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.classList.toggle('show');
+        }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            btn.classList.toggle('visible', window.scrollY > 300);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAR Interview Prep - Data Analytics Support Lead | Rajesh Dammala</title>
+    <style>
+        :root {--primary:#1a365d;--primary-light:#2b6cb0;--accent:#3182ce;--success:#38a169;--warning:#d69e2e;--bg:#f7fafc;--card-bg:#ffffff;--text:#2d3748;--text-light:#718096;--border:#e2e8f0;--shadow:0 2px 8px rgba(0,0,0,0.08);--shadow-hover:0 4px 16px rgba(0,0,0,0.12);--gradient:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);}
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;scroll-behavior:smooth;}
+        .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:200;transition:width 0.1s;}
+        .nav-bar{background:white;border-bottom:1px solid var(--border);padding:0.5rem 1rem;position:sticky;top:0;z-index:99;display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow);}
+        .nav-bar button{background:var(--primary);color:white;border:none;padding:0.4rem 0.8rem;border-radius:4px;cursor:pointer;font-size:0.8rem;transition:all 0.2s;}
+        .nav-bar button:hover{background:var(--accent);transform:translateY(-1px);}
+        .search-box{flex:1;min-width:200px;padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:4px;font-size:0.9rem;outline:none;}
+        .search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(49,130,206,0.2);}
+        .container{display:flex;max-width:1400px;margin:0 auto;}
+        .sidebar{width:300px;position:sticky;top:50px;height:calc(100vh - 50px);overflow-y:auto;background:white;border-right:1px solid var(--border);padding:1rem 0;flex-shrink:0;}
+        .sidebar h3{padding:0.5rem 1rem;color:var(--primary);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px;}
+        .sidebar ul{list-style:none;}
+        .sidebar li{border-bottom:1px solid var(--border);}
+        .sidebar .toc-link{display:block;padding:0.5rem 1rem;color:var(--text);text-decoration:none;font-size:0.82rem;transition:all 0.2s;}
+        .sidebar .toc-link:hover{background:#ebf8ff;color:var(--accent);padding-left:1.3rem;}
+        .sidebar .toc-link.active{background:#ebf8ff;color:var(--accent);border-left:3px solid var(--accent);font-weight:600;}
+        .main-content{flex:1;padding:1.5rem 2rem;min-width:0;}
+        .hero{background:var(--gradient);color:white;padding:2rem;border-radius:12px;margin-bottom:1.5rem;text-align:center;}
+        .hero h1{font-size:1.6rem;margin-bottom:0.5rem;}
+        .hero p{opacity:0.9;font-size:0.95rem;}
+        .stats-bar{display:flex;gap:1.5rem;padding:1rem 1.5rem;background:white;border-radius:8px;box-shadow:var(--shadow);margin-bottom:1.5rem;flex-wrap:wrap;justify-content:center;}
+        .stat{text-align:center;}
+        .stat-value{font-size:1.5rem;font-weight:700;color:var(--primary);}
+        .stat-label{font-size:0.75rem;color:var(--text-light);text-transform:uppercase;}
+        .content-section{margin-bottom:1rem;background:var(--card-bg);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow 0.3s;}
+        .content-section:hover{box-shadow:var(--shadow-hover);}
+        details{width:100%;}
+        details summary{cursor:pointer;list-style:none;}
+        details summary::-webkit-details-marker{display:none;}
+        .section-header{display:flex;align-items:center;padding:1rem 1.5rem;background:linear-gradient(135deg,#f7fafc 0%,#edf2f7 100%);border-bottom:2px solid var(--primary);user-select:none;transition:background 0.2s;}
+        .section-header:hover{background:linear-gradient(135deg,#ebf8ff 0%,#e6fffa 100%);}
+        .section-icon{font-size:1.4rem;margin-right:0.8rem;}
+        .section-title{flex:1;font-size:1.05rem;font-weight:700;color:var(--primary);}
+        .toggle-icon::after{content:'\25BC';font-size:0.8rem;color:var(--text-light);transition:transform 0.3s;}
+        details[open] .toggle-icon::after{content:'\25B2';}
+        .section-content{padding:1.5rem;animation:fadeIn 0.3s ease;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+        .section-content h3{color:var(--primary-light);margin:1.2rem 0 0.6rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border);font-size:1rem;}
+        .section-content h4{color:var(--primary);margin:0.8rem 0 0.4rem;font-size:0.95rem;}
+        .section-content p{margin-bottom:0.6rem;}
+        .section-content ul{margin:0.5rem 0 0.5rem 1.5rem;}
+        .section-content li{margin-bottom:0.4rem;line-height:1.5;}
+        .section-content strong{color:var(--primary);}
+        .section-content code{background:#edf2f7;padding:0.1rem 0.4rem;border-radius:3px;font-size:0.88em;font-family:'Cascadia Code',Consolas,monospace;}
+        .section-content pre{background:#1a202c;color:#e2e8f0;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;margin:0.8rem 0;}
+        .section-content table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.88rem;}
+        .section-content th{background:var(--primary);color:white;padding:0.5rem 0.8rem;text-align:left;}
+        .section-content tr{border-bottom:1px solid var(--border);}
+        .section-content td{padding:0.5rem 0.8rem;vertical-align:top;}
+        .section-content tr:nth-child(even){background:#f7fafc;}
+        .star-label{display:inline-block;background:var(--primary);color:white;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.75rem;font-weight:700;margin-right:0.3rem;}
+        .star-label.s{background:#2b6cb0;}.star-label.t{background:#2c7a7b;}.star-label.a{background:#38a169;}.star-label.r{background:#d69e2e;}.star-label.l{background:#9b2c2c;}
+        .back-to-top-inline{display:block;text-align:right;padding:0.5rem 1rem;font-size:0.8rem;color:var(--accent);text-decoration:none;border-top:1px solid var(--border);background:#f7fafc;}
+        .back-to-top-inline:hover{background:#ebf8ff;color:var(--primary);}
+        .scroll-btns{position:fixed;bottom:2rem;right:2rem;display:flex;flex-direction:column;gap:0.5rem;z-index:1000;}
+        .scroll-btn{width:48px;height:48px;border-radius:50%;background:var(--primary);color:white;border:none;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:none;align-items:center;justify-content:center;transition:all 0.3s;}
+        .scroll-btn:hover{background:var(--accent);transform:scale(1.1);}
+        .scroll-btn.visible{display:flex;}
+        /* Filter Bar */
+        .filter-bar{background:white;border-bottom:1px solid var(--border);padding:0.6rem 1rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+        .filter-bar .filter-group{display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap;}
+        .filter-bar .filter-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);margin-right:0.3rem;white-space:nowrap;}
+        .filter-bar .divider{width:1px;height:24px;background:var(--border);margin:0 0.5rem;}
+        .pill{display:inline-flex;align-items:center;gap:0.3rem;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--text);transition:all 0.2s;text-decoration:none;white-space:nowrap;}
+        .pill:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);box-shadow:0 2px 6px rgba(49,130,206,0.15);}
+        .pill.active{background:var(--primary);color:white;border-color:var(--primary);}
+        .pill.active:hover{background:var(--accent);border-color:var(--accent);}
+        .pill .pill-icon{font-size:0.85rem;}
+        .pill.topic-azure{border-color:#0078d4;}.pill.topic-azure.active{background:#0078d4;border-color:#0078d4;}
+        .pill.topic-python{border-color:#3776ab;}.pill.topic-python.active{background:#3776ab;border-color:#3776ab;}
+        .pill.topic-sql{border-color:#cc2927;}.pill.topic-sql.active{background:#cc2927;border-color:#cc2927;}
+        .pill.topic-etl{border-color:#e97627;}.pill.topic-etl.active{background:#e97627;border-color:#e97627;}
+        .pill.topic-behavioral{border-color:#38a169;}.pill.topic-behavioral.active{background:#38a169;border-color:#38a169;}
+        .pill.topic-reporting{border-color:#7c3aed;}.pill.topic-reporting.active{background:#7c3aed;border-color:#7c3aed;}
+        .pill.topic-erp{border-color:#d97706;}.pill.topic-erp.active{background:#d97706;border-color:#d97706;}
+        .pill.role-lead{border-color:#1a365d;}.pill.role-lead.active{background:#1a365d;border-color:#1a365d;}
+        .pill.role-engineer{border-color:#2c7a7b;}.pill.role-engineer.active{background:#2c7a7b;border-color:#2c7a7b;}
+        .pill.role-manager{border-color:#9b2c2c;}.pill.role-manager.active{background:#9b2c2c;border-color:#9b2c2c;}
+        .pill.role-analyst{border-color:#5a67d8;}.pill.role-analyst.active{background:#5a67d8;border-color:#5a67d8;}
+        .active-filter-banner{background:#ebf8ff;border:1px solid #bee3f8;padding:0.4rem 1rem;display:none;align-items:center;justify-content:space-between;font-size:0.82rem;color:var(--primary);}
+        .active-filter-banner.visible{display:flex;}
+        .active-filter-banner button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:0.82rem;}
+        .active-filter-banner button:hover{text-decoration:underline;}
+        /* Sidebar grouped */
+        .sidebar .group-header{padding:0.5rem 1rem 0.2rem;color:var(--primary);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-top:0.5rem;border-top:1px solid var(--border);}
+        .sidebar .group-header:first-child{border-top:none;margin-top:0;}
+        @media print{.sidebar,.nav-bar,.scroll-btns,.back-to-top-inline,.progress-bar,.stats-bar,.hero,.filter-bar,.active-filter-banner{display:none!important;}.main-content{padding:0;}details{display:block;}.content-section{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;}}
+        @media(max-width:768px){.sidebar{display:none;}.container{flex-direction:column;}.main-content{padding:1rem;}.filter-bar{padding:0.4rem 0.5rem;}}
+    </style>
+</head>
+<body id="top">
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-bar">
+        <button onclick="expandAll()">📂 Expand All</button>
+        <button onclick="collapseAll()">📁 Collapse All</button>
+        <button onclick="resetFilters()">🔄 Show All</button>
+        <button onclick="window.print()">🖨️ Print</button>
+        <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search questions, keywords, technologies..." oninput="searchContent(this.value)">
+    </nav>
+    <!-- FILTER BAR: Topics & Roles -->
+    <div class="filter-bar" id="filterBar">
+        <div class="filter-group">
+            <span class="filter-label">📌 Topics:</span>
+            <a class="pill topic-azure" data-filter="topic" data-value="azure" onclick="toggleFilter(this)"><span class="pill-icon">☁️</span> Azure</a>
+            <a class="pill topic-python" data-filter="topic" data-value="python" onclick="toggleFilter(this)"><span class="pill-icon">🐍</span> Python</a>
+            <a class="pill topic-sql" data-filter="topic" data-value="sql" onclick="toggleFilter(this)"><span class="pill-icon">🗃️</span> T-SQL/DWH</a>
+            <a class="pill topic-etl" data-filter="topic" data-value="etl" onclick="toggleFilter(this)"><span class="pill-icon">🔄</span> ETL/SSIS</a>
+            <a class="pill topic-reporting" data-filter="topic" data-value="reporting" onclick="toggleFilter(this)"><span class="pill-icon">📊</span> Power BI</a>
+            <a class="pill topic-erp" data-filter="topic" data-value="erp" onclick="toggleFilter(this)"><span class="pill-icon">🏢</span> SAP/ERP</a>
+            <a class="pill topic-behavioral" data-filter="topic" data-value="behavioral" onclick="toggleFilter(this)"><span class="pill-icon">🎯</span> Behavioral</a>
+        </div>
+        <div class="divider"></div>
+        <div class="filter-group">
+            <span class="filter-label">👤 Roles:</span>
+            <a class="pill role-lead" data-filter="role" data-value="lead" onclick="toggleFilter(this)"><span class="pill-icon">🎖️</span> Tech Lead</a>
+            <a class="pill role-engineer" data-filter="role" data-value="engineer" onclick="toggleFilter(this)"><span class="pill-icon">🔧</span> Data Engineer</a>
+            <a class="pill role-manager" data-filter="role" data-value="manager" onclick="toggleFilter(this)"><span class="pill-icon">👔</span> Support Manager</a>
+            <a class="pill role-analyst" data-filter="role" data-value="analyst" onclick="toggleFilter(this)"><span class="pill-icon">📈</span> Data Analyst</a>
+        </div>
+    </div>
+    <div class="active-filter-banner" id="filterBanner">
+        <span id="filterBannerText">Showing: All questions</span>
+        <button onclick="resetFilters()">✕ Clear Filters</button>
+    </div>
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <h3>📑 Navigation</h3>
+            <div class="group-header">🚀 Quick Start</div>
+            <ul>
+                <li><a href="#intro" class="toc-link" data-target="intro">About This Guide</a></li>
+                <li><a href="#pitch" class="toc-link" data-target="pitch">Tell Me About Yourself</a></li>
+            </ul>
+            <div class="group-header">☁️ Azure & Cloud</div>
+            <ul>
+                <li><a href="#azure-data-services" class="toc-link" data-target="azure-data-services">Azure Data Services</a></li>
+                <li><a href="#databricks-pyspark" class="toc-link" data-target="databricks-pyspark">Databricks & PySpark</a></li>
+                <li><a href="#adls-formats" class="toc-link" data-target="adls-formats">ADLS & File Formats</a></li>
+                <li><a href="#adf" class="toc-link" data-target="adf">Azure Data Factory</a></li>
+            </ul>
+            <div class="group-header">🗃️ Data & SQL</div>
+            <ul>
+                <li><a href="#tsql-dwh" class="toc-link" data-target="tsql-dwh">T-SQL & Data Warehouse</a></li>
+                <li><a href="#python-scripting" class="toc-link" data-target="python-scripting">Python & Scripting</a></li>
+                <li><a href="#performance" class="toc-link" data-target="performance">Performance Tuning</a></li>
+            </ul>
+            <div class="group-header">🔄 Pipelines & Integration</div>
+            <ul>
+                <li><a href="#etl-pipelines" class="toc-link" data-target="etl-pipelines">ETL & Data Pipelines</a></li>
+                <li><a href="#ssis-msbi" class="toc-link" data-target="ssis-msbi">SSIS & MSBI</a></li>
+                <li><a href="#data-quality" class="toc-link" data-target="data-quality">Data Quality & Governance</a></li>
+                <li><a href="#sap-erp" class="toc-link" data-target="sap-erp">SAP / ERP Data</a></li>
+            </ul>
+            <div class="group-header">📊 Reporting</div>
+            <ul>
+                <li><a href="#powerbi" class="toc-link" data-target="powerbi">Power BI & Reporting</a></li>
+            </ul>
+            <div class="group-header">🎯 Leadership & Soft Skills</div>
+            <ul>
+                <li><a href="#escalation-leadership" class="toc-link" data-target="escalation-leadership">Escalation & Leadership</a></li>
+                <li><a href="#coaching" class="toc-link" data-target="coaching">Coaching & Mentoring</a></li>
+                <li><a href="#runbooks" class="toc-link" data-target="runbooks">Runbooks & Documentation</a></li>
+            </ul>
+            <div class="group-header">🧩 Practice</div>
+            <ul>
+                <li><a href="#scenarios" class="toc-link" data-target="scenarios">Scenario-Based Questions</a></li>
+                <li><a href="#questions-to-ask" class="toc-link" data-target="questions-to-ask">Questions to Ask Interviewer</a></li>
+            </ul>
+        </aside>
+        <main class="main-content" id="mainContent">
+            <div class="hero">
+                <h1>⭐ STAR Interview Preparation Guide</h1>
+                <p>Data Analytics Support Lead — Azure | Databricks | PySpark | T-SQL | ETL | SSIS | SAP</p>
+                <p style="margin-top:0.5rem;font-size:0.85rem;">Rajesh Dammala | rajesh.dammala@gmail.com | 425-229-0060</p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">40+</div><div class="stat-label">STAR Stories</div></div>
+                <div class="stat"><div class="stat-value">9</div><div class="stat-label">Tech Domains</div></div>
+                <div class="stat"><div class="stat-value">60+</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">16+</div><div class="stat-label">Years Experience</div></div>
+            </div>
+
+            <!-- INTRO SECTION -->
+            <section id="intro" class="content-section" data-category="behavioral" data-role="lead engineer manager analyst">
+                <details open>
+                    <summary class="section-header">
+                        <span class="section-icon">📋</span>
+                        <span class="section-title">STAR+L Framework & Guide Overview</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <p><strong>This guide is tailored for:</strong> Lead Technical Support — Data Analytics Applications</p>
+                        <p>Key technologies covered: Azure Data Services, Databricks, PySpark, T-SQL/DWH, ADLS, Delta/Parquet, ADF, SSIS, Power BI, SAP/ERP</p>
+                        <h3>STAR+L Method</h3>
+                        <p><span class="star-label s">S</span> <strong>Situation:</strong> Set the context — when, where, what system, what scale?</p>
+                        <p><span class="star-label t">T</span> <strong>Task:</strong> What was YOUR responsibility? What goal?</p>
+                        <p><span class="star-label a">A</span> <strong>Action:</strong> Specific steps YOU took. Use "I" not "we."</p>
+                        <p><span class="star-label r">R</span> <strong>Result:</strong> Outcome with metrics/data.</p>
+                        <p><span class="star-label l">L</span> <strong>Learnings:</strong> What changed going forward?</p>
+                        <h3>Key Rules</h3>
+                        <ul>
+                            <li>Quantify: rows processed, % improvement, time saved, SLA metrics</li>
+                            <li>Keep answers to 2-3 minutes</li>
+                            <li>Relate data support experience to operational excellence</li>
+                            <li>Show escalation judgment — when to fix vs. when to engage engineering</li>
+                        </ul>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- TELL ME ABOUT YOURSELF -->
+            <section id="pitch" class="content-section" data-category="behavioral" data-role="lead engineer manager analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">👋</span>
+                        <span class="section-title">TELL ME ABOUT YOURSELF (Data Analytics Lead Pitch)</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>The Pitch (90 seconds):</h3>
+                        <p>"I'm a Technology Operations and Data Platform leader with 16+ years of experience at Microsoft scale. I currently lead escalations for Xbox's Customer Experience Team SRE, where I serve as the central authority for incident management across 20+ mission-critical production services.</p>
+                        <p>My career has given me deep exposure to large-scale data systems — from Azure infrastructure operations managing clusters with 30,000+ network devices, to building KQL/Power BI telemetry dashboards, to leading teams that troubleshoot complex production issues across cloud platforms daily.</p>
+                        <p>What makes me particularly strong for a data analytics support lead role is my combination of: hands-on technical depth (T-SQL, Python, Azure data services, pipeline troubleshooting), escalation management expertise (I redesigned our framework to reduce resolution time by 32%), and knowledge engineering (I authored 175+ runbooks/playbooks in 5 months for complex support scenarios).</p>
+                        <p>I thrive at the intersection of deep technical troubleshooting and team leadership — coaching analysts, building reusable diagnostics, and partnering with engineering to drive permanent fixes."</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- AZURE DATA SERVICES -->
+            <section id="azure-data-services" class="content-section" data-category="azure" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">☁️</span>
+                        <span class="section-title">AZURE DATA SERVICES</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q1: Describe a time you troubleshot a complex issue across multiple Azure data services.</h3>
+                        <p><span class="star-label s">S</span> A production data pipeline spanning ADLS → Databricks → Azure SQL DWH was failing intermittently during nightly loads. The pipeline processed 50M+ records from multiple source systems and failures were impacting downstream Power BI dashboards used by executives.</p>
+                        <p><span class="star-label t">T</span> I needed to identify the root cause across the multi-service chain, restore data freshness, and prevent recurrence — all under SLA pressure with executive visibility.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Mapped the end-to-end data flow: ADLS landing zone → Databricks Bronze/Silver/Gold layers → COPY INTO Azure SQL DWH → Power BI refresh</li>
+                            <li>Checked Azure Monitor and Databricks cluster logs — found intermittent <code>java.lang.OutOfMemoryError</code> during the Silver→Gold transformation</li>
+                            <li>Analyzed the Spark UI: a single partition had 80% of the data (severe data skew on customer_region key)</li>
+                            <li>Cross-referenced with ADLS file sizes — one source system had changed from daily to hourly dumps without notification, causing 8x volume spike in one partition</li>
+                            <li>Implemented <code>salting</code> technique on the skewed key and added adaptive query execution</li>
+                            <li>Added file-count and size-based alerting on the ADLS landing zone to catch upstream changes</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Pipeline stabilized with zero failures over next 30 days. Processing time reduced from 4.5 hours to 1.8 hours. The monitoring alert caught 2 additional upstream schema changes before they caused failures.</p>
+                        <p><span class="star-label l">L</span> In multi-service architectures, the root cause is often NOT where the error manifests. Systematic tracing from symptom backwards through each service boundary is critical. Upstream change detection is as important as downstream error handling.</p>
+
+                        <h3>Q2: How do you approach Azure service limits and throttling issues in data workloads?</h3>
+                        <p><span class="star-label s">S</span> A large dataset upload process was failing with HTTP 429 (throttling) errors when writing to Azure SQL Database. The application was batch-loading 200M records from ADLS via multiple parallel streams.</p>
+                        <p><span class="star-label t">T</span> I needed to diagnose why throttling occurred and redesign the load pattern to work within Azure service limits while meeting the 4-hour SLA window.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Reviewed Azure SQL DTU/vCore consumption via <code>sys.dm_db_resource_stats</code> — confirmed we were hitting 100% CPU during parallel loads</li>
+                            <li>Analyzed the parallelism: 32 concurrent COPY streams was overwhelming a Standard S3 tier</li>
+                            <li>Reduced parallelism to 8 streams but added batch windowing (load by date partition)</li>
+                            <li>Switched from row-by-row inserts to <code>BULK INSERT</code> with <code>TABLOCK</code> for minimal logging</li>
+                            <li>Implemented exponential backoff retry logic in the Python orchestrator</li>
+                            <li>Recommended tier upgrade to Hyperscale for sustained large workloads</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Eliminated throttling errors completely. Load time improved from 6 hours (with failures) to 3.2 hours. Cost increased only 15% with tier adjustment vs. 4x if we had simply scaled massively.</p>
+                        <p><span class="star-label l">L</span> Throwing more parallelism at Azure services without understanding DTU/throughput limits creates worse outcomes. Right-sizing concurrency + optimal bulk patterns often beats brute-force scaling.</p>
+
+                        <h3>Q3: What Azure services would you use to build a data observability layer for a support team?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul>
+                            <li><strong>Azure Monitor + Log Analytics:</strong> Centralized logging across all services (ADF, Databricks, SQL)</li>
+                            <li><strong>Application Insights:</strong> Custom telemetry for data pipeline health metrics</li>
+                            <li><strong>Azure Alerts:</strong> Proactive notification on pipeline failures, data freshness SLA breaches</li>
+                            <li><strong>KQL dashboards:</strong> Real-time query on pipeline execution patterns, error clustering</li>
+                            <li><strong>Power BI:</strong> Executive-facing dashboards for data platform health KPIs</li>
+                            <li><strong>Azure Service Health:</strong> Correlate pipeline failures with platform-level incidents</li>
+                        </ul>
+                        <p>I'd implement a "Data Platform Health" dashboard showing: pipeline success rate, data freshness per dataset, error categorization, and trending volume metrics — giving the support team immediate visibility without diving into logs.</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- DATABRICKS & PYSPARK -->
+            <section id="databricks-pyspark" class="content-section" data-category="azure python" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">⚡</span>
+                        <span class="section-title">DATABRICKS & PYSPARK</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q4: Walk me through troubleshooting a slow PySpark job in Databricks.</h3>
+                        <p><span class="star-label s">S</span> A PySpark transformation job processing 500GB of Delta tables was taking 6+ hours — well beyond the 2-hour SLA. The job reads from multiple Delta tables, performs joins and aggregations, and writes to a Gold layer table used for reporting.</p>
+                        <p><span class="star-label t">T</span> I needed to identify performance bottlenecks and optimize the job to meet the 2-hour window without increasing cluster cost significantly.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Opened the Spark UI → Stages tab: found one stage taking 80% of total time with massive shuffle write (200GB)</li>
+                            <li>Drilled into the SQL tab → physical plan showed a <code>SortMergeJoin</code> on a highly skewed key</li>
+                            <li>Checked partition distribution: <code>df.groupBy("join_key").count().orderBy(desc("count"))</code> — confirmed 90% of records in 5 partitions</li>
+                            <li>Applied broadcast join for the smaller table (< 1GB): <code>broadcast(df_small)</code></li>
+                            <li>For the large-large join: implemented salting — appended random suffix to skewed keys</li>
+                            <li>Enabled Adaptive Query Execution: <code>spark.conf.set("spark.sql.adaptive.enabled", "true")</code></li>
+                            <li>Added <code>ZORDER BY</code> on frequently filtered columns in Delta tables</li>
+                            <li>Replaced Python UDFs with native Spark functions (<code>when</code>, <code>coalesce</code>, <code>regexp_extract</code>)</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Job runtime dropped from 6.2 hours to 1.4 hours (77% improvement). Shuffle reduced from 200GB to 12GB. No cluster size increase needed — same cost, 4x faster.</p>
+                        <p><span class="star-label l">L</span> In PySpark, 90% of performance issues come from 3 things: data skew, unnecessary shuffles, and Python UDFs. Always check the physical plan before changing cluster config. AQE + broadcast hints solve most join performance issues.</p>
+
+                        <h3>Q5: How do you handle schema evolution issues in Delta Lake?</h3>
+                        <p><span class="star-label s">S</span> A source system added 3 new columns to their daily feed without advance notice. The Delta table write failed with <code>AnalysisException: cannot resolve column</code> because schema enforcement rejected the new columns.</p>
+                        <p><span class="star-label t">T</span> I needed to restore the pipeline immediately and implement a sustainable schema evolution strategy.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Immediate fix: added <code>.option("mergeSchema", "true")</code> to the write operation</li>
+                            <li>Verified new columns didn't conflict with existing ones using <code>DESCRIBE HISTORY</code></li>
+                            <li>Implemented a schema validation layer that compares incoming schema vs. expected schema BEFORE writing</li>
+                            <li>Created alerting: if schema drift detected, log the diff and notify the team (but allow additive changes)</li>
+                            <li>Set table property: <code>delta.columnMapping.mode = 'name'</code> for safer evolution</li>
+                            <li>Documented schema contract with source team — breaking changes require 48-hour notice</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Pipeline restored within 30 minutes. Schema validation caught 4 additional schema changes over the next quarter — all handled gracefully without failures. Zero downstream impact.</p>
+                        <p><span class="star-label l">L</span> Schema evolution is inevitable in production. The question isn't "if" but "how gracefully." Additive changes should auto-merge; breaking changes need contracts. Delta's schema enforcement is a feature, not a bug — it prevents silent data corruption.</p>
+
+                        <h3>Q6: Explain Delta Lake time travel and when you'd use it in support scenarios.</h3>
+                        <p><strong>Answer:</strong></p>
+                        <pre>-- View table as of a specific version
+SELECT * FROM my_table VERSION AS OF 42;
+
+-- View table as of a timestamp
+SELECT * FROM my_table TIMESTAMP AS OF '2026-06-01 08:00:00';
+
+-- Compare current vs. previous version
+SELECT * FROM my_table VERSION AS OF 42
+EXCEPT
+SELECT * FROM my_table VERSION AS OF 41;</pre>
+                        <p><strong>Support use cases:</strong></p>
+                        <ul>
+                            <li><strong>Data recovery:</strong> User accidentally overwrites or deletes records — restore from previous version</li>
+                            <li><strong>Root cause analysis:</strong> Compare data before/after a pipeline run to identify what changed</li>
+                            <li><strong>Audit:</strong> Track who modified what and when using <code>DESCRIBE HISTORY</code></li>
+                            <li><strong>Regression testing:</strong> Validate new transformation logic against historical data</li>
+                            <li><strong>Compliance:</strong> Point-in-time queries for regulatory reporting</li>
+                        </ul>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- T-SQL & DATA WAREHOUSE -->
+            <section id="tsql-dwh" class="content-section" data-category="sql" data-role="lead engineer analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🗃️</span>
+                        <span class="section-title">T-SQL & DATA WAREHOUSE</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q7: Describe a time you tuned a critical production query that was causing SLA breaches.</h3>
+                        <p><span class="star-label s">S</span> A nightly stored procedure that aggregates sales data across 15 fact tables was running for 8+ hours, causing the reporting SLA (data available by 6 AM) to be breached 3 days in a row. The procedure processes 2B+ rows.</p>
+                        <p><span class="star-label t">T</span> I needed to reduce execution time to under 3 hours to restore SLA compliance while ensuring data accuracy.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Captured the actual execution plan — found 4 table scans on billion-row tables and 2 implicit conversions</li>
+                            <li>Identified parameter sniffing: the plan was optimized for a small date range but used for full monthly aggregation</li>
+                            <li>Broke the monolithic procedure into stages using temp tables:
+                                <pre>-- Stage 1: Pre-aggregate by date partition
+SELECT date_key, product_key, SUM(amount) as total
+INTO #stage1
+FROM fact_sales WITH (NOLOCK)
+WHERE date_key BETWEEN @start AND @end
+GROUP BY date_key, product_key;
+
+-- Create index on temp table
+CREATE CLUSTERED INDEX ix_stage1 ON #stage1(date_key, product_key);
+
+-- Stage 2: Join with dimensions
+SELECT s.*, d.region, p.category
+INTO #stage2
+FROM #stage1 s
+JOIN dim_date d ON s.date_key = d.date_key
+JOIN dim_product p ON s.product_key = p.product_key;</pre>
+                            </li>
+                            <li>Added missing non-clustered indexes on join columns with INCLUDE for covering</li>
+                            <li>Fixed implicit conversions: <code>VARCHAR</code> to <code>NVARCHAR</code> comparisons causing scans</li>
+                            <li>Added <code>OPTION (RECOMPILE)</code> for the date-range-dependent sections</li>
+                            <li>Implemented partition elimination by aligning the WHERE clause with table partitioning</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Execution time dropped from 8.2 hours to 1.8 hours (78% improvement). SLA restored immediately. The staged approach also made debugging easier — each temp table is a checkpoint.</p>
+                        <p><span class="star-label l">L</span> Large procedures benefit from decomposition. Temp tables with indexes create "materialized checkpoints" that give the optimizer better cardinality estimates. Always check for implicit conversions first — they're silent killers that force full scans.</p>
+
+                        <h3>Q8: How do you analyze execution plans to find performance issues?</h3>
+                        <p><strong>Key things I look for in execution plans:</strong></p>
+                        <table>
+                            <tr><th>Symptom</th><th>Root Cause</th><th>Fix</th></tr>
+                            <tr><td>Table Scan on large table</td><td>Missing index or non-SARGable WHERE</td><td>Create covering index; rewrite predicate</td></tr>
+                            <tr><td>Hash Match (high cost)</td><td>Large unsorted join inputs</td><td>Add index on join key; reduce input set first</td></tr>
+                            <tr><td>Sort operator (spills to disk)</td><td>Insufficient memory grant</td><td>Add ORDER BY-aligned index; increase memory grant hint</td></tr>
+                            <tr><td>Thick arrows (actual > estimated)</td><td>Stale statistics</td><td>UPDATE STATISTICS; use FULLSCAN for critical tables</td></tr>
+                            <tr><td>Parallelism with skew</td><td>One thread doing all work</td><td>Redistribute data; adjust MAXDOP; partition table</td></tr>
+                            <tr><td>Key Lookup + Nested Loop</td><td>Non-covering index</td><td>Add INCLUDE columns to the index</td></tr>
+                        </table>
+                        <pre>-- Quick diagnostics query pack
+-- 1. Find missing indexes
+SELECT * FROM sys.dm_db_missing_index_details WHERE database_id = DB_ID();
+
+-- 2. Find expensive queries
+SELECT TOP 10 
+    qs.total_elapsed_time/qs.execution_count as avg_elapsed,
+    qs.execution_count,
+    SUBSTRING(qt.text, qs.statement_start_offset/2, 100) as query_text
+FROM sys.dm_exec_query_stats qs
+CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
+ORDER BY qs.total_elapsed_time DESC;
+
+-- 3. Check index usage
+SELECT OBJECT_NAME(i.object_id), i.name, 
+    us.user_seeks, us.user_scans, us.user_lookups
+FROM sys.indexes i
+LEFT JOIN sys.dm_db_index_usage_stats us ON i.object_id = us.object_id
+WHERE us.database_id = DB_ID();</pre>
+
+                        <h3>Q9: Explain CTEs vs Temp Tables vs Table Variables — when do you use each?</h3>
+                        <table>
+                            <tr><th>Feature</th><th>CTE</th><th>Temp Table</th><th>Table Variable</th></tr>
+                            <tr><td>Persistence</td><td>Query scope only</td><td>Session scope</td><td>Batch scope</td></tr>
+                            <tr><td>Statistics</td><td>No (uses base table stats)</td><td>Yes (auto-created)</td><td>No</td></tr>
+                            <tr><td>Indexes</td><td>No</td><td>Yes (explicit)</td><td>Primary key only</td></tr>
+                            <tr><td>Best for</td><td>Readability, recursion, single-use</td><td>Large intermediate results, multi-step</td><td>Small sets (&lt;1000 rows)</td></tr>
+                            <tr><td>Transaction log</td><td>N/A</td><td>Logged in tempdb</td><td>Minimal logging</td></tr>
+                        </table>
+                        <p><strong>My rule of thumb:</strong> If I reference the result more than once or it exceeds 10K rows → temp table. If it's for readability or recursion → CTE. If it's a small lookup set in a proc → table variable.</p>
+
+                        <h3>Q10: How would you troubleshoot deadlocks in a production DWH?</h3>
+                        <p><span class="star-label s">S</span> Production ETL loads were failing intermittently with deadlock errors. The loads run concurrent updates on dimension tables while reporting queries read the same tables.</p>
+                        <p><span class="star-label t">T</span> Eliminate deadlocks without impacting either ETL SLAs or reporting query performance.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Enabled deadlock trace flag 1222 and captured deadlock graphs from system_health extended events</li>
+                            <li>Analyzed the graph: ETL held page lock on dim_customer while waiting for dim_product; reporting held dim_product waiting for dim_customer (classic cycle)</li>
+                            <li>Implemented <code>READ_COMMITTED_SNAPSHOT</code> isolation for the reporting database to eliminate reader-writer conflicts</li>
+                            <li>Standardized lock ordering in ETL procs: always acquire locks in alphabetical table order</li>
+                            <li>Added <code>NOLOCK</code> hints for reporting queries where slight staleness is acceptable</li>
+                            <li>Reduced transaction scope in ETL: commit per-dimension rather than all-at-once</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Deadlocks eliminated (from 15/week to 0). ETL reliability improved to 99.9%. Reporting queries actually got 20% faster due to RCSI eliminating blocking waits.</p>
+                        <p><span class="star-label l">L</span> Deadlocks are design problems, not runtime problems. RCSI is almost always the right choice for mixed OLTP/reporting workloads. Lock ordering discipline prevents cycles at the source.</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- PYTHON & SCRIPTING -->
+            <section id="python-scripting" class="content-section" data-category="python" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🐍</span>
+                        <span class="section-title">PYTHON & DATA ENGINEERING</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q11: Describe a Python script you built to automate data troubleshooting.</h3>
+                        <p><span class="star-label s">S</span> Our support team was spending 2-3 hours per ticket manually checking data reconciliation between source systems and the data warehouse — comparing row counts, checksums, and identifying mismatches across 50+ tables.</p>
+                        <p><span class="star-label t">T</span> I needed to build an automated diagnostic tool that could perform these checks in minutes and produce an actionable report.</p>
+                        <p><span class="star-label a">A</span> I built a Python-based reconciliation framework:</p>
+                        <pre>import pandas as pd
+from azure.identity import DefaultAzureCredential
+from azure.storage.filedatalake import DataLakeServiceClient
+import pyodbc
+from concurrent.futures import ThreadPoolExecutor
+
+class DataReconciler:
+    def __init__(self, config):
+        self.adls_client = DataLakeServiceClient(...)
+        self.sql_conn = pyodbc.connect(config['dwh_conn'])
+    
+    def check_row_counts(self, table_name, date_filter):
+        """Compare source ADLS file count vs DWH table count"""
+        source_count = self._get_adls_count(table_name, date_filter)
+        target_count = self._get_sql_count(table_name, date_filter)
+        variance = abs(source_count - target_count) / max(source_count, 1)
+        return {'table': table_name, 'source': source_count, 
+                'target': target_count, 'variance_pct': variance * 100}
+    
+    def check_checksums(self, table_name, key_columns):
+        """Hash-based comparison for data integrity"""
+        # Generate HASHBYTES on SQL side, compare with Python hash
+        ...
+    
+    def generate_report(self, results):
+        """Output HTML report with pass/fail indicators"""
+        df = pd.DataFrame(results)
+        df['status'] = df['variance_pct'].apply(
+            lambda x: '✅ PASS' if x < 0.01 else '❌ FAIL')
+        return df.to_html(classes='recon-table')</pre>
+                        <p><span class="star-label r">R</span> Reduced reconciliation time from 2-3 hours to 8 minutes per ticket. Support team adopted it as standard first-response diagnostic. Caught 12 data quality issues in the first month that would have gone unnoticed.</p>
+                        <p><span class="star-label l">L</span> Python is the glue language for data support — it can talk to ADLS, SQL, Databricks, and produce reports all in one workflow. Investing in reusable diagnostic tools pays dividends across every future ticket.</p>
+
+                        <h3>Q12: How do you use Python with Azure SDK for data platform support?</h3>
+                        <p><strong>Key libraries I use daily:</strong></p>
+                        <table>
+                            <tr><th>Library</th><th>Use Case</th></tr>
+                            <tr><td><code>azure-identity</code></td><td>Authentication via DefaultAzureCredential (MSI, CLI, SP)</td></tr>
+                            <tr><td><code>azure-storage-file-datalake</code></td><td>ADLS file operations — list, read, check ACLs</td></tr>
+                            <tr><td><code>azure-mgmt-datafactory</code></td><td>Programmatic ADF pipeline monitoring and re-runs</td></tr>
+                            <tr><td><code>databricks-sdk</code></td><td>Job status checks, cluster management, notebook execution</td></tr>
+                            <tr><td><code>pyodbc</code> / <code>sqlalchemy</code></td><td>SQL Server/DWH connectivity and query execution</td></tr>
+                            <tr><td><code>pandas</code> / <code>polars</code></td><td>Data analysis, comparison, reporting</td></tr>
+                            <tr><td><code>great_expectations</code></td><td>Data quality validation frameworks</td></tr>
+                        </table>
+
+                        <h3>Q13: How would you handle a scenario where a Python ETL script is consuming too much memory?</h3>
+                        <p><strong>Systematic approach:</strong></p>
+                        <ul>
+                            <li><strong>Profile first:</strong> Use <code>memory_profiler</code> or <code>tracemalloc</code> to identify the memory hog</li>
+                            <li><strong>Chunked processing:</strong> Replace <code>pd.read_csv(file)</code> with <code>pd.read_csv(file, chunksize=100000)</code></li>
+                            <li><strong>Dtype optimization:</strong> Downcast numerics, use <code>category</code> dtype for low-cardinality strings</li>
+                            <li><strong>Generator patterns:</strong> Yield rows instead of collecting into lists</li>
+                            <li><strong>Polars over Pandas:</strong> For large datasets, Polars uses Apache Arrow (zero-copy, lazy eval)</li>
+                            <li><strong>Offload to Spark:</strong> If data exceeds single-node memory, push to Databricks</li>
+                        </ul>
+                        <pre># Memory-efficient chunked processing
+for chunk in pd.read_csv('large_file.csv', chunksize=50000):
+    processed = transform(chunk)
+    processed.to_sql('target_table', engine, if_exists='append', index=False)
+    del chunk, processed  # Explicit garbage collection hint</pre>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- ETL & DATA PIPELINES -->
+            <section id="etl-pipelines" class="content-section" data-category="etl" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🔄</span>
+                        <span class="section-title">ETL & DATA PIPELINES</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q14: Tell me about a time a production ETL pipeline failed and how you resolved it.</h3>
+                        <p><span class="star-label s">S</span> A critical nightly ETL pipeline that loads financial transaction data from 12 source systems into the data warehouse failed at 2 AM. The pipeline processes 80M records and feeds 15 downstream reports due by 7 AM. The on-call analyst escalated to me after initial troubleshooting showed no obvious errors in the ADF logs.</p>
+                        <p><span class="star-label t">T</span> I needed to diagnose the failure, restore the pipeline, and ensure all downstream reports had fresh data before the 7 AM business deadline.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Checked ADF Monitor → activity failed at "Copy to Staging" step with generic timeout error</li>
+                            <li>Investigated the source: one of 12 systems (SAP extract) had a file 10x larger than normal (schema change added nested records)</li>
+                            <li>The Parquet file was malformed — nested schema wasn't flattened, causing parsing failure</li>
+                            <li>Immediate mitigation: skipped the SAP source, loaded remaining 11 systems (partial load better than no load)</li>
+                            <li>For SAP fix: wrote a quick PySpark script to flatten the nested Parquet, loaded manually</li>
+                            <li>All data available by 5:30 AM — 90 minutes before deadline</li>
+                            <li>Long-term: added schema validation step at ingestion + alerting on file size anomalies</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Met the 7 AM SLA despite a critical failure. No business impact. The schema validation caught 3 similar issues over the next month — each auto-handled without human intervention.</p>
+                        <p><span class="star-label l">L</span> In production support, "perfect" is the enemy of "on time." Loading 11/12 sources on time is better than loading 12/12 sources late. Always have a partial-load strategy. Schema validation at ingestion is non-negotiable for multi-source pipelines.</p>
+
+                        <h3>Q15: How do you design monitoring and alerting for ETL pipelines?</h3>
+                        <p><strong>My ETL monitoring framework has 4 layers:</strong></p>
+                        <table>
+                            <tr><th>Layer</th><th>What It Checks</th><th>Tool</th></tr>
+                            <tr><td>Infrastructure</td><td>Cluster health, disk space, memory, connectivity</td><td>Azure Monitor, AppInsights</td></tr>
+                            <tr><td>Pipeline Execution</td><td>Start/end times, duration anomalies, failure counts</td><td>ADF Monitor, custom KQL</td></tr>
+                            <tr><td>Data Quality</td><td>Row counts, null rates, schema drift, value ranges</td><td>Great Expectations, custom SQL checks</td></tr>
+                            <tr><td>Business SLA</td><td>Data freshness, report availability, downstream dependencies</td><td>Power BI refresh status, custom dashboard</td></tr>
+                        </table>
+                        <p><strong>Alert escalation matrix:</strong></p>
+                        <ul>
+                            <li>P1 (immediate page): Pipeline failure with SLA breach risk</li>
+                            <li>P2 (15-min response): Data quality threshold breached, partial failure</li>
+                            <li>P3 (next business day): Duration anomaly, schema drift detected</li>
+                        </ul>
+
+                        <h3>Q16: How do you handle data pipeline idempotency?</h3>
+                        <p><strong>Answer:</strong> Every pipeline I build must be safely re-runnable. Key patterns:</p>
+                        <ul>
+                            <li><strong>Upsert/MERGE:</strong> Use <code>MERGE INTO target USING source ON key WHEN MATCHED THEN UPDATE WHEN NOT MATCHED THEN INSERT</code></li>
+                            <li><strong>Partition overwrite:</strong> Delete-then-insert by partition key (date), not append-only</li>
+                            <li><strong>Watermark tracking:</strong> Store last-processed timestamp; on re-run, start from watermark</li>
+                            <li><strong>Delta Lake:</strong> Use <code>MERGE</code> with business keys — naturally idempotent</li>
+                            <li><strong>File-based:</strong> Process files atomically — move to "processed" folder only after successful load</li>
+                        </ul>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- ADLS & FILE FORMATS -->
+            <section id="adls-formats" class="content-section" data-category="azure" data-role="lead engineer analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">📁</span>
+                        <span class="section-title">ADLS & FILE FORMATS (Parquet/Delta/CSV)</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q17: When would you use Parquet vs Delta vs CSV in a data lake architecture?</h3>
+                        <table>
+                            <tr><th>Format</th><th>Best For</th><th>Avoid When</th></tr>
+                            <tr><td><strong>CSV/Excel</strong></td><td>Human-readable exports, small ad-hoc uploads, legacy system integration</td><td>Large-scale processing, schema enforcement needed, columnar queries</td></tr>
+                            <tr><td><strong>Parquet</strong></td><td>Immutable analytical reads, archive/cold tier, interop with non-Databricks tools</td><td>Frequent updates/deletes needed, ACID required, time-travel needed</td></tr>
+                            <tr><td><strong>Delta</strong></td><td>Production pipelines, ACID writes, CDC/upserts, audit trails, concurrent reads/writes</td><td>Simple file exchange with non-Spark tools, cost-sensitive archival</td></tr>
+                        </table>
+                        <p><strong>My recommended data lake layout:</strong></p>
+                        <pre>ADLS Container/
+├── raw/          ← CSV, JSON, XML (as-received from sources)
+├── bronze/       ← Parquet (raw converted, schema-on-read)
+├── silver/       ← Delta (cleaned, deduplicated, conformed)
+├── gold/         ← Delta (business-ready aggregates)
+└── archive/      ← Parquet (compressed, lifecycle-managed)</pre>
+
+                        <h3>Q18: How would you troubleshoot a file not being picked up from ADLS?</h3>
+                        <p><span class="star-label s">S</span> A data pipeline was configured to ingest CSV files from an ADLS container using an ADF event trigger, but new files were not being processed. Business users reported data staleness.</p>
+                        <p><span class="star-label t">T</span> Identify why files weren't triggering the pipeline and restore automated ingestion.</p>
+                        <p><span class="star-label a">A</span> My diagnostic checklist:</p>
+                        <ul>
+                            <li>✅ Verified file exists in expected path — it was there</li>
+                            <li>✅ Checked naming pattern — file was <code>data_20260611.CSV</code> but trigger filtered for <code>*.csv</code> (case-sensitive on Linux-based ADLS)</li>
+                            <li>✅ Checked trigger status in ADF Monitor → trigger was "Started" but no runs</li>
+                            <li>✅ Verified Event Grid subscription was active (Azure Portal → Storage Account → Events)</li>
+                            <li>❌ Found: Event Grid subscription had expired due to a resource group policy that auto-deletes subscriptions after 90 days</li>
+                            <li>Fix: Recreated Event Grid subscription, changed trigger to case-insensitive blob pattern</li>
+                            <li>Added monitoring alert on Event Grid subscription health</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Pipeline restored within 20 minutes. Backfilled the 3 missed files. Prevented recurrence by adding subscription health check to our weekly automated diagnostics.</p>
+                        <p><span class="star-label l">L</span> "Invisible" infrastructure like Event Grid subscriptions can silently expire. File triggers have multiple failure points: file naming, container permissions, Event Grid subscription, trigger pattern matching. A systematic checklist is essential.</p>
+
+                        <h3>Q19: How do you handle large Parquet file optimization?</h3>
+                        <p><strong>Key optimization strategies:</strong></p>
+                        <ul>
+                            <li><strong>File size targeting:</strong> Aim for 128MB-1GB per file (optimal for Spark readers)</li>
+                            <li><strong>Too many small files:</strong> Use <code>OPTIMIZE</code> (Delta) or repartition + coalesce</li>
+                            <li><strong>Column pruning:</strong> Parquet's columnar format means SELECT specific columns = dramatic I/O reduction</li>
+                            <li><strong>Predicate pushdown:</strong> Ensure filters on partition columns to skip entire file groups</li>
+                            <li><strong>Compression:</strong> Use SNAPPY for balanced speed/size, ZSTD for maximum compression</li>
+                            <li><strong>Row group size:</strong> Default 128MB is usually optimal; tune for query patterns</li>
+                        </ul>
+                        <pre># Check Parquet file metadata for diagnostics
+import pyarrow.parquet as pq
+meta = pq.read_metadata('file.parquet')
+print(f"Rows: {meta.num_rows}, Row Groups: {meta.num_row_groups}")
+print(f"Columns: {meta.num_columns}, Size: {meta.serialized_size/1024/1024:.1f} MB")
+for i in range(meta.num_row_groups):
+    rg = meta.row_group(i)
+    print(f"  RG {i}: {rg.num_rows} rows, {rg.total_byte_size/1024/1024:.1f} MB")</pre>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- AZURE DATA FACTORY -->
+            <section id="adf" class="content-section" data-category="azure etl" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🏭</span>
+                        <span class="section-title">AZURE DATA FACTORY</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q20: How do you implement incremental loads in ADF?</h3>
+                        <p><span class="star-label s">S</span> A full-load pipeline was taking 12 hours to reload 500M records nightly from an operational database. Storage costs were growing 20% monthly due to full snapshots.</p>
+                        <p><span class="star-label t">T</span> Convert to incremental load pattern to reduce time, cost, and source system impact.</p>
+                        <p><span class="star-label a">A</span> I designed a watermark-based incremental pattern:</p>
+                        <pre>Pipeline Structure:
+1. Lookup Activity → Read last_watermark from control table
+2. Copy Activity → Source query: 
+   SELECT * FROM source_table 
+   WHERE modified_date > '@{activity('Lookup').output.firstRow.watermark}'
+3. Stored Procedure → Update control table with MAX(modified_date)
+4. If Activity → If row_count > 0, trigger downstream transformations</pre>
+                        <ul>
+                            <li>For file-based sources: used event triggers (BlobCreated) on ADLS</li>
+                            <li>For CDC sources: leveraged <code>sys.change_tracking_current_version()</code></li>
+                            <li>Added error handling: if Copy fails, watermark is NOT updated (safe replay)</li>
+                            <li>Implemented tumbling window triggers for guaranteed processing windows</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Load time reduced from 12 hours to 45 minutes (94% improvement). Storage costs reduced by 60%. Source system load reduced by 85% (only reading changed records).</p>
+                        <p><span class="star-label l">L</span> Incremental loads are more complex to implement but pay off exponentially as data grows. The watermark pattern with atomic commit-only-on-success ensures data consistency even during failures.</p>
+
+                        <h3>Q21: How do you troubleshoot ADF pipeline failures?</h3>
+                        <p><strong>My systematic approach:</strong></p>
+                        <ul>
+                            <li><strong>Step 1 — ADF Monitor:</strong> Check pipeline run → identify failed activity → read error message</li>
+                            <li><strong>Step 2 — Error categorization:</strong>
+                                <ul>
+                                    <li>Connectivity: timeout, auth failure → check linked service, network, firewall</li>
+                                    <li>Data: schema mismatch, type conversion → check source data changes</li>
+                                    <li>Resource: memory, DTU limit → check cluster/database sizing</li>
+                                    <li>Logic: wrong results → debug mapping data flows in debug mode</li>
+                                </ul>
+                            </li>
+                            <li><strong>Step 3 — Integration Runtime logs:</strong> For self-hosted IR, check event viewer on IR machine</li>
+                            <li><strong>Step 4 — Reproduce:</strong> Re-run with same parameters; use Debug mode for step-through</li>
+                            <li><strong>Step 5 — Fix + Prevent:</strong> Apply fix, add retry policy, alert on this error pattern</li>
+                        </ul>
+
+                        <h3>Q22: How do you handle ADF data flow performance issues?</h3>
+                        <p><strong>Performance optimization checklist:</strong></p>
+                        <ul>
+                            <li>Use <strong>staging</strong> for COPY activities (enables PolyBase/COPY INTO for DWH loads)</li>
+                            <li>Set appropriate <strong>parallelism</strong> (DIU for Copy, core count for Data Flows)</li>
+                            <li>Enable <strong>partition</strong> option in sources — hash partition on join keys</li>
+                            <li>Avoid <strong>row-by-row</strong> lookups in data flows — pre-load lookup tables as cached datasets</li>
+                            <li>Use <strong>TTL (Time-to-Live)</strong> on data flow clusters to avoid cold-start overhead</li>
+                            <li>Monitor <strong>Spark execution</strong> plan in data flow monitoring for skew/spill indicators</li>
+                        </ul>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- SSIS & MSBI -->
+            <section id="ssis-msbi" class="content-section" data-category="etl" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">📦</span>
+                        <span class="section-title">SSIS & MSBI</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q23: Describe your experience with SSIS package troubleshooting.</h3>
+                        <p><span class="star-label s">S</span> A legacy SSIS package that loads daily HR data into the data warehouse was failing intermittently with "buffer full" errors. The package processed 5M employee records with multiple lookups and conditional splits.</p>
+                        <p><span class="star-label t">T</span> Stabilize the package without a full rewrite (legacy system, minimal dev budget).</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Enabled SSIS logging (OnError, OnWarning, BufferSizeTuning events) to identify the bottleneck</li>
+                            <li>Found: Lookup transformations were using Full Cache mode loading 50M reference rows into memory</li>
+                            <li>Switched large lookups to Partial Cache with appropriate cache size limits</li>
+                            <li>Identified a Slowly Changing Dimension component causing row-by-row updates — replaced with staging table + MERGE pattern</li>
+                            <li>Adjusted <code>DefaultBufferMaxRows</code> and <code>DefaultBufferSize</code> properties based on average row width</li>
+                            <li>Split the monolithic data flow into 3 sequential phases with checkpoint restartability</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Package runtime stabilized from "fails 3x/week" to zero failures over 6 months. Runtime improved from 4 hours to 1.5 hours. Memory usage dropped 60%.</p>
+                        <p><span class="star-label l">L</span> SSIS performance issues are almost always memory-related. Full Cache lookups against large tables are the #1 offender. The SCD wizard component should never be used for tables over 100K rows — always prefer staging + MERGE.</p>
+
+                        <h3>Q24: How would you migrate an SSIS-based ETL to Azure (ADF/Databricks)?</h3>
+                        <p><strong>Migration strategy:</strong></p>
+                        <table>
+                            <tr><th>SSIS Component</th><th>Azure Equivalent</th><th>Notes</th></tr>
+                            <tr><td>Control Flow</td><td>ADF Pipeline</td><td>Orchestration, sequencing, error handling</td></tr>
+                            <tr><td>Data Flow</td><td>ADF Mapping Data Flow / Databricks notebook</td><td>Complex transforms → Databricks; simple → ADF</td></tr>
+                            <tr><td>Execute SQL Task</td><td>ADF Stored Procedure activity</td><td>Direct equivalent</td></tr>
+                            <tr><td>Lookup Transform</td><td>ADF Lookup activity / Spark broadcast join</td><td>Spark is more scalable for large lookups</td></tr>
+                            <tr><td>Flat File Source</td><td>ADF Copy + ADLS</td><td>Land files in ADLS first, then process</td></tr>
+                            <tr><td>SCD Component</td><td>Delta Lake MERGE</td><td>Far more performant at scale</td></tr>
+                            <tr><td>Package variables</td><td>ADF Parameters + Variables</td><td>Passed via pipeline parameters</td></tr>
+                            <tr><td>SQL Agent scheduling</td><td>ADF Triggers (schedule/event/tumbling)</td><td>More flexible triggering options</td></tr>
+                        </table>
+                        <p><strong>Key considerations:</strong> Lift-and-shift via Azure-SSIS IR for quick migration; refactor to native ADF/Databricks for long-term scale. Prioritize based on pipeline criticality and complexity.</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- POWER BI -->
+            <section id="powerbi" class="content-section" data-category="sql reporting" data-role="lead analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">📊</span>
+                        <span class="section-title">POWER BI & REPORTING</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q25: How do you troubleshoot a Power BI report showing incorrect data?</h3>
+                        <p><span class="star-label s">S</span> An executive dashboard in Power BI showed revenue figures $2M lower than the source system. The finance team escalated as a P1 — executives use this dashboard for weekly decision-making.</p>
+                        <p><span class="star-label t">T</span> Identify whether the discrepancy is in the data, the model, or the DAX — and fix it within 4 hours.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Ran direct SQL query against the DWH: <code>SELECT SUM(revenue) FROM fact_sales WHERE month = '2026-05'</code> — matched the source system ($45M)</li>
+                            <li>Checked Power BI dataset refresh timestamp — data was fresh (refreshed at 5 AM)</li>
+                            <li>Opened Power BI Desktop → DAX formula: found <code>CALCULATE(SUM(Revenue), FILTER(...))</code> with a filter that excluded specific transaction types</li>
+                            <li>Checked model relationships: found a bidirectional filter on a bridge table was propagating an unintended filter context, excluding international transactions</li>
+                            <li>Fixed: Changed relationship to single-direction, adjusted DAX to use <code>ALL(dim_region)</code> to clear the filter</li>
+                            <li>Validated: New total matched SQL query exactly ($45M)</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Fixed within 2 hours. Root cause documented. Added a "Control Total" card to the dashboard that compares DAX result vs. direct SQL query — alerts if variance exceeds 0.01%.</p>
+                        <p><span class="star-label l">L</span> Power BI issues split into 3 categories: data (ETL problem), model (relationship/filter problem), or DAX (formula logic). Always start with direct SQL to isolate which layer is wrong. Bidirectional relationships are a common hidden source of incorrect aggregations.</p>
+
+                        <h3>Q26: How do you handle Power BI dataset refresh failures?</h3>
+                        <p><strong>Common causes and fixes:</strong></p>
+                        <ul>
+                            <li><strong>Gateway timeout:</strong> Increase timeout settings; optimize source query to return faster</li>
+                            <li><strong>Credential expiry:</strong> Check data source credentials in Power BI Service → Settings</li>
+                            <li><strong>Memory limit:</strong> Dataset too large for Premium capacity → implement incremental refresh</li>
+                            <li><strong>Source unavailable:</strong> Source DB maintenance window overlaps refresh schedule → reschedule</li>
+                            <li><strong>Schema change:</strong> Source added/removed columns → update Power Query in Desktop, republish</li>
+                        </ul>
+                        <p><strong>Incremental refresh setup:</strong></p>
+                        <pre>-- In Power Query, create RangeStart and RangeEnd parameters
+-- Apply filter: WHERE OrderDate >= RangeStart AND OrderDate < RangeEnd
+-- Configure: Keep last 3 years, refresh last 7 days
+-- Result: Only refreshes recent partitions instead of full dataset</pre>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- DATA QUALITY -->
+            <section id="data-quality" class="content-section" data-category="etl python" data-role="lead engineer analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">✅</span>
+                        <span class="section-title">DATA QUALITY & GOVERNANCE</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q27: How do you implement data quality checks in production pipelines?</h3>
+                        <p><span class="star-label s">S</span> We had recurring data quality incidents — null values in critical fields, duplicate records, and out-of-range values — that weren't caught until business users reported them in dashboards (average detection time: 48 hours).</p>
+                        <p><span class="star-label t">T</span> Build a proactive data quality framework that catches issues within minutes of pipeline completion.</p>
+                        <p><span class="star-label a">A</span> I implemented a 3-tier validation strategy:</p>
+                        <pre># Tier 1: Schema validation (at ingestion)
+expectations = {
+    "customer_id": {"not_null": True, "unique": True},
+    "amount": {"not_null": True, "min": 0, "max": 10000000},
+    "date": {"not_null": True, "format": "YYYY-MM-DD"}
+}
+
+# Tier 2: Business rules (post-transform)
+-- SQL checks embedded in pipeline
+SELECT COUNT(*) as orphan_count
+FROM fact_sales f
+LEFT JOIN dim_customer c ON f.customer_key = c.customer_key
+WHERE c.customer_key IS NULL;  -- Should be 0
+
+# Tier 3: Statistical checks (trend analysis)
+-- Alert if today's row count deviates >20% from 7-day average
+WITH stats AS (
+    SELECT AVG(row_count) as avg_count, STDEV(row_count) as std_count
+    FROM pipeline_metrics WHERE run_date > DATEADD(day,-7, GETDATE())
+)
+SELECT CASE WHEN ABS(@today_count - avg_count) > 2 * std_count 
+    THEN 'ALERT' ELSE 'OK' END FROM stats;</pre>
+                        <ul>
+                            <li>Built quarantine table pattern: failed records → error table with reason codes</li>
+                            <li>Integrated with Azure Alerts for immediate notification on DQ failures</li>
+                            <li>Created weekly DQ scorecard for each data domain</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Reduced mean-time-to-detection from 48 hours to 15 minutes. Data quality score improved from 82% to 97%. Business trust in the platform increased measurably (survey scores up 40%).</p>
+                        <p><span class="star-label l">L</span> Data quality is a continuous process, not a one-time fix. Combine schema checks (fast, cheap), business rules (domain-specific), and statistical monitoring (catches unknown-unknowns). The quarantine pattern is essential — don't fail the whole pipeline for bad records.</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- PERFORMANCE TUNING -->
+            <section id="performance" class="content-section" data-category="sql azure" data-role="lead engineer">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🚀</span>
+                        <span class="section-title">PERFORMANCE TUNING</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q28: Describe your approach to tuning a data processing system end-to-end.</h3>
+                        <p><strong>My performance tuning methodology (Top-Down):</strong></p>
+                        <table>
+                            <tr><th>Layer</th><th>What to Check</th><th>Tools</th></tr>
+                            <tr><td>Architecture</td><td>Is the design appropriate? (batch vs stream, partition strategy)</td><td>Design review, data profiling</td></tr>
+                            <tr><td>Infrastructure</td><td>CPU, memory, I/O, network bottlenecks</td><td>Azure Monitor, Spark UI, DMVs</td></tr>
+                            <tr><td>Query/Code</td><td>Execution plans, UDFs, shuffles, scans</td><td>SSMS, Spark SQL tab, EXPLAIN</td></tr>
+                            <tr><td>Data</td><td>Skew, small files, partition pruning, statistics</td><td>Data profiling, file metadata</td></tr>
+                            <tr><td>Configuration</td><td>Parallelism, memory allocation, cache settings</td><td>Spark conf, SQL Server sp_configure</td></tr>
+                        </table>
+
+                        <h3>Q29: How do you handle data skew in distributed processing?</h3>
+                        <p><strong>Data skew detection:</strong></p>
+                        <pre># PySpark: Detect skew
+df.groupBy("partition_key").count() \
+  .orderBy(desc("count")) \
+  .show(10)
+
+# If max_count / avg_count > 10x → severe skew</pre>
+                        <p><strong>Mitigation strategies:</strong></p>
+                        <ul>
+                            <li><strong>Salting:</strong> Append random suffix to skewed key, join with exploded version of other table</li>
+                            <li><strong>Broadcast join:</strong> If one side fits in memory (< 1GB), broadcast it</li>
+                            <li><strong>Adaptive Query Execution (AQE):</strong> Spark 3.0+ auto-handles some skew scenarios</li>
+                            <li><strong>Custom partitioning:</strong> Repartition by a more evenly distributed key</li>
+                            <li><strong>Two-pass approach:</strong> Process skewed keys separately with higher parallelism</li>
+                        </ul>
+                        <pre># Salting technique
+from pyspark.sql.functions import concat, lit, floor, rand
+
+# Add salt to skewed table
+df_skewed = df_skewed.withColumn("salt", floor(rand() * 10))
+df_skewed = df_skewed.withColumn("salted_key", concat("join_key", lit("_"), "salt"))
+
+# Explode the other table
+from pyspark.sql.functions import explode, array
+df_other = df_other.crossJoin(
+    spark.range(10).withColumnRenamed("id", "salt")
+).withColumn("salted_key", concat("join_key", lit("_"), "salt"))
+
+# Join on salted key — evenly distributed
+result = df_skewed.join(df_other, "salted_key")</pre>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- SAP / ERP -->
+            <section id="sap-erp" class="content-section" data-category="etl erp" data-role="lead engineer analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🏢</span>
+                        <span class="section-title">SAP / ERP DATA</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q30: What experience do you have with SAP/ERP data in analytics pipelines?</h3>
+                        <p><span class="star-label s">S</span> A client's analytics platform ingested SAP ECC data (FI/CO modules — financial accounting and controlling). The data extraction used SAP ODP (Operational Data Provisioning) to land data in ADLS, then transformed via Databricks into a finance data warehouse.</p>
+                        <p><span class="star-label t">T</span> I supported troubleshooting issues with data reconciliation between SAP source and the analytics DWH, particularly around currency conversion, posting periods, and document-level accuracy.</p>
+                        <p><span class="star-label a">A</span> Key challenges I addressed:</p>
+                        <ul>
+                            <li><strong>Currency conversion:</strong> SAP stores amounts in document currency + local currency. Had to join with TCURR table for consistent reporting currency conversion using period-end rates</li>
+                            <li><strong>Posting periods:</strong> SAP uses special periods (13-16) for year-end adjustments — pipeline was filtering these out incorrectly</li>
+                            <li><strong>Document types:</strong> Needed to understand BKPF (document header) + BSEG (line items) relationship to avoid double-counting in aggregations</li>
+                            <li><strong>Delta extraction:</strong> Configured CDC using SAP Change Pointers to only extract modified records — reduced extraction window from 8 hours to 40 minutes</li>
+                            <li><strong>GL account hierarchy:</strong> SAP stores hierarchical accounts — needed recursive CTE to flatten for reporting</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Achieved 99.99% reconciliation between SAP and DWH (variance < $100 on $500M+ in transactions). Finance team approved the DWH as "system of record" for management reporting. Extraction time reduced by 85%.</p>
+                        <p><span class="star-label l">L</span> SAP data requires deep domain understanding — document types, posting logic, currency handling are all non-intuitive. Building a mapping document between SAP tables/fields and DWH dimensions is essential for any support team. You can't troubleshoot what you don't understand structurally.</p>
+
+                        <h3>Q31: How do you handle financial data reconciliation between ERP and DWH?</h3>
+                        <p><strong>Reconciliation framework for financial data:</strong></p>
+                        <ul>
+                            <li><strong>Level 1 — Row counts:</strong> Total documents in source vs. target (should match within delta extraction window)</li>
+                            <li><strong>Level 2 — Control totals:</strong> Sum of amounts at GL account level must balance between systems</li>
+                            <li><strong>Level 3 — Trial balance:</strong> Debits = Credits check in DWH (fundamental accounting equation)</li>
+                            <li><strong>Level 4 — Sample audit:</strong> Random selection of 50 documents, trace from source → staging → DWH end-to-end</li>
+                            <li><strong>Level 5 — Exception reporting:</strong> Flag any transactions that exist in one system but not the other</li>
+                        </ul>
+                        <pre>-- Financial reconciliation SQL
+-- Compare GL balance between SAP extract and DWH
+SELECT 
+    s.gl_account,
+    s.source_balance,
+    d.dwh_balance,
+    s.source_balance - d.dwh_balance as variance,
+    CASE WHEN ABS(s.source_balance - d.dwh_balance) > 0.01 
+         THEN 'INVESTIGATE' ELSE 'OK' END as status
+FROM sap_trial_balance s
+FULL OUTER JOIN dwh_trial_balance d ON s.gl_account = d.gl_account
+WHERE ABS(ISNULL(s.source_balance,0) - ISNULL(d.dwh_balance,0)) > 0.01
+ORDER BY ABS(s.source_balance - d.dwh_balance) DESC;</pre>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- ESCALATION & LEADERSHIP -->
+            <section id="escalation-leadership" class="content-section" data-category="behavioral" data-role="lead manager">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🎯</span>
+                        <span class="section-title">ESCALATION & TECHNICAL LEADERSHIP</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q32: Tell me about a time you led a critical escalation involving multiple teams.</h3>
+                        <p><span class="star-label s">S</span> At Microsoft Xbox CXT, a major incident affected the customer support data pipeline — agents couldn't see customer interaction history. This impacted 5,000+ support agents globally. The issue spanned Azure AppInsights (telemetry), the data platform (SQL/DWH), and the frontend application.</p>
+                        <p><span class="star-label t">T</span> As Lead Escalations Manager, I needed to coordinate a multi-team response, restore service within the 2-hour SLA, and ensure root-cause closure.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li>Established incident bridge within 5 minutes — pulled in data platform, app, and infra engineers</li>
+                            <li>Ran parallel investigation streams: I checked data pipeline health (KQL queries) while app team checked frontend, infra checked connectivity</li>
+                            <li>Identified: a schema change in the upstream data source broke the ETL transformation — data was flowing but malformed</li>
+                            <li>Immediate mitigation: rolled back to last-known-good data snapshot using our checkpoint mechanism</li>
+                            <li>Coordinated with the source team to understand the schema change (undocumented deployment)</li>
+                            <li>Updated the transformation logic, validated with test data, promoted to production</li>
+                            <li>Held blameless postmortem — implemented mandatory schema change notifications</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Service restored in 1 hour 40 minutes (within SLA). 5,000+ agents back to full functionality. The schema notification process prevented 6 similar incidents over the next quarter.</p>
+                        <p><span class="star-label l">L</span> Effective escalation management requires: clear ownership (one person drives), parallel investigation (don't serialize), stakeholder communication (every 30 min), and blameless RCA (fix the system, not blame the person). The schema notification process I established became an organization-wide standard.</p>
+
+                        <h3>Q33: How do you decide when to fix something yourself vs. escalate to engineering?</h3>
+                        <p><strong>My escalation decision framework:</strong></p>
+                        <table>
+                            <tr><th>Fix Myself</th><th>Escalate to Engineering</th></tr>
+                            <tr><td>Configuration issues (permissions, settings)</td><td>Code bugs requiring application changes</td></tr>
+                            <tr><td>Data fixes (rerun pipeline, correct records)</td><td>Platform defects (Azure service issues)</td></tr>
+                            <tr><td>Query optimization (indexes, plan hints)</td><td>Architectural changes needed</td></tr>
+                            <tr><td>Runbook-documented scenarios</td><td>Novel issues without precedent</td></tr>
+                            <tr><td>Temporary workarounds within SLA</td><td>Recurring issues needing permanent fix</td></tr>
+                        </table>
+                        <p><strong>Key principle:</strong> "Restore service first, then pursue permanent fix." I fix what I can to meet SLA, but always file a defect/RFC for the engineering team to address root cause. I never let workarounds become permanent without engineering awareness.</p>
+
+                        <h3>Q34: How do you communicate complex technical issues to non-technical stakeholders?</h3>
+                        <p><strong>My framework — Impact, Cause, Fix, Timeline:</strong></p>
+                        <ul>
+                            <li><strong>Impact:</strong> "The sales dashboard is showing yesterday's data instead of today's."</li>
+                            <li><strong>Cause (simplified):</strong> "One of our data sources sent information in an unexpected format that our system couldn't read."</li>
+                            <li><strong>Fix:</strong> "We've applied a temporary fix and today's data is now available. A permanent fix will prevent this from happening again."</li>
+                            <li><strong>Timeline:</strong> "Temporary fix: done. Permanent fix: deployed by Friday. No action needed from you."</li>
+                        </ul>
+                        <p>I avoid jargon. Instead of "the Databricks job failed due to a schema drift in the Parquet files from the SAP ODP extraction," I say "one data source changed its format without notice, and our system couldn't read the new format."</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- COACHING & MENTORING -->
+            <section id="coaching" class="content-section" data-category="behavioral" data-role="lead manager">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🧑‍🏫</span>
+                        <span class="section-title">COACHING & MENTORING ANALYSTS</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q35: Tell me about a time you coached a junior analyst to handle complex escalations independently.</h3>
+                        <p><span class="star-label s">S</span> A junior analyst on my team was technically capable but would immediately escalate any ticket involving performance tuning or multi-system issues. This created a bottleneck where 60% of tickets came to me, preventing me from focusing on strategic improvements.</p>
+                        <p><span class="star-label t">T</span> I needed to develop this analyst's confidence and capability to handle L2/L3 tickets independently, reducing escalation rate by at least 50%.</p>
+                        <p><span class="star-label a">A</span> I:</p>
+                        <ul>
+                            <li><strong>Paired troubleshooting:</strong> For 2 weeks, we worked tickets together. I verbalized my thought process: "First I check the execution plan because... then I look for..."</li>
+                            <li><strong>Decision tree creation:</strong> Together, we documented a flowchart for the top 10 issue types — what to check, in what order, when to escalate</li>
+                            <li><strong>Graduated ownership:</strong> Week 3-4: they led, I observed. Week 5+: they solo'd with post-resolution review</li>
+                            <li><strong>Safe failure space:</strong> Made clear that taking 30 minutes longer on a ticket while learning is better than instant escalation</li>
+                            <li><strong>Knowledge sessions:</strong> Weekly 30-minute sessions on: execution plans, Spark UI, Delta troubleshooting</li>
+                        </ul>
+                        <p><span class="star-label r">R</span> Within 2 months, escalation rate dropped from 60% to 20%. Analyst began handling execution plan analysis, basic Spark tuning, and schema drift issues independently. They received "Rising Star" recognition from stakeholders. I freed up 10+ hours/week for strategic work.</p>
+                        <p><span class="star-label l">L</span> Coaching is not "telling" — it's modeling, scaffolding, then releasing. The decision tree was the highest-leverage artifact: it gave structure to ambiguous situations. Most junior analysts can do the work — they just need confidence that their approach is correct.</p>
+
+                        <h3>Q36: How do you build a knowledge-sharing culture in a support team?</h3>
+                        <p><strong>My approach:</strong></p>
+                        <ul>
+                            <li><strong>Blameless postmortems:</strong> Every P1/P2 incident becomes a learning document, not a blame assignment</li>
+                            <li><strong>Win-of-the-week:</strong> Team members present one interesting resolution — builds confidence and shares patterns</li>
+                            <li><strong>Living runbooks:</strong> Every new issue type gets documented. The person who solves it writes the runbook (ownership)</li>
+                            <li><strong>Office hours:</strong> Weekly open session where anyone can bring a tricky ticket for collaborative troubleshooting</li>
+                            <li><strong>Cross-training rotations:</strong> Engineers rotate between data domains quarterly to broaden skills</li>
+                            <li><strong>Metrics transparency:</strong> Share team KPIs openly — resolution time, escalation rate, CSAT — everyone sees the impact</li>
+                        </ul>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- RUNBOOKS & DOCUMENTATION -->
+            <section id="runbooks" class="content-section" data-category="behavioral" data-role="lead manager">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">📖</span>
+                        <span class="section-title">RUNBOOKS & TROUBLESHOOTING ASSETS</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q37: Describe how you create reusable troubleshooting assets for a support team.</h3>
+                        <p><span class="star-label s">S</span> When I joined the Xbox CXT SRE team, there were almost no documented troubleshooting procedures. Engineers relied on tribal knowledge. This meant: slow onboarding (3+ months), inconsistent resolution quality, and single points of failure when key engineers were on leave.</p>
+                        <p><span class="star-label t">T</span> Build a comprehensive knowledge base from scratch that enables any team member to troubleshoot 80% of issues independently.</p>
+                        <p><span class="star-label a">A</span> I created a multi-asset knowledge system:</p>
+                        <ul>
+                            <li><strong>Runbooks (175+ in 5 months):</strong> Structured as: Symptoms → Diagnostic Steps → Resolution → Escalation Criteria → Prevention</li>
+                            <li><strong>Query packs:</strong> Pre-built KQL/SQL queries for common diagnostics — copy-paste-execute</li>
+                            <li><strong>Decision trees:</strong> Visual flowcharts for top 20 issue types</li>
+                            <li><strong>Postmortem library:</strong> Indexed by service, symptom, and root-cause category</li>
+                            <li><strong>Video walkthroughs:</strong> 5-minute recordings for complex multi-step procedures</li>
+                        </ul>
+                        <p><strong>My runbook template:</strong></p>
+                        <pre>## [Issue Type]: [Specific Title]
+### Symptoms
+- What the user/system reports
+- Error messages, log patterns
+
+### Diagnostic Steps
+1. Check X → Expected result: Y
+2. If Y is abnormal → Check Z
+3. Query: [pre-built diagnostic query]
+
+### Resolution
+- Step-by-step fix with commands
+- Verification: How to confirm fix worked
+
+### Escalation Criteria
+- Escalate to [team] if: [conditions]
+- Required data to include in escalation
+
+### Prevention
+- What would prevent recurrence
+- Related monitoring/alerting</pre>
+                        <p><span class="star-label r">R</span> Onboarding time reduced from 3 months to 3 weeks. First-contact resolution rate improved by 40%. Escalation rate dropped 35%. Team was able to handle a 25% volume increase without additional headcount.</p>
+                        <p><span class="star-label l">L</span> Documentation is a force multiplier. 175 runbooks sounds like a lot, but each one saves 30+ minutes per occurrence. The key is structure — a consistent template means anyone can find what they need in seconds. Living documents (updated after each use) stay relevant.</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- SCENARIO-BASED QUESTIONS -->
+            <section id="scenarios" class="content-section" data-category="azure sql python etl behavioral" data-role="lead engineer manager analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🧩</span>
+                        <span class="section-title">SCENARIO-BASED QUESTIONS</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>Q38: A user reports that their dataset upload is stuck at 95%. What do you check?</h3>
+                        <ul>
+                            <li><strong>Network:</strong> Large file upload timeout? Check if connection was dropped (partial upload in ADLS?)</li>
+                            <li><strong>File validation:</strong> Is there a post-upload validation step that's hanging? (schema check, virus scan)</li>
+                            <li><strong>Lock contention:</strong> Is the target table locked by another process? Check <code>sys.dm_tran_locks</code></li>
+                            <li><strong>Transaction log:</strong> Is the transaction log full? Check <code>DBCC SQLPERF(LOGSPACE)</code></li>
+                            <li><strong>Memory/TempDB:</strong> Sort operations spilling to disk during bulk insert?</li>
+                            <li><strong>Index rebuilds:</strong> Disabled indexes being rebuilt after bulk insert? (common with SSIS bulk loads)</li>
+                            <li><strong>Trigger:</strong> Is there an AFTER INSERT trigger processing all 95% of rows?</li>
+                        </ul>
+                        <p><strong>My approach:</strong> Check system DMVs for active requests, wait types will tell you exactly what it's waiting on. <code>RESOURCE_SEMAPHORE</code> = memory wait, <code>WRITELOG</code> = log disk I/O, <code>LCK_M_X</code> = blocking.</p>
+
+                        <h3>Q39: Production data shows duplicates after a pipeline re-run. How do you investigate and fix?</h3>
+                        <p><strong>Investigation:</strong></p>
+                        <ul>
+                            <li>Identify the duplication scope: How many duplicates? Which tables? Which run IDs?</li>
+                            <li>Check pipeline idempotency: Was the pipeline designed for safe re-run? (MERGE vs. INSERT)</li>
+                            <li>Check for missing WHERE clause in the re-run (full load instead of incremental)</li>
+                            <li>Verify watermark: Did the watermark reset or fail to update from the first run?</li>
+                        </ul>
+                        <p><strong>Immediate fix:</strong></p>
+                        <pre>-- Deduplicate using ROW_NUMBER
+WITH ranked AS (
+    SELECT *, ROW_NUMBER() OVER (
+        PARTITION BY business_key 
+        ORDER BY load_timestamp DESC
+    ) as rn
+    FROM target_table
+    WHERE load_date = '2026-06-11'
+)
+DELETE FROM ranked WHERE rn > 1;
+
+-- Verify
+SELECT business_key, COUNT(*) 
+FROM target_table 
+GROUP BY business_key 
+HAVING COUNT(*) > 1;  -- Should return 0 rows</pre>
+                        <p><strong>Prevention:</strong> Implement MERGE pattern, add unique constraints on business keys, use Delta Lake's MERGE for natural idempotency.</p>
+
+                        <h3>Q40: A Databricks job succeeds but produces wrong results. No errors in logs. How do you debug?</h3>
+                        <ul>
+                            <li><strong>Version comparison:</strong> Use Delta time travel to compare output before/after the suspect run</li>
+                            <li><strong>Input validation:</strong> Check if source data changed (new values, nulls, format changes)</li>
+                            <li><strong>Logic walkthrough:</strong> Step through notebook cell-by-cell with a small sample dataset</li>
+                            <li><strong>Join analysis:</strong> Check for fan-out (1-to-many joins creating duplicates) or data loss (inner join dropping unmatched rows)</li>
+                            <li><strong>Filter context:</strong> Did a WHERE clause accidentally exclude valid data?</li>
+                            <li><strong>Type coercion:</strong> Implicit string-to-number conversion producing unexpected results</li>
+                            <li><strong>Null handling:</strong> <code>NULL != NULL</code> in SQL — joins on nullable columns lose records</li>
+                        </ul>
+                        <pre># Quick debug pattern
+# 1. Count at each stage
+print(f"Input rows: {df_input.count()}")
+print(f"After filter: {df_filtered.count()}")  
+print(f"After join: {df_joined.count()}")  # Watch for fan-out or drop
+print(f"After agg: {df_final.count()}")
+
+# 2. Check for nulls in join keys
+df_input.filter(col("join_key").isNull()).count()
+
+# 3. Validate aggregation
+df_final.select(sum("amount")).show()  # Compare with source total</pre>
+
+                        <h3>Q41: How would you handle a situation where a critical report is needed in 30 minutes but the data pipeline failed?</h3>
+                        <p><strong>Triage approach (speed over perfection):</strong></p>
+                        <ul>
+                            <li><strong>Option A — Last known good:</strong> Serve yesterday's data with clear "data as of [timestamp]" disclaimer</li>
+                            <li><strong>Option B — Manual extract:</strong> Direct SQL query against source system, export to Excel/CSV for immediate consumption</li>
+                            <li><strong>Option C — Partial load:</strong> Load available sources, flag missing data in the report</li>
+                            <li><strong>Option D — Hot path:</strong> If available, query the real-time/streaming layer instead of batch</li>
+                        </ul>
+                        <p><strong>Communication template:</strong> "The automated report is delayed due to [issue]. I've prepared [alternative] which contains [X]% of the data. Full refresh will be available by [time]. Here's what's included and what's missing: [...]"</p>
+
+                        <h3>Q42: A customer says "the data doesn't look right" with no other details. How do you approach this?</h3>
+                        <p><strong>Structured intake questions:</strong></p>
+                        <ul>
+                            <li>Which report/dashboard/table are you looking at? (narrow the scope)</li>
+                            <li>What specific number or value looks wrong? (get concrete)</li>
+                            <li>What did you expect to see? What's your reference? (understand the baseline)</li>
+                            <li>When did it last look correct? (establish timeline)</li>
+                            <li>Did anything change recently? (new filters, date range, access changes)</li>
+                        </ul>
+                        <p><strong>Then:</strong> Validate their expected value against direct source query. If source matches expectation, the issue is in transformation/reporting layer. If source also shows unexpected values, escalate to source system team.</p>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <!-- QUESTIONS TO ASK -->
+            <section id="questions-to-ask" class="content-section" data-category="behavioral" data-role="lead engineer manager analyst">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">❓</span>
+                        <span class="section-title">QUESTIONS TO ASK THE INTERVIEWER</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        <h3>About the Role</h3>
+                        <ul>
+                            <li>What does a typical escalation look like — what's the volume, complexity, and SLA?</li>
+                            <li>How is the support team structured? How many analysts would I be coaching?</li>
+                            <li>What's the current ratio of reactive support vs. proactive improvement work?</li>
+                            <li>What's the tech stack maturity? Are pipelines well-documented or am I building from scratch?</li>
+                        </ul>
+                        <h3>About the Data Platform</h3>
+                        <ul>
+                            <li>What's the data volume scale? (TB/PB? Batch/streaming?)</li>
+                            <li>Which Azure data services are in production today vs. planned?</li>
+                            <li>Are you using Databricks Unity Catalog for governance?</li>
+                            <li>What's the current observability stack for data pipelines?</li>
+                        </ul>
+                        <h3>About the Team & Culture</h3>
+                        <ul>
+                            <li>How closely does support partner with engineering on root-cause fixes?</li>
+                            <li>What does success look like in the first 90 days for this role?</li>
+                            <li>How do you measure the effectiveness of the support function? (MTTR, escalation rate, CSAT?)</li>
+                            <li>What's the on-call expectation? Follow-the-sun or single timezone?</li>
+                        </ul>
+                        <h3>About Growth</h3>
+                        <ul>
+                            <li>What career paths exist from this role? (People management? Architecture? Product?)</li>
+                            <li>Is there budget for certifications and training?</li>
+                            <li>How is knowledge contribution (runbooks, tooling) valued in performance reviews?</li>
+                        </ul>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- SCROLL BUTTONS -->
+    <div class="scroll-btns">
+        <button class="scroll-btn" id="scrollUp" onclick="scrollUp()" title="Scroll Up">⬆</button>
+        <button class="scroll-btn" id="scrollDown" onclick="scrollDown()" title="Scroll Down">⬇</button>
+    </div>
+
+    <script>
+        // State
+        let activeFilters = { topic: null, role: null };
+
+        function scrollUp(){window.scrollBy({top:-400,behavior:'smooth'});}
+        function scrollDown(){window.scrollBy({top:400,behavior:'smooth'});}
+        function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});}
+        
+        window.addEventListener('scroll',function(){
+            const scrollY=window.scrollY;
+            const docHeight=document.documentElement.scrollHeight-window.innerHeight;
+            document.getElementById('progressBar').style.width=(scrollY/docHeight)*100+'%';
+            const upBtn=document.getElementById('scrollUp');
+            const downBtn=document.getElementById('scrollDown');
+            upBtn.classList.toggle('visible',scrollY>300);
+            downBtn.classList.toggle('visible',scrollY<docHeight-300);
+            updateActiveTOC();
+        });
+        
+        window.addEventListener('load',function(){
+            document.getElementById('scrollDown').classList.add('visible');
+        });
+
+        function expandAll(){document.querySelectorAll('.content-section').forEach(s=>{s.style.display='block';s.querySelector('details').open=true;});}
+        function collapseAll(){document.querySelectorAll('.content-section').forEach(s=>{s.style.display='block';s.querySelector('details').open=false;});}
+
+        // Filter logic
+        function toggleFilter(el){
+            const filterType = el.getAttribute('data-filter');
+            const value = el.getAttribute('data-value');
+            
+            // Toggle active state
+            if(activeFilters[filterType] === value){
+                activeFilters[filterType] = null;
+                el.classList.remove('active');
+            } else {
+                // Deactivate siblings
+                document.querySelectorAll(`.pill[data-filter="${filterType}"]`).forEach(p=>p.classList.remove('active'));
+                activeFilters[filterType] = value;
+                el.classList.add('active');
+            }
+            applyFilters();
+        }
+
+        function applyFilters(){
+            const sections = document.querySelectorAll('.content-section');
+            const hasTopic = activeFilters.topic !== null;
+            const hasRole = activeFilters.role !== null;
+            const hasAny = hasTopic || hasRole;
+            let visibleCount = 0;
+
+            sections.forEach(section=>{
+                const cats = (section.getAttribute('data-category')||'').split(' ');
+                const roles = (section.getAttribute('data-role')||'').split(' ');
+                
+                let topicMatch = !hasTopic || cats.includes(activeFilters.topic);
+                let roleMatch = !hasRole || roles.includes(activeFilters.role);
+                
+                if(topicMatch && roleMatch){
+                    section.style.display = 'block';
+                    section.querySelector('details').open = true;
+                    visibleCount++;
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Update banner
+            const banner = document.getElementById('filterBanner');
+            const bannerText = document.getElementById('filterBannerText');
+            if(hasAny){
+                banner.classList.add('visible');
+                let parts = [];
+                if(hasTopic) parts.push('Topic: ' + activeFilters.topic.toUpperCase());
+                if(hasRole) parts.push('Role: ' + activeFilters.role.toUpperCase());
+                bannerText.textContent = `Showing ${visibleCount} sections — ${parts.join(' + ')}`;
+            } else {
+                banner.classList.remove('visible');
+            }
+        }
+
+        function resetFilters(){
+            activeFilters = { topic: null, role: null };
+            document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(s=>{s.style.display='block';});
+            document.getElementById('filterBanner').classList.remove('visible');
+            document.getElementById('searchBox').value = '';
+        }
+
+        function searchContent(query){
+            // Clear pill filters when searching
+            if(query && query.length >= 2){
+                activeFilters = { topic: null, role: null };
+                document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+                document.getElementById('filterBanner').classList.remove('visible');
+            }
+            const sections=document.querySelectorAll('.content-section');
+            if(!query||query.length<2){sections.forEach(s=>s.style.display='block');return;}
+            sections.forEach(section=>{
+                const text=section.textContent.toLowerCase();
+                if(text.includes(query.toLowerCase())){section.style.display='block';section.querySelector('details').open=true;}
+                else{section.style.display='none';}
+            });
+        }
+
+        function updateActiveTOC(){
+            const sections=document.querySelectorAll('.content-section');
+            const links=document.querySelectorAll('.toc-link');
+            let current='';
+            sections.forEach(section=>{if(section.style.display!=='none' && section.getBoundingClientRect().top<=100)current=section.id;});
+            links.forEach(link=>{link.classList.toggle('active',link.getAttribute('data-target')===current);});
+        }
+
+        document.querySelectorAll('.toc-link').forEach(link=>{
+            link.addEventListener('click',function(e){
+                e.preventDefault();
+                const target=document.getElementById(this.getAttribute('data-target'));
+                if(target){
+                    // Show section if hidden by filter
+                    target.style.display='block';
+                    target.querySelector('details').open=true;
+                    target.scrollIntoView({behavior:'smooth',block:'start'});
+                }
+            });
+        });
+
+        document.addEventListener('keydown',function(e){
+            if((e.ctrlKey&&e.key==='f')||(e.key==='/'&&document.activeElement.tagName!=='INPUT')){e.preventDefault();document.getElementById('searchBox').focus();}
+            if(e.key==='Escape'){resetFilters();document.getElementById('searchBox').blur();}
+        });
+    </script>
+</body>
+</html>
