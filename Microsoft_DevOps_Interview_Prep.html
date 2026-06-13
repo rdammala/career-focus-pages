@@ -47,6 +47,13 @@
     </style>
 </head>
 <body>
+<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;align-items:center;gap:15px;font-family:'Segoe UI',sans-serif;font-size:0.85em;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+    <span style="font-weight:600;color:#0078d4;">&#x1F4DA; Career Prep</span>
+    <a href="Microsoft_DevOps_Interview_Prep.html" style="color:#333;text-decoration:none;padding:4px 10px;border-radius:15px;background:#f0f0f0;transition:background 0.2s;">DevOps</a>
+    <a href="STAR_Interview_Preparation_Guide.html" style="color:#333;text-decoration:none;padding:4px 10px;border-radius:15px;background:#f0f0f0;transition:background 0.2s;">Amazon STAR</a>
+    <a href="STAR_Data_Analytics_Support_Lead_Interview_Guide.html" style="color:#333;text-decoration:none;padding:4px 10px;border-radius:15px;background:#f0f0f0;transition:background 0.2s;">Data Analytics</a>
+</div>
+<div style="height:45px;"></div>
     <div class="header">
         <h1>Microsoft DevOps Engineer Interview Prep</h1>
         <p>Comprehensive Guide — All Levels (L61 to L65+)</p>
@@ -206,7 +213,7 @@ def is_allowed(user_id, limit=100, window=60):
                             <li><strong>Automatic promotion/rollback:</strong> Based on error rate, latency P99, and customer-reported issues (ICM integration)</li>
                             <li><strong>Safe deployment practices:</strong> One-box &rarr; region-pair &rarr; global; never deploy to paired regions simultaneously</li>
                         </ul>
-                        <div class="tip"><strong>&#x1F4A1; Microsoft-specific:</strong> Reference Azure Safe Deployment Practices (SDP), Express V2 deployment system, and how Xbox/Azure use progressive exposure.</div>
+                        <div class="tip"><strong>&#x1F4A1; Microsoft-specific:</strong> Reference Azure Safe Deployment Practices (SDP), Express V2 deployment system, and how Enterprise Platform/Azure use progressive exposure.</div>
                     </div>
                 </div>
             </div>
@@ -403,7 +410,7 @@ def is_allowed(user_id, limit=100, window=60):
                             <li><strong>Postmortem:</strong> Blameless review within 48h. Repair items tracked in backlog with owners/dates.</li>
                         </ul>
                         <div class="star">
-                            <h4>&#x1F31F; Your STAR Example (from Xbox SRE):</h4>
+                            <h4>&#x1F31F; Your STAR Example (from Platform SRE):</h4>
                             <p><strong>S:</strong> Sev2 ICM on Triage-Data service — 40+ alerts fired simultaneously for ADF pipeline failures.<br>
                             <strong>T:</strong> As on-call SRE, needed to triage, mitigate, and coordinate across teams.<br>
                             <strong>A:</strong> Used Kusto queries to isolate root cause (storage account throttling), redirected traffic, engaged storage team. Created automated runbook for future.<br>
