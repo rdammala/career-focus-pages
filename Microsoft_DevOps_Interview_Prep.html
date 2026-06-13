@@ -127,14 +127,27 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
     </style>
 </head>
 <body id="top">
-<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:'Segoe UI',sans-serif;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+<div id="page-nav" style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:'Segoe UI',sans-serif;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
     <span style="font-weight:600;color:#0078d4;font-size:0.9em;">&#x1F4DA; Career Prep</span>
-    <a href="STAR_Interview_Preparation_Guide.html" style="color:#333;text-decoration:none;padding:5px 14px;border-radius:20px;background:#f0f0f0;font-size:0.85em;transition:background 0.2s;">Amazon STAR(L)</a>
-    <a href="STAR_Data_Analytics_Support_Lead_Interview_Guide.html" style="color:#333;text-decoration:none;padding:5px 14px;border-radius:20px;background:#f0f0f0;font-size:0.85em;transition:background 0.2s;">Microsoft Data Analytics</a>
-    <a href="Microsoft_DevOps_Interview_Prep.html" style="color:#fff;text-decoration:none;padding:5px 14px;border-radius:20px;background:#0078d4;font-weight:600;font-size:0.85em;">Microsoft DevOps</a>
-    
+    <a href="STAR_Interview_Preparation_Guide.html" class="page-tab" data-page="STAR_Interview_Preparation_Guide.html">Amazon STAR(L)</a>
+    <a href="STAR_Data_Analytics_Support_Lead_Interview_Guide.html" class="page-tab" data-page="STAR_Data_Analytics_Support_Lead_Interview_Guide.html">Microsoft Data Analytics</a>
+    <a href="Microsoft_DevOps_Interview_Prep.html" class="page-tab" data-page="Microsoft_DevOps_Interview_Prep.html">Microsoft DevOps</a>
 </div>
+<style>
+    .page-tab{color:#333;text-decoration:none;padding:5px 14px;border-radius:20px;background:#f0f0f0;font-size:0.85em;transition:all 0.2s;}
+    .page-tab:hover{background:#e0e0e0;}
+    .page-tab.active{color:#fff!important;background:#0078d4!important;font-weight:600;}
+</style>
+<script>
+(function(){
+    var current=window.location.pathname.split('/').pop();
+    document.querySelectorAll('.page-tab').forEach(function(tab){
+        if(tab.getAttribute('data-page')===current){tab.classList.add('active');}
+    });
+})();
+</script>
 <div style="height:45px;"></div>
+
 
     <div class="progress-bar" id="progressBar"></div>
     <nav class="nav-bar">
