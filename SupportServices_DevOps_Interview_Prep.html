@@ -121,7 +121,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
 </head>
 <body id="top">
 <div id="page-nav" style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:'Segoe UI',sans-serif;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
-    <span style="font-weight:600;color:#0078d4;font-size:0.9em;">&#x1F4DA; Career Prep</span>
+    <a href="https://github.com/rdammala/career-focus-pages" style="font-weight:600;color:#0078d4;font-size:0.9em;text-decoration:none;">&#x1F4DA; Career Prep</a>
     <a href="STAR_Interview_Preparation_Guide.html" class="page-tab" data-page="STAR_Interview_Preparation_Guide.html">Amazon STAR(L)</a>
     <a href="STAR_Data_Analytics_Support_Lead_Interview_Guide.html" class="page-tab" data-page="STAR_Data_Analytics_Support_Lead_Interview_Guide.html">Microsoft Data Analytics</a>
     <a href="Microsoft_DevOps_Interview_Prep.html" class="page-tab" data-page="Microsoft_DevOps_Interview_Prep.html">Microsoft DevOps</a>
@@ -341,11 +341,11 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                             </tr>
                         </table>
                         <pre>Interview memory aid
-                        Git                = version control engine
-                        GitHub             = collaboration + hosting for Git
-                        GitLab             = integrated DevOps suite
-                        Azure DevOps       = Microsoft ALM + pipeline platform
-                        GitHub Actions     = CI/CD automation inside GitHub</pre>
+Git                = version control engine
+GitHub             = collaboration + hosting for Git
+GitLab             = integrated DevOps suite
+Azure DevOps       = Microsoft ALM + pipeline platform
+GitHub Actions     = CI/CD automation inside GitHub</pre>
                         
                     </div>
                 </details>
@@ -391,13 +391,13 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Back-office workflows, fraud scoring, notifications, and ETL fan-out often fit Functions.</li>
                                                             </ul>
                                                             <pre>// Simple rule of thumb
-                                                            if (workload == "always-on web application" || requiresCustomMiddleware) {
-                                                                choose = "Azure App Service";
-                                                            } else if (workload == "event-driven" || trafficPattern == "bursty") {
-                                                                choose = "Azure Functions";
-                                                            } else {
-                                                                choose = "Evaluate latency, cost, scaling, and hosting controls";
-                                                            }</pre>
+if (workload == "always-on web application" || requiresCustomMiddleware) {
+    choose = "Azure App Service";
+} else if (workload == "event-driven" || trafficPattern == "bursty") {
+    choose = "Azure Functions";
+} else {
+    choose = "Evaluate latency, cost, scaling, and hosting controls";
+}</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Map one current workload into both services. State the trade-offs for latency, scaling, cost, and operational controls in under 60 seconds.</div>
                                                         </div>
                                                     </div>
@@ -425,28 +425,28 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                             </ul>
                                                             <p>For fraud detection, an Event Hub trigger can ingest transactions, pull device history from Cosmos DB, and emit high-risk findings to Service Bus for analyst workflows.</p>
                                                             <pre>public class FraudScreenFunction
-                                                            {
-                                                                [FunctionName("FraudScreenFunction")]
-                                                                public static async Task Run(
-                                                                    [EventHubTrigger("txn-stream", Connection = "EventHubConnection")] string transactionJson,
-                                                                    [CosmosDB(
-                                                                        databaseName: "risk",
-                                                                        containerName: "deviceProfiles",
-                                                                        Connection = "CosmosConnection",
-                                                                        SqlQuery = "SELECT * FROM c WHERE c.deviceId = {deviceId}")]
-                                                                    IEnumerable&lt;DeviceProfile&gt; priorProfiles,
-                                                                    [ServiceBus("high-risk-alerts", Connection = "ServiceBusConnection")]
-                                                                    IAsyncCollector&lt;FraudAlert&gt; alerts,
-                                                                    ILogger log)
-                                                                {
-                                                                    var score = FraudRules.Calculate(transactionJson, priorProfiles);
-                                                                    if (score &gt;= 80)
-                                                                    {
-                                                                        await alerts.AddAsync(new FraudAlert { Severity = "High", Score = score });
-                                                                    }
-                                                                    log.LogInformation($"Fraud score: {score}");
-                                                                }
-                                                            }</pre>
+{
+    [FunctionName("FraudScreenFunction")]
+    public static async Task Run(
+        [EventHubTrigger("txn-stream", Connection = "EventHubConnection")] string transactionJson,
+        [CosmosDB(
+            databaseName: "risk",
+            containerName: "deviceProfiles",
+            Connection = "CosmosConnection",
+            SqlQuery = "SELECT * FROM c WHERE c.deviceId = {deviceId}")]
+        IEnumerable&lt;DeviceProfile&gt; priorProfiles,
+        [ServiceBus("high-risk-alerts", Connection = "ServiceBusConnection")]
+        IAsyncCollector&lt;FraudAlert&gt; alerts,
+        ILogger log)
+    {
+        var score = FraudRules.Calculate(transactionJson, priorProfiles);
+        if (score &gt;= 80)
+        {
+            await alerts.AddAsync(new FraudAlert { Severity = "High", Score = score });
+        }
+        log.LogInformation($"Fraud score: {score}");
+    }
+}</pre>
                                                             <ul>
                                                                 <li>Bindings reduce plumbing, but for complex retries, transactions, or batching, the SDK may still be preferable.</li>
                                                                 <li>Idempotency matters: duplicate events can happen, so use event IDs or dedupe keys.</li>
@@ -482,10 +482,10 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                             </table>
                                                             <p>A practical answer is: <strong>WebJobs are fine for legacy background jobs attached to a web app, but Azure Functions are the default modern choice for event-driven work.</strong></p>
                                                             <pre>{
-                                                              "legacy-job": "WebJobs if you already have an App Service and the workload is stable",
-                                                              "new-integration": "Azure Functions for event triggers, bindings, and elastic scaling",
-                                                              "burst-traffic": "Azure Functions Premium if cold starts must be minimized"
-                                                            }</pre>
+  "legacy-job": "WebJobs if you already have an App Service and the workload is stable",
+  "new-integration": "Azure Functions for event triggers, bindings, and elastic scaling",
+  "burst-traffic": "Azure Functions Premium if cold starts must be minimized"
+}</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Take one cron-style task and explain how you would modernize it from WebJobs to Functions, including trigger choice and observability changes.</div>
                                                         </div>
                                                     </div>
@@ -515,22 +515,22 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Persist curated outcomes to <strong>SQL Server</strong> for analyst reporting and case management.</li>
                                                             </ul>
                                                             <pre>Client SDK
-                                                               |
-                                                               v
-                                                            Azure Front Door / API Management
-                                                               |
-                                                               v
-                                                            Fingerprint API (App Service or Azure Functions)
-                                                               |-------------------------------|
-                                                               |                               |
-                                                               v                               v
-                                                            Event Hubs                     Cosmos DB (device profiles)
-                                                               |
-                                                               v
-                                                            Fraud Scoring Function ----&gt; Service Bus queue ----&gt; Analyst / support platform workflow
-                                                               |
-                                                               v
-                                                            Application Insights + Azure Monitor + SQL reporting</pre>
+   |
+   v
+Azure Front Door / API Management
+   |
+   v
+Fingerprint API (App Service or Azure Functions)
+   |-------------------------------|
+   |                               |
+   v                               v
+Event Hubs                     Cosmos DB (device profiles)
+   |
+   v
+Fraud Scoring Function ----&gt; Service Bus queue ----&gt; Analyst / support platform workflow
+   |
+   v
+Application Insights + Azure Monitor + SQL reporting</pre>
                                                             <p>Design the model so the online scoring path is fast and the investigative path is richer but asynchronous.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Sketch the above flow and mark which hops are synchronous versus asynchronous. Then explain where you would cache, partition, and alert.</div>
                                                         </div>
@@ -561,30 +561,30 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li><strong>Observability:</strong> structured logs, secret redaction, and alerting on auth failures or elevated error rates.</li>
                                                             </ul>
                                                             <pre>from azure.identity import ManagedIdentityCredential
-                                                            from azure.keyvault.secrets import SecretClient
-                                                            
-                                                            credential = ManagedIdentityCredential()
-                                                            client = SecretClient(
-                                                                vault_url="https://risk-vault.vault.azure.net/",
-                                                                credential=credential
-                                                            )
-                                                            cosmos_key = client.get_secret("CosmosPrimaryKey").value
-                                                            
-                                                            # Better still: avoid keys entirely when the downstream service supports managed identity.</pre>
+from azure.keyvault.secrets import SecretClient
+
+credential = ManagedIdentityCredential()
+client = SecretClient(
+    vault_url="https://risk-vault.vault.azure.net/",
+    credential=credential
+)
+cosmos_key = client.get_secret("CosmosPrimaryKey").value
+
+# Better still: avoid keys entirely when the downstream service supports managed identity.</pre>
                                                             <pre># host.json hardening ideas
-                                                            {
-                                                              "version": "2.0",
-                                                              "logging": {
-                                                                "applicationInsights": {
-                                                                  "samplingSettings": { "isEnabled": true }
-                                                                }
-                                                              },
-                                                              "extensions": {
-                                                                "http": {
-                                                                  "routePrefix": "api"
-                                                                }
-                                                              }
-                                                            }</pre>
+{
+  "version": "2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": { "isEnabled": true }
+    }
+  },
+  "extensions": {
+    "http": {
+      "routePrefix": "api"
+    }
+  }
+}</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Review one function app and replace any secret-bearing app settings with Key Vault references or managed identity-based access.</div>
                                                         </div>
                                                     </div>
@@ -628,87 +628,87 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Gate production behind approvals or protected environments</li>
                                                             </ul>
                                                             <pre>trigger:
-                                                              branches:
-                                                                include:
-                                                                  - main
-                                                                  - feature/*
-                                                            
-                                                            pr:
-                                                              branches:
-                                                                include:
-                                                                  - main
-                                                            
-                                                            pool:
-                                                              vmImage: ubuntu-latest
-                                                            
-                                                            variables:
-                                                              nodeVersion: '20.x'
-                                                              buildFolder: 'dist'
-                                                            
-                                                            stages:
-                                                              - stage: Build
-                                                                jobs:
-                                                                  - job: BuildReact
-                                                                    steps:
-                                                                      - task: NodeTool@0
-                                                                        inputs:
-                                                                          versionSpec: $(nodeVersion)
-                                                                      - task: Cache@2
-                                                                        inputs:
-                                                                          key: 'npm | "$(Agent.OS)" | package-lock.json'
-                                                                          path: $(Pipeline.Workspace)/.npm
-                                                                      - script: npm ci
-                                                                        displayName: Install dependencies
-                                                                      - script: npm run lint
-                                                                        displayName: Lint
-                                                                      - script: npm test -- --runInBand --ci
-                                                                        displayName: Unit tests
-                                                                      - script: npm run build
-                                                                        displayName: Build
-                                                                      - publish: $(buildFolder)
-                                                                        artifact: webapp
-                                                            
-                                                              - stage: Security
-                                                                dependsOn: Build
-                                                                jobs:
-                                                                  - job: Scan
-                                                                    steps:
-                                                                      - download: current
-                                                                        artifact: webapp
-                                                                      - script: echo "Run SCA, secret scanning, and static analysis here"
-                                                                        displayName: Security checks
-                                                            
-                                                              - stage: Deploy_Staging
-                                                                dependsOn: Security
-                                                                condition: succeeded()
-                                                                jobs:
-                                                                  - deployment: DeployStaging
-                                                                    environment: supportservices-staging
-                                                                    strategy:
-                                                                      runOnce:
-                                                                        deploy:
-                                                                          steps:
-                                                                            - download: current
-                                                                              artifact: webapp
-                                                                            - task: AzureStaticWebApp@0
-                                                                              inputs:
-                                                                                app_location: '.'
-                                                                                output_location: 'dist'
-                                                            
-                                                              - stage: Deploy_Production
-                                                                dependsOn: Deploy_Staging
-                                                                condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-                                                                jobs:
-                                                                  - deployment: DeployProd
-                                                                    environment: supportservices-production
-                                                                    strategy:
-                                                                      runOnce:
-                                                                        deploy:
-                                                                          steps:
-                                                                            - download: current
-                                                                              artifact: webapp
-                                                                            - script: echo "Promote approved artifact to production"
-                                                                              displayName: Production deploy</pre>
+  branches:
+    include:
+      - main
+      - feature/*
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  nodeVersion: '20.x'
+  buildFolder: 'dist'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildReact
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(nodeVersion)
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              path: $(Pipeline.Workspace)/.npm
+          - script: npm ci
+            displayName: Install dependencies
+          - script: npm run lint
+            displayName: Lint
+          - script: npm test -- --runInBand --ci
+            displayName: Unit tests
+          - script: npm run build
+            displayName: Build
+          - publish: $(buildFolder)
+            artifact: webapp
+
+  - stage: Security
+    dependsOn: Build
+    jobs:
+      - job: Scan
+        steps:
+          - download: current
+            artifact: webapp
+          - script: echo "Run SCA, secret scanning, and static analysis here"
+            displayName: Security checks
+
+  - stage: Deploy_Staging
+    dependsOn: Security
+    condition: succeeded()
+    jobs:
+      - deployment: DeployStaging
+        environment: supportservices-staging
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: webapp
+                - task: AzureStaticWebApp@0
+                  inputs:
+                    app_location: '.'
+                    output_location: 'dist'
+
+  - stage: Deploy_Production
+    dependsOn: Deploy_Staging
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployProd
+        environment: supportservices-production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: webapp
+                - script: echo "Promote approved artifact to production"
+                  displayName: Production deploy</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Fork a small React app and wire in lint, tests, and artifact publishing before adding deployment stages. Explain why artifact promotion is safer than rebuilding later.</div>
                                                         </div>
                                                     </div>
@@ -737,20 +737,20 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Prefer squash merge for short-lived feature branches to keep history readable.</li>
                                                             </ul>
                                                             <pre>az repos policy build create ^
-                                                              --branch main ^
-                                                              --blocking true ^
-                                                              --enabled true ^
-                                                              --build-definition-id 42 ^
-                                                              --manual-queue-only false ^
-                                                              --valid-duration 0 ^
-                                                              --repository-id 00000000-0000-0000-0000-000000000000
-                                                            
-                                                            az repos policy approver-count create ^
-                                                              --branch main ^
-                                                              --minimum-approver-count 2 ^
-                                                              --creator-vote-counts false ^
-                                                              --allow-downvotes true ^
-                                                              --reset-on-source-push true</pre>
+  --branch main ^
+  --blocking true ^
+  --enabled true ^
+  --build-definition-id 42 ^
+  --manual-queue-only false ^
+  --valid-duration 0 ^
+  --repository-id 00000000-0000-0000-0000-000000000000
+
+az repos policy approver-count create ^
+  --branch main ^
+  --minimum-approver-count 2 ^
+  --creator-vote-counts false ^
+  --allow-downvotes true ^
+  --reset-on-source-push true</pre>
                                                             <p>In interviews, connect policies to outcomes: smaller blast radius, consistent quality gates, and traceable releases.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Design separate policy sets for application code versus infrastructure code. Call out where extra approvals or change windows should apply.</div>
                                                         </div>
@@ -778,27 +778,27 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>The key is <strong>promotion of the same artifact</strong>, not rebuilding at every stage.</li>
                                                             </ul>
                                                             <pre>stages:
-                                                              - stage: Deploy_Staging
-                                                                jobs:
-                                                                  - deployment: web
-                                                                    environment: staging
-                                                                    strategy:
-                                                                      runOnce:
-                                                                        deploy:
-                                                                          steps:
-                                                                            - script: echo "Deploy to staging"
-                                                            
-                                                              - stage: Deploy_Prod
-                                                                dependsOn: Deploy_Staging
-                                                                condition: succeeded()
-                                                                jobs:
-                                                                  - deployment: web
-                                                                    environment: production   # approvals/checks are configured on the environment
-                                                                    strategy:
-                                                                      runOnce:
-                                                                        deploy:
-                                                                          steps:
-                                                                            - script: echo "Deploy approved artifact to prod"</pre>
+- stage: Deploy_Staging
+  jobs:
+    - deployment: web
+      environment: staging
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - script: echo "Deploy to staging"
+
+- stage: Deploy_Prod
+  dependsOn: Deploy_Staging
+  condition: succeeded()
+  jobs:
+    - deployment: web
+      environment: production   # approvals/checks are configured on the environment
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - script: echo "Deploy approved artifact to prod"</pre>
                                                             <table>
                                                                 <tr><th>Control</th><th>Purpose</th></tr>
                                                                 <tr><td>Pre-deployment approval</td><td>Human accountability for risky releases</td></tr>
@@ -832,20 +832,20 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Grant the pipeline identity least-privilege Key Vault access.</li>
                                                             </ul>
                                                             <pre>variables:
-                                                              - group: supportservices-shared
-                                                            
-                                                            steps:
-                                                              - task: AzureKeyVault@2
-                                                                inputs:
-                                                                  azureSubscription: 'svc-connection-prod'
-                                                                  KeyVaultName: 'supportservices-kv'
-                                                                  SecretsFilter: 'ApiToken,CosmosEndpoint'
-                                                                  RunAsPreJob: true
-                                                            
-                                                              - script: |
-                                                                  echo "Using non-secret config: $(environmentName)"
-                                                                  echo "Secrets are available as masked variables"
-                                                                displayName: Use config safely</pre>
+  - group: supportservices-shared
+
+steps:
+  - task: AzureKeyVault@2
+    inputs:
+      azureSubscription: 'svc-connection-prod'
+      KeyVaultName: 'supportservices-kv'
+      SecretsFilter: 'ApiToken,CosmosEndpoint'
+      RunAsPreJob: true
+
+  - script: |
+      echo "Using non-secret config: $(environmentName)"
+      echo "Secrets are available as masked variables"
+    displayName: Use config safely</pre>
                                                             <p>Strong answers mention rotation strategy, audit trails, break-glass access, and secretless auth where possible.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Move one pipeline off hard-coded secrets. Document what changed in access control, rotation, and logging behavior.</div>
                                                         </div>
@@ -873,18 +873,18 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Compliance is not just tool execution; it also includes enforcement, reporting, and blocking unsafe releases.</li>
                                                             </ul>
                                                             <pre>stages:
-                                                              - stage: Compliance
-                                                                jobs:
-                                                                  - job: OneEngineeringChecks
-                                                                    steps:
-                                                                      - script: echo "Run CredScan"
-                                                                        displayName: CredScan
-                                                                      - script: echo "Run BinSkim"
-                                                                        displayName: BinSkim
-                                                                      - script: echo "Run CodeQL"
-                                                                        displayName: CodeQL
-                                                                      - script: echo "Publish SARIF and compliance evidence"
-                                                                        displayName: Evidence publishing</pre>
+- stage: Compliance
+  jobs:
+    - job: OneEngineeringChecks
+      steps:
+        - script: echo "Run CredScan"
+          displayName: CredScan
+        - script: echo "Run BinSkim"
+          displayName: BinSkim
+        - script: echo "Run CodeQL"
+          displayName: CodeQL
+        - script: echo "Publish SARIF and compliance evidence"
+          displayName: Evidence publishing</pre>
                                                             <table>
                                                                 <tr><th>Control</th><th>Why it matters</th></tr>
                                                                 <tr><td>CredScan</td><td>Prevents accidental secret leakage</td></tr>
@@ -935,17 +935,17 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Use feature flags when work spans multiple merges but should stay dark in production.</li>
                                                             </ul>
                                                             <pre>git checkout main
-                                                            git pull origin main
-                                                            git checkout -b feature/device-risk-cache
-                                                            
-                                                            # work, commit, push
-                                                            git add .
-                                                            git commit -m "Add device risk cache adapter"
-                                                            git push -u origin feature/device-risk-cache
-                                                            
-                                                            # keep branch fresh
-                                                            git fetch origin
-                                                            git rebase origin/main</pre>
+git pull origin main
+git checkout -b feature/device-risk-cache
+
+# work, commit, push
+git add .
+git commit -m "Add device risk cache adapter"
+git push -u origin feature/device-risk-cache
+
+# keep branch fresh
+git fetch origin
+git rebase origin/main</pre>
                                                             <p>Why interviewers like this answer: it balances flow speed, low merge pain, and production safety.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Simulate a one-day feature branch and explain when you would rebase, when you would merge, and when you would split the work behind a feature flag.</div>
                                                         </div>
@@ -974,20 +974,20 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Prefer rebase for linear cleanup on private branches; avoid rewriting shared history without coordination.</li>
                                                             </ol>
                                                             <pre>git config --global rerere.enabled true
-                                                            git fetch origin
-                                                            git rebase origin/main
-                                                            
-                                                            # inspect conflicts
-                                                            git status
-                                                            git mergetool
-                                                            
-                                                            # after resolving
-                                                            git add src/risk-engine.ts
-                                                            git rebase --continue</pre>
+git fetch origin
+git rebase origin/main
+
+# inspect conflicts
+git status
+git mergetool
+
+# after resolving
+git add src/risk-engine.ts
+git rebase --continue</pre>
                                                             <pre># Useful conflict inspection
-                                                            git diff --name-only --diff-filter=U
-                                                            git checkout --ours path/to/file
-                                                            git checkout --theirs path/to/file</pre>
+git diff --name-only --diff-filter=U
+git checkout --ours path/to/file
+git checkout --theirs path/to/file</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Create a deliberate conflict in a sample repo, resolve it with rerere enabled, then repeat the same conflict to show how Git reuses your prior resolution.</div>
                                                         </div>
                                                     </div>
@@ -1031,50 +1031,50 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Join reference data such as allow-lists, prior chargebacks, or country risk</li>
                                                             </ul>
                                                             <pre>WITH recent_txn AS (
-                                                                SELECT
-                                                                    t.TransactionId,
-                                                                    t.AccountId,
-                                                                    t.DeviceId,
-                                                                    t.Amount,
-                                                                    t.CountryCode,
-                                                                    t.CreatedUtc,
-                                                                    ROW_NUMBER() OVER (
-                                                                        PARTITION BY t.AccountId
-                                                                        ORDER BY t.CreatedUtc DESC
-                                                                    ) AS rn,
-                                                                    COUNT(*) OVER (
-                                                                        PARTITION BY t.DeviceId
-                                                                        ORDER BY t.CreatedUtc
-                                                                        ROWS BETWEEN 9 PRECEDING AND CURRENT ROW
-                                                                    ) AS last_10_attempts
-                                                                FROM dbo.Transactions t
-                                                                WHERE t.CreatedUtc >= DATEADD(HOUR, -24, SYSUTCDATETIME())
-                                                            ),
-                                                            chargeback_accounts AS (
-                                                                SELECT DISTINCT AccountId
-                                                                FROM dbo.Cases
-                                                                WHERE CaseType = 'Chargeback'
-                                                            )
-                                                            SELECT
-                                                                r.TransactionId,
-                                                                r.AccountId,
-                                                                r.DeviceId,
-                                                                r.Amount,
-                                                                r.CountryCode,
-                                                                r.last_10_attempts,
-                                                                CASE
-                                                                    WHEN cb.AccountId IS NOT NULL THEN 'High'
-                                                                    WHEN r.Amount >= 500 AND r.last_10_attempts >= 4 THEN 'High'
-                                                                    WHEN cr.RiskTier = 'Elevated' THEN 'Review'
-                                                                    ELSE 'Normal'
-                                                                END AS RiskDecision
-                                                            FROM recent_txn r
-                                                            LEFT JOIN chargeback_accounts cb
-                                                                ON cb.AccountId = r.AccountId
-                                                            LEFT JOIN dbo.CountryRisk cr
-                                                                ON cr.CountryCode = r.CountryCode
-                                                            WHERE r.rn <= 5
-                                                            ORDER BY r.CreatedUtc DESC;</pre>
+    SELECT
+        t.TransactionId,
+        t.AccountId,
+        t.DeviceId,
+        t.Amount,
+        t.CountryCode,
+        t.CreatedUtc,
+        ROW_NUMBER() OVER (
+            PARTITION BY t.AccountId
+            ORDER BY t.CreatedUtc DESC
+        ) AS rn,
+        COUNT(*) OVER (
+            PARTITION BY t.DeviceId
+            ORDER BY t.CreatedUtc
+            ROWS BETWEEN 9 PRECEDING AND CURRENT ROW
+        ) AS last_10_attempts
+    FROM dbo.Transactions t
+    WHERE t.CreatedUtc >= DATEADD(HOUR, -24, SYSUTCDATETIME())
+),
+chargeback_accounts AS (
+    SELECT DISTINCT AccountId
+    FROM dbo.Cases
+    WHERE CaseType = 'Chargeback'
+)
+SELECT
+    r.TransactionId,
+    r.AccountId,
+    r.DeviceId,
+    r.Amount,
+    r.CountryCode,
+    r.last_10_attempts,
+    CASE
+        WHEN cb.AccountId IS NOT NULL THEN 'High'
+        WHEN r.Amount >= 500 AND r.last_10_attempts >= 4 THEN 'High'
+        WHEN cr.RiskTier = 'Elevated' THEN 'Review'
+        ELSE 'Normal'
+    END AS RiskDecision
+FROM recent_txn r
+LEFT JOIN chargeback_accounts cb
+    ON cb.AccountId = r.AccountId
+LEFT JOIN dbo.CountryRisk cr
+    ON cr.CountryCode = r.CountryCode
+WHERE r.rn <= 5
+ORDER BY r.CreatedUtc DESC;</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Load sample transaction data and add one more fraud rule, such as impossible travel or device-sharing across many accounts.</div>
                                                         </div>
                                                     </div>
@@ -1102,15 +1102,15 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <tr><td>Clustered</td><td>Base row storage order</td><td>Pick a stable narrow key when possible</td></tr>
                                                             </table>
                                                             <pre>CREATE NONCLUSTERED INDEX IX_Transactions_Account_CreatedUtc
-                                                            ON dbo.Transactions (AccountId, CreatedUtc DESC)
-                                                            INCLUDE (Amount, DeviceId, CountryCode);
-                                                            
-                                                            CREATE NONCLUSTERED INDEX IX_Tickets_OpenOnly
-                                                            ON dbo.SupportTickets (Status, Priority)
-                                                            WHERE Status IN ('Open', 'Investigating');
-                                                            
-                                                            CREATE CLUSTERED COLUMNSTORE INDEX CCI_FraudEvents
-                                                            ON dbo.FraudEvents;</pre>
+ON dbo.Transactions (AccountId, CreatedUtc DESC)
+INCLUDE (Amount, DeviceId, CountryCode);
+
+CREATE NONCLUSTERED INDEX IX_Tickets_OpenOnly
+ON dbo.SupportTickets (Status, Priority)
+WHERE Status IN ('Open', 'Investigating');
+
+CREATE CLUSTERED COLUMNSTORE INDEX CCI_FraudEvents
+ON dbo.FraudEvents;</pre>
                                                             <ul>
                                                                 <li>Index for the query pattern, not just for columns that &quot;seem important.&quot;</li>
                                                                 <li>Balance read gain against write amplification and maintenance cost.</li>
@@ -1141,28 +1141,28 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Rewrite predicates to stay SARGable and reduce row width early.</li>
                                                             </ol>
                                                             <pre>CREATE OR ALTER PROCEDURE dbo.GetRecentHighRisk
-                                                                @AccountId bigint = NULL
-                                                            AS
-                                                            BEGIN
-                                                                SET NOCOUNT ON;
-                                                            
-                                                                SELECT TOP (100)
-                                                                    TransactionId,
-                                                                    AccountId,
-                                                                    Amount,
-                                                                    RiskScore,
-                                                                    CreatedUtc
-                                                                FROM dbo.Transactions
-                                                                WHERE (@AccountId IS NULL OR AccountId = @AccountId)
-                                                                  AND RiskScore >= 80
-                                                                ORDER BY CreatedUtc DESC
-                                                                OPTION (RECOMPILE);  -- use selectively when parameter skew is severe
-                                                            END;</pre>
+    @AccountId bigint = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP (100)
+        TransactionId,
+        AccountId,
+        Amount,
+        RiskScore,
+        CreatedUtc
+    FROM dbo.Transactions
+    WHERE (@AccountId IS NULL OR AccountId = @AccountId)
+      AND RiskScore >= 80
+    ORDER BY CreatedUtc DESC
+    OPTION (RECOMPILE);  -- use selectively when parameter skew is severe
+END;</pre>
                                                             <pre>-- Useful diagnostics
-                                                            SET STATISTICS IO, TIME ON;
-                                                            EXEC dbo.GetRecentHighRisk @AccountId = 101;
-                                                            EXEC dbo.GetRecentHighRisk @AccountId = NULL;
-                                                            SET STATISTICS IO, TIME OFF;</pre>
+SET STATISTICS IO, TIME ON;
+EXEC dbo.GetRecentHighRisk @AccountId = 101;
+EXEC dbo.GetRecentHighRisk @AccountId = NULL;
+SET STATISTICS IO, TIME OFF;</pre>
                                                             <p>Discuss <strong>parameter sniffing</strong> explicitly: good for many procedures, painful when data distribution is highly skewed.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Take one slow proc, compare estimated and actual rows, then decide whether the right fix is indexing, rewrite, statistics, or parameter-handling strategy.</div>
                                                         </div>
@@ -1184,30 +1184,30 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                     <div class="question-body">
                                                         <div class="answer">
                                                             <pre>WITH monthly AS (
-                                                                SELECT
-                                                                    DATEFROMPARTS(YEAR(CreatedUtc), MONTH(CreatedUtc), 1) AS MonthStart,
-                                                                    COUNT(*) AS TicketCount,
-                                                                    SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS HighSeverityCount
-                                                                FROM dbo.SupportTickets
-                                                                WHERE CreatedUtc >= DATEADD(MONTH, -12, SYSUTCDATETIME())
-                                                                GROUP BY DATEFROMPARTS(YEAR(CreatedUtc), MONTH(CreatedUtc), 1)
-                                                            )
-                                                            SELECT
-                                                                MonthStart,
-                                                                TicketCount,
-                                                                HighSeverityCount,
-                                                                SUM(TicketCount) OVER (ORDER BY MonthStart) AS RunningTotal,
-                                                                LAG(TicketCount) OVER (ORDER BY MonthStart) AS PriorMonthCount,
-                                                                CASE
-                                                                    WHEN LAG(TicketCount) OVER (ORDER BY MonthStart) IS NULL THEN NULL
-                                                                    WHEN LAG(TicketCount) OVER (ORDER BY MonthStart) = 0 THEN NULL
-                                                                    ELSE ROUND(
-                                                                        (TicketCount - LAG(TicketCount) OVER (ORDER BY MonthStart)) * 100.0
-                                                                        / LAG(TicketCount) OVER (ORDER BY MonthStart), 2
-                                                                    )
-                                                                END AS MoMPercent
-                                                            FROM monthly
-                                                            ORDER BY MonthStart;</pre>
+    SELECT
+        DATEFROMPARTS(YEAR(CreatedUtc), MONTH(CreatedUtc), 1) AS MonthStart,
+        COUNT(*) AS TicketCount,
+        SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS HighSeverityCount
+    FROM dbo.SupportTickets
+    WHERE CreatedUtc >= DATEADD(MONTH, -12, SYSUTCDATETIME())
+    GROUP BY DATEFROMPARTS(YEAR(CreatedUtc), MONTH(CreatedUtc), 1)
+)
+SELECT
+    MonthStart,
+    TicketCount,
+    HighSeverityCount,
+    SUM(TicketCount) OVER (ORDER BY MonthStart) AS RunningTotal,
+    LAG(TicketCount) OVER (ORDER BY MonthStart) AS PriorMonthCount,
+    CASE
+        WHEN LAG(TicketCount) OVER (ORDER BY MonthStart) IS NULL THEN NULL
+        WHEN LAG(TicketCount) OVER (ORDER BY MonthStart) = 0 THEN NULL
+        ELSE ROUND(
+            (TicketCount - LAG(TicketCount) OVER (ORDER BY MonthStart)) * 100.0
+            / LAG(TicketCount) OVER (ORDER BY MonthStart), 2
+        )
+    END AS MoMPercent
+FROM monthly
+ORDER BY MonthStart;</pre>
                                                             <ul>
                                                                 <li><strong>LAG</strong> compares current month with previous month.</li>
                                                                 <li><strong>SUM OVER</strong> gives the running total without self-joins.</li>
@@ -1260,9 +1260,9 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Many real systems use <strong>both</strong>: Cosmos for operational scale, SQL Server for curated relational analytics.</li>
                                                             </ul>
                                                             <pre>{
-                                                              "operational_store": "Cosmos DB for hot JSON device/profile data",
-                                                              "reporting_store": "SQL Server for trend analysis, joins, and controlled reporting schemas"
-                                                            }</pre>
+  "operational_store": "Cosmos DB for hot JSON device/profile data",
+  "reporting_store": "SQL Server for trend analysis, joins, and controlled reporting schemas"
+}</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Take one use case and force yourself to justify why a single database is enough; then explain why a polyglot approach may still win.</div>
                                                         </div>
                                                     </div>
@@ -1290,27 +1290,27 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li><strong>Schema:</strong> keep a compact current-state document plus optional event feed for history.</li>
                                                             </ul>
                                                             <pre>{
-                                                              "id": "fp_20260614_1001",
-                                                              "deviceId": "device-7f21",
-                                                              "accountId": "acct-839",
-                                                              "fingerprintHash": "sha256:9e3d...",
-                                                              "browser": {
-                                                                "family": "Edge",
-                                                                "version": "125",
-                                                                "timezone": "UTC-8"
-                                                              },
-                                                              "network": {
-                                                                "ip": "203.0.113.10",
-                                                                "asn": 64500,
-                                                                "country": "US"
-                                                              },
-                                                              "risk": {
-                                                                "score": 73,
-                                                                "signals": ["new-device", "velocity-spike"]
-                                                              },
-                                                              "lastSeenUtc": "2026-06-14T15:00:00Z",
-                                                              "ttl": 2592000
-                                                            }</pre>
+  "id": "fp_20260614_1001",
+  "deviceId": "device-7f21",
+  "accountId": "acct-839",
+  "fingerprintHash": "sha256:9e3d...",
+  "browser": {
+    "family": "Edge",
+    "version": "125",
+    "timezone": "UTC-8"
+  },
+  "network": {
+    "ip": "203.0.113.10",
+    "asn": 64500,
+    "country": "US"
+  },
+  "risk": {
+    "score": 73,
+    "signals": ["new-device", "velocity-spike"]
+  },
+  "lastSeenUtc": "2026-06-14T15:00:00Z",
+  "ttl": 2592000
+}</pre>
                                                             <p>If queries regularly need all devices for one account, consider a second container or materialized projection rather than forcing cross-partition scans.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> List your top three query patterns first, then defend the partition key. If you cannot do that, the design is not done yet.</div>
                                                         </div>
@@ -1340,10 +1340,10 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                             </ul>
                                                             <p>For distributed fraud detection, <strong>Bounded Staleness</strong> is often the balanced answer: it limits stale reads while preserving better global performance than Strong consistency across regions.</p>
                                                             <pre>// Example concept
-                                                            CosmosClientOptions options = new CosmosClientOptions
-                                                            {
-                                                                ConsistencyLevel = ConsistencyLevel.BoundedStaleness
-                                                            };</pre>
+CosmosClientOptions options = new CosmosClientOptions
+{
+    ConsistencyLevel = ConsistencyLevel.BoundedStaleness
+};</pre>
                                                             <p>Why not Session only? Because multiple services may read the same device/account state, not just the original writer session.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Write down one scenario where Strong consistency is worth the cost and one where Eventual is acceptable. That contrast sharpens your interview answer.</div>
                                                         </div>
@@ -1372,21 +1372,21 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Watch for hot partitions and rebalance if one key dominates traffic.</li>
                                                             </ul>
                                                             <pre>{
-                                                              "indexingMode": "consistent",
-                                                              "automatic": true,
-                                                              "includedPaths": [
-                                                                { "path": "/deviceId/?" },
-                                                                { "path": "/accountId/?" },
-                                                                { "path": "/risk/score/?" }
-                                                              ],
-                                                              "excludedPaths": [
-                                                                { "path": "/rawTelemetry/*" }
-                                                              ]
-                                                            }</pre>
+  "indexingMode": "consistent",
+  "automatic": true,
+  "includedPaths": [
+    { "path": "/deviceId/?" },
+    { "path": "/accountId/?" },
+    { "path": "/risk/score/?" }
+  ],
+  "excludedPaths": [
+    { "path": "/rawTelemetry/*" }
+  ]
+}</pre>
                                                             <pre>// Better than query when possible
-                                                            var response = await container.ReadItemAsync&lt;DeviceProfile&gt;(
-                                                                id: "fp_20260614_1001",
-                                                                partitionKey: new PartitionKey("device-7f21"));</pre>
+var response = await container.ReadItemAsync&lt;DeviceProfile&gt;(
+    id: "fp_20260614_1001",
+    partitionKey: new PartitionKey("device-7f21"));</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Take a sample query and rewrite it as a point read or narrow projection. Then estimate why the RU cost should drop.</div>
                                                         </div>
                                                     </div>
@@ -1432,9 +1432,9 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <tr><td>Best fit</td><td>Teams wanting native Mongo ecosystem</td><td>Teams already standardized on Azure governance and Cosmos operations</td></tr>
                                                             </table>
                                                             <pre>// Generic connection example
-                                                            const client = new MongoClient(process.env.MONGO_CONNECTION);
-                                                            await client.connect();
-                                                            const collection = client.db("support").collection("tickets");</pre>
+const client = new MongoClient(process.env.MONGO_CONNECTION);
+await client.connect();
+const collection = client.db("support").collection("tickets");</pre>
                                                             <p>A strong answer acknowledges that API compatibility does not mean every feature, command, or performance profile is identical.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Pick one MongoDB feature your application depends on and verify whether Cosmos DB Mongo API supports it before promising a migration path.</div>
                                                         </div>
@@ -1461,28 +1461,28 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Index by ticket number, status, assignee, and update timestamp.</li>
                                                             </ul>
                                                             <pre>{
-                                                              "_id": "TCK-2026-00421",
-                                                              "title": "Payment verification issue",
-                                                              "status": "Investigating",
-                                                              "priority": "High",
-                                                              "requester": {
-                                                                "accountId": "acct-839",
-                                                                "region": "NA"
-                                                              },
-                                                              "assignee": {
-                                                                "agentId": "agent-17",
-                                                                "team": "support-ops"
-                                                              },
-                                                              "recentHistory": [
-                                                                { "at": "2026-06-14T09:00:00Z", "state": "Open" },
-                                                                { "at": "2026-06-14T09:30:00Z", "state": "Investigating" }
-                                                              ],
-                                                              "tags": ["billing", "verification", "fraud-review"],
-                                                              "updatedUtc": "2026-06-14T09:30:00Z"
-                                                            }</pre>
+  "_id": "TCK-2026-00421",
+  "title": "Payment verification issue",
+  "status": "Investigating",
+  "priority": "High",
+  "requester": {
+    "accountId": "acct-839",
+    "region": "NA"
+  },
+  "assignee": {
+    "agentId": "agent-17",
+    "team": "support-ops"
+  },
+  "recentHistory": [
+    { "at": "2026-06-14T09:00:00Z", "state": "Open" },
+    { "at": "2026-06-14T09:30:00Z", "state": "Investigating" }
+  ],
+  "tags": ["billing", "verification", "fraud-review"],
+  "updatedUtc": "2026-06-14T09:30:00Z"
+}</pre>
                                                             <pre>db.tickets.createIndex({ status: 1, priority: 1, updatedUtc: -1 })
-                                                            db.tickets.createIndex({ "requester.accountId": 1, updatedUtc: -1 })
-                                                            db.tickets.createIndex({ tags: 1 })</pre>
+db.tickets.createIndex({ "requester.accountId": 1, updatedUtc: -1 })
+db.tickets.createIndex({ tags: 1 })</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Estimate document growth for a busy ticket. If history grows too large, split audit events into a separate collection and explain why.</div>
                                                         </div>
                                                     </div>
@@ -1530,14 +1530,14 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <tr><td>Operational teams need quick changes without deep engineering cycles</td><td>The system is engineering-heavy and optimized for scale-first service patterns</td></tr>
                                                             </table>
                                                             <pre>&lt;fetch version="1.0" output-format="xml-platform" mapping="logical"&gt;
-                                                              &lt;entity name="incident"&gt;
-                                                                &lt;attribute name="title" /&gt;
-                                                                &lt;attribute name="prioritycode" /&gt;
-                                                                &lt;filter&gt;
-                                                                  &lt;condition attribute="statecode" operator="eq" value="0" /&gt;
-                                                                &lt;/filter&gt;
-                                                              &lt;/entity&gt;
-                                                            &lt;/fetch&gt;</pre>
+  &lt;entity name="incident"&gt;
+    &lt;attribute name="title" /&gt;
+    &lt;attribute name="prioritycode" /&gt;
+    &lt;filter&gt;
+      &lt;condition attribute="statecode" operator="eq" value="0" /&gt;
+    &lt;/filter&gt;
+  &lt;/entity&gt;
+&lt;/fetch&gt;</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Compare one support workflow implemented in Dataverse versus custom code. Focus on speed of change, governance, and throughput expectations.</div>
                                                         </div>
                                                     </div>
@@ -1576,31 +1576,31 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                         <div class="answer">
                                                             <h4>Architecture answer</h4>
                                                             <pre>Client / support portal
-                                                                    |
-                                                                    v
-                                                             Azure Front Door + WAF
-                                                                    |
-                                                                    v
-                                                            API Management
-                                                                    |
-                                                                    v
-                                                            Transaction Intake API (App Service)
-                                                                    |
-                                                                    +---- synchronous rules engine ----+
-                                                                    |                                 |
-                                                                    v                                 v
-                                                               Event Hubs --------------------&gt; Cosmos DB (device/account profiles)
-                                                                    |                                 |
-                                                                    v                                 |
-                                                            Fraud Scoring Function / Durable Function |
-                                                                    |                                 |
-                                                                    +----&gt; Service Bus high-risk queue|
-                                                                    |                                 |
-                                                                    v                                 v
-                                                             Analyst workflow / support platform   SQL Server reporting
-                                                                    |
-                                                                    v
-                                                             Application Insights + Log Analytics + Azure Monitor alerts</pre>
+        |
+        v
+ Azure Front Door + WAF
+        |
+        v
+API Management
+        |
+        v
+Transaction Intake API (App Service)
+        |
+        +---- synchronous rules engine ----+
+        |                                 |
+        v                                 v
+   Event Hubs --------------------&gt; Cosmos DB (device/account profiles)
+        |                                 |
+        v                                 |
+Fraud Scoring Function / Durable Function |
+        |                                 |
+        +----&gt; Service Bus high-risk queue|
+        |                                 |
+        v                                 v
+ Analyst workflow / support platform   SQL Server reporting
+        |
+        v
+ Application Insights + Log Analytics + Azure Monitor alerts</pre>
                                                             <ul>
                                                                 <li><strong>Synchronous path:</strong> lightweight rules for immediate allow/review/deny response.</li>
                                                                 <li><strong>Asynchronous path:</strong> deeper enrichment, device correlation, and case generation.</li>
@@ -1608,13 +1608,13 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li><strong>Messaging:</strong> Event Hubs for ingestion, Service Bus for reliable workflow orchestration.</li>
                                                             </ul>
                                                             <pre>{
-                                                              "transactionId": "txn-90210",
-                                                              "accountId": "acct-839",
-                                                              "deviceId": "device-7f21",
-                                                              "amount": 650.00,
-                                                              "ipAddress": "203.0.113.10",
-                                                              "riskSignals": ["new-device", "velocity-spike", "country-mismatch"]
-                                                            }</pre>
+  "transactionId": "txn-90210",
+  "accountId": "acct-839",
+  "deviceId": "device-7f21",
+  "amount": 650.00,
+  "ipAddress": "203.0.113.10",
+  "riskSignals": ["new-device", "velocity-spike", "country-mismatch"]
+}</pre>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Practice explaining the architecture in two passes: a 30-second executive summary and a 3-minute technical deep dive.</div>
                                                         </div>
                                                     </div>
@@ -1641,21 +1641,21 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Separate retryable external failures from genuine code defects.</li>
                                                             </ol>
                                                             <pre>steps:
-                                                              - script: |
-                                                                  echo "Node version:"
-                                                                  node --version
-                                                                  echo "NPM version:"
-                                                                  npm --version
-                                                                  echo "Environment snapshot:"
-                                                                  printenv | sort
-                                                                displayName: Diagnostic snapshot
-                                                            
-                                                              - script: npm test -- --ci --reporters=default --reporters=jest-junit
-                                                                displayName: Run tests
-                                                            
-                                                              - publish: junit.xml
-                                                                artifact: test-results
-                                                                condition: failed()</pre>
+- script: |
+    echo "Node version:"
+    node --version
+    echo "NPM version:"
+    npm --version
+    echo "Environment snapshot:"
+    printenv | sort
+  displayName: Diagnostic snapshot
+
+- script: npm test -- --ci --reporters=default --reporters=jest-junit
+  displayName: Run tests
+
+- publish: junit.xml
+  artifact: test-results
+  condition: failed()</pre>
                                                             <ul>
                                                                 <li>Look for non-determinism: time zones, race conditions, unpinned images, leaked state, and parallel test collisions.</li>
                                                                 <li>If the build is flaky, treat that as a product defect; it erodes trust in the pipeline.</li>
@@ -1685,23 +1685,23 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Use <strong>Durable Functions</strong> when the flow has fan-out/fan-in, retries, timers, or human steps.</li>
                                                             </ul>
                                                             <pre>[FunctionName("FraudReviewOrchestrator")]
-                                                            public static async Task Run(
-                                                                [OrchestrationTrigger] IDurableOrchestrationContext context)
-                                                            {
-                                                                var payload = context.GetInput&lt;FraudReviewRequest&gt;();
-                                                                var deviceTask = context.CallActivityAsync&lt;DeviceContext&gt;("LoadDeviceContext", payload);
-                                                                var accountTask = context.CallActivityAsync&lt;AccountContext&gt;("LoadAccountContext", payload);
-                                                                await Task.WhenAll(deviceTask, accountTask);
-                                                            
-                                                                var risk = await context.CallActivityAsync&lt;RiskDecision&gt;(
-                                                                    "ComputeRiskDecision",
-                                                                    new { payload, Device = deviceTask.Result, Account = accountTask.Result });
-                                                            
-                                                                if (risk.RequiresAnalyst)
-                                                                {
-                                                                    await context.CallActivityAsync("QueueAnalystCase", risk);
-                                                                }
-                                                            }</pre>
+public static async Task Run(
+    [OrchestrationTrigger] IDurableOrchestrationContext context)
+{
+    var payload = context.GetInput&lt;FraudReviewRequest&gt;();
+    var deviceTask = context.CallActivityAsync&lt;DeviceContext&gt;("LoadDeviceContext", payload);
+    var accountTask = context.CallActivityAsync&lt;AccountContext&gt;("LoadAccountContext", payload);
+    await Task.WhenAll(deviceTask, accountTask);
+
+    var risk = await context.CallActivityAsync&lt;RiskDecision&gt;(
+        "ComputeRiskDecision",
+        new { payload, Device = deviceTask.Result, Account = accountTask.Result });
+
+    if (risk.RequiresAnalyst)
+    {
+        await context.CallActivityAsync("QueueAnalystCase", risk);
+    }
+}</pre>
                                                             <p>Keep the monolith as system of record initially; peel off well-bounded side workflows before touching core transactional paths.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Draw the first capability you would extract, define its contract, and list the rollback path if the new serverless flow misbehaves.</div>
                                                         </div>
@@ -1729,21 +1729,21 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>If issues appear, swap back quickly.</li>
                                                             </ul>
                                                             <pre>az webapp deployment slot create ^
-                                                              --name supportservices-api ^
-                                                              --resource-group rg-supportservices ^
-                                                              --slot staging
-                                                            
-                                                            az webapp deployment source config-zip ^
-                                                              --name supportservices-api ^
-                                                              --resource-group rg-supportservices ^
-                                                              --slot staging ^
-                                                              --src build.zip
-                                                            
-                                                            az webapp deployment slot swap ^
-                                                              --name supportservices-api ^
-                                                              --resource-group rg-supportservices ^
-                                                              --slot staging ^
-                                                              --target-slot production</pre>
+  --name supportservices-api ^
+  --resource-group rg-supportservices ^
+  --slot staging
+
+az webapp deployment source config-zip ^
+  --name supportservices-api ^
+  --resource-group rg-supportservices ^
+  --slot staging ^
+  --src build.zip
+
+az webapp deployment slot swap ^
+  --name supportservices-api ^
+  --resource-group rg-supportservices ^
+  --slot staging ^
+  --target-slot production</pre>
                                                             <p>Mention slot-specific settings, warm-up endpoints, smoke tests, and session/cache considerations after swap.</p>
                                                             <div class="tip"><strong>Hands-on tip:</strong> Run a mock swap plan and define the go/no-go metrics you would inspect before promoting the staging slot.</div>
                                                         </div>
@@ -1770,10 +1770,10 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                                                 <li>Track function duration, failures, queue length, cold starts, downstream dependency failures, and business KPIs such as fraud alerts per minute.</li>
                                                             </ul>
                                                             <pre>requests
-                                                            | where timestamp &gt; ago(30m)
-                                                            | summarize Total=count(), Failures=countif(success == false), P95=percentile(duration, 95ms)
-                                                                      by operation_Name
-                                                            | order by Failures desc</pre>
+| where timestamp &gt; ago(30m)
+| summarize Total=count(), Failures=countif(success == false), P95=percentile(duration, 95ms)
+          by operation_Name
+| order by Failures desc</pre>
                                                             <table>
                                                                 <tr><th>Alert</th><th>Trigger</th><th>Response</th></tr>
                                                                 <tr><td>Error spike</td><td>Failure rate &gt; 2% for 10 min</td><td>Page on-call and attach recent deployment context</td></tr>
@@ -1816,8 +1816,8 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>What is the max execution time for Azure Functions?</td>
                                 <td>Consumption plan has time limits, while Premium and Dedicated plans support much longer-running workloads; always design long work as resumable.</td>
                                 <td><pre>{
-                          "decision": "Use Durable Functions for long workflows"
-                        }</pre></td>
+  "decision": "Use Durable Functions for long workflows"
+}</pre></td>
                                 <td>Check your hosting plan before promising execution duration.</td>
                             </tr>
                             <tr>
@@ -1825,9 +1825,9 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>What causes cold starts?</td>
                                 <td>Cold starts happen when serverless compute must allocate and initialize a worker after idle time or scale-out.</td>
                                 <td><pre># Mitigations
-                        Premium plan
-                        warm instances
-                        smaller startup path</pre></td>
+Premium plan
+warm instances
+smaller startup path</pre></td>
                                 <td>Measure startup time separately from handler time.</td>
                             </tr>
                             <tr>
@@ -1835,9 +1835,9 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>Why are partition keys important?</td>
                                 <td>They determine data distribution, scalability, and whether requests stay cheap point reads or become expensive cross-partition scans.</td>
                                 <td><pre>{
-                          "goodKey": "/deviceId",
-                          "badKey": "/country"
-                        }</pre></td>
+  "goodKey": "/deviceId",
+  "badKey": "/country"
+}</pre></td>
                                 <td>List top query patterns before choosing the key.</td>
                             </tr>
                             <tr>
@@ -1845,7 +1845,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>Git merge vs rebase?</td>
                                 <td>Merge preserves branch history; rebase rewrites commits onto a new base for a cleaner linear history.</td>
                                 <td><pre>git merge main
-                        git rebase origin/main</pre></td>
+git rebase origin/main</pre></td>
                                 <td>Use rebase on private branches and coordinate before rewriting shared history.</td>
                             </tr>
                             <tr>
@@ -1853,7 +1853,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>What is a deadlock?</td>
                                 <td>It is a cycle where two or more transactions each hold locks the others need, so SQL Server kills one as the victim.</td>
                                 <td><pre>SET DEADLOCK_PRIORITY LOW;
-                        -- keep transactions short</pre></td>
+-- keep transactions short</pre></td>
                                 <td>Reproduce one with two sessions to remember it clearly.</td>
                             </tr>
                             <tr>
@@ -1861,7 +1861,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>Why do execution plans matter?</td>
                                 <td>They show how SQL Server actually accesses data, revealing scans, lookups, spills, bad estimates, and expensive joins.</td>
                                 <td><pre>SET STATISTICS IO, TIME ON;
-                        -- inspect actual plan</pre></td>
+-- inspect actual plan</pre></td>
                                 <td>Never tune blind; capture plan plus IO/time first.</td>
                             </tr>
                             <tr>
@@ -1869,7 +1869,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>What is the CAP theorem in one line?</td>
                                 <td>In a distributed system under partition, you choose between strict consistency and full availability.</td>
                                 <td><pre>Partition event =&gt;
-                        choose C or A</pre></td>
+choose C or A</pre></td>
                                 <td>Relate CAP back to Cosmos DB consistency choices.</td>
                             </tr>
                             <tr>
@@ -1877,7 +1877,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>Azure DevOps vs GitHub Actions?</td>
                                 <td>Azure DevOps is broader ALM with Boards, Repos, Pipelines, and Artifacts; GitHub Actions is GitHub-native workflow automation.</td>
                                 <td><pre>ADO = ALM suite
-                        GHA = GitHub CI/CD</pre></td>
+GHA = GitHub CI/CD</pre></td>
                                 <td>Answer by matching platform choice to team workflow and governance needs.</td>
                             </tr>
                             <tr>
@@ -1885,7 +1885,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>What does <code>az login</code> do?</td>
                                 <td>It authenticates the Azure CLI so you can access subscriptions and run management commands under a user or device code flow.</td>
                                 <td><pre>az login
-                        az account show</pre></td>
+az account show</pre></td>
                                 <td>Follow with <code>az account set</code> when multiple subscriptions exist.</td>
                             </tr>
                             <tr>
@@ -1893,7 +1893,7 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                 <td>What is a service principal?</td>
                                 <td>It is a non-human application identity used by automation to access Azure resources with scoped permissions.</td>
                                 <td><pre>az ad sp create-for-rbac \
-                          --name supportservices-cicd</pre></td>
+--name supportservices-cicd</pre></td>
                                 <td>Always mention least privilege and secret rotation or federated credentials.</td>
                             </tr>
                         </table>
@@ -1935,10 +1935,10 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                             <li>Log structured telemetry to Application Insights.</li>
                                         </ul>
                                         <pre>func init FraudLab --worker-runtime dotnet
-                        func new --name ScoreTransaction --template "HTTP trigger"
-                        
-                        # add queue output or Service Bus output binding
-                        # add risk rules and local.settings.json values</pre>
+func new --name ScoreTransaction --template "HTTP trigger"
+
+# add queue output or Service Bus output binding
+# add risk rules and local.settings.json values</pre>
                                         <div class="tip"><strong>Validation:</strong> Submit 10 sample payloads and confirm only the risky ones reach the downstream queue.</div>
                                     </div>
                                 </div>
@@ -1963,12 +1963,12 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                             <li>Protect production with approvals.</li>
                                         </ul>
                                         <pre>trigger:
-                          - main
-                        
-                        steps:
-                          - script: npm ci
-                          - script: npm test
-                          - script: npm run build</pre>
+  - main
+
+steps:
+  - script: npm ci
+  - script: npm test
+  - script: npm run build</pre>
                                         <div class="tip"><strong>Validation:</strong> Intentionally break a test to confirm PR validation blocks the merge.</div>
                                     </div>
                                 </div>
@@ -1993,10 +1993,10 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                             <li>Add one index, update statistics, and compare.</li>
                                         </ul>
                                         <pre>SET STATISTICS IO, TIME ON;
-                        -- run baseline query
-                        CREATE INDEX IX_Report ON dbo.SupportTickets(Status, UpdatedUtc) INCLUDE (Priority);
-                        -- run again and compare reads/time
-                        SET STATISTICS IO, TIME OFF;</pre>
+-- run baseline query
+CREATE INDEX IX_Report ON dbo.SupportTickets(Status, UpdatedUtc) INCLUDE (Priority);
+-- run again and compare reads/time
+SET STATISTICS IO, TIME OFF;</pre>
                                         <div class="tip"><strong>Validation:</strong> Record logical reads before and after. Explain the result rather than just celebrating a faster runtime.</div>
                                     </div>
                                 </div>
@@ -2021,10 +2021,10 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
                                             <li>Enable <code>rerere</code> and repeat.</li>
                                         </ul>
                                         <pre>git init
-                        git checkout -b feature/pipeline-doc
-                        git config rerere.enabled true
-                        git fetch origin
-                        git rebase origin/main</pre>
+git checkout -b feature/pipeline-doc
+git config rerere.enabled true
+git fetch origin
+git rebase origin/main</pre>
                                         <div class="tip"><strong>Validation:</strong> Explain each Git command aloud as you run it; that fluency helps the interview as much as the mechanics.</div>
                                     </div>
                                 </div>
@@ -2178,5 +2178,22 @@ details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .
             }
         });
     </script>
+<!-- Copyright & Contact Footer -->
+<footer style="background:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);color:white;padding:40px 20px;margin-top:40px;font-family:'Segoe UI',sans-serif;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between;align-items:flex-start;">
+        <div style="flex:1;min-width:280px;">
+            <h3 style="margin:0 0 12px;font-size:1.2rem;border-bottom:2px solid rgba(255,255,255,0.3);padding-bottom:8px;">📬 Contact</h3>
+            <p style="margin:6px 0;font-size:0.9rem;">💼 <a href="https://rdammala.github.io/sre-portfolio/" style="color:#90cdf4;text-decoration:none;">SRE Portfolio</a></p>
+            <p style="margin:6px 0;font-size:0.9rem;">📂 <a href="https://github.com/rdammala/career-focus-pages" style="color:#90cdf4;text-decoration:none;">Career Focus Guides (GitHub)</a></p>
+            <p style="margin:6px 0;font-size:0.9rem;">🔗 <a href="https://github.com/rdammala" style="color:#90cdf4;text-decoration:none;">GitHub Profile</a></p>
+        </div>
+        <div style="flex:1;min-width:280px;text-align:right;">
+            <h3 style="margin:0 0 12px;font-size:1.2rem;border-bottom:2px solid rgba(255,255,255,0.3);padding-bottom:8px;">⚖️ Copyright</h3>
+            <p style="margin:6px 0;font-size:0.85rem;opacity:0.9;">© 2026 Rajesh Dammala. All rights reserved.</p>
+            <p style="margin:6px 0;font-size:0.8rem;opacity:0.75;">This content is original work and may not be reproduced, distributed, or used without explicit written permission from the author.</p>
+            <p style="margin:10px 0 0;font-size:0.75rem;opacity:0.6;">Built with GitHub Copilot CLI</p>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
