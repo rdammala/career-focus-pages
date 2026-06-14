@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportServices DevOps - Cloud, Databases &amp; CI/CD Interview Prep</title>
+    <style>
+:root {--primary:#1a365d;--primary-light:#2b6cb0;--accent:#3182ce;--success:#38a169;--warning:#d69e2e;--bg:#f7fafc;--card-bg:#ffffff;--text:#2d3748;--text-light:#718096;--border:#e2e8f0;--shadow:0 2px 8px rgba(0,0,0,0.08);--shadow-hover:0 4px 16px rgba(0,0,0,0.12);--gradient:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;scroll-behavior:smooth;}
+a{color:var(--accent);}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:200;transition:width 0.1s;}
+.nav-bar{background:white;border-bottom:1px solid var(--border);padding:0.5rem 1rem;position:sticky;top:0;z-index:99;display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow);}
+.nav-bar button{background:var(--primary);color:white;border:none;padding:0.4rem 0.8rem;border-radius:4px;cursor:pointer;font-size:0.8rem;transition:all 0.2s;}
+.nav-bar button:hover{background:var(--accent);transform:translateY(-1px);}
+.search-box{flex:1;min-width:220px;padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:4px;font-size:0.9rem;outline:none;}
+.search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(49,130,206,0.2);}
+.filter-bar{background:white;border-bottom:1px solid var(--border);padding:0.6rem 1rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.filter-group{display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap;}
+.filter-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);margin-right:0.3rem;white-space:nowrap;}
+.divider{width:1px;height:24px;background:var(--border);margin:0 0.5rem;}
+.pill{display:inline-flex;align-items:center;gap:0.3rem;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--text);transition:all 0.2s;text-decoration:none;white-space:nowrap;}
+.pill:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);box-shadow:0 2px 6px rgba(49,130,206,0.15);}
+.pill.active{background:var(--primary);color:white;border-color:var(--primary);}
+.pill.active:hover{background:var(--accent);border-color:var(--accent);}
+.pill-icon{font-size:0.85rem;}
+.active-filter-banner{background:#ebf8ff;border:1px solid #bee3f8;padding:0.4rem 1rem;display:none;align-items:center;justify-content:space-between;font-size:0.82rem;color:var(--primary);}
+.active-filter-banner.visible{display:flex;}
+.active-filter-banner button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:0.82rem;}
+.active-filter-banner button:hover{text-decoration:underline;}
+.container{display:flex;max-width:1400px;margin:0 auto;}
+.sidebar{width:300px;position:sticky;top:50px;height:calc(100vh - 50px);overflow-y:auto;background:white;border-right:1px solid var(--border);padding:1rem 0;flex-shrink:0;}
+.sidebar h3{padding:0.5rem 1rem;color:var(--primary);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px;}
+.sidebar ul{list-style:none;}
+.sidebar li{border-bottom:1px solid var(--border);}
+.sidebar .toc-link{display:block;padding:0.5rem 1rem;color:var(--text);text-decoration:none;font-size:0.82rem;transition:all 0.2s;}
+.sidebar .toc-link:hover{background:#ebf8ff;color:var(--accent);padding-left:1.3rem;}
+.sidebar .toc-link.active{background:#ebf8ff;color:var(--accent);border-left:3px solid var(--accent);font-weight:600;}
+.sidebar .group-header{padding:0.5rem 1rem 0.2rem;color:var(--primary);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-top:0.5rem;border-top:1px solid var(--border);}
+.sidebar .group-header:first-child{border-top:none;margin-top:0;}
+.main-content{flex:1;padding:1.5rem 2rem;min-width:0;}
+.hero{background:var(--gradient);color:white;padding:2rem;border-radius:12px;margin-bottom:1.5rem;text-align:center;box-shadow:var(--shadow);}
+.hero h1{font-size:1.7rem;margin-bottom:0.5rem;}
+.hero p{opacity:0.94;font-size:0.95rem;}
+.stats-bar{display:flex;gap:1.5rem;padding:1rem 1.5rem;background:white;border-radius:8px;box-shadow:var(--shadow);margin-bottom:1.5rem;flex-wrap:wrap;justify-content:center;}
+.stat{text-align:center;min-width:120px;}
+.stat-value{font-size:1.5rem;font-weight:700;color:var(--primary);}
+.stat-label{font-size:0.75rem;color:var(--text-light);text-transform:uppercase;}
+.content-section{margin-bottom:1rem;background:var(--card-bg);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow 0.3s;}
+.content-section:hover{box-shadow:var(--shadow-hover);}
+details{width:100%;}
+details summary{cursor:pointer;list-style:none;}
+details summary::-webkit-details-marker{display:none;}
+.section-header{display:flex;align-items:center;padding:1rem 1.5rem;background:linear-gradient(135deg,#f7fafc 0%,#edf2f7 100%);border-bottom:2px solid var(--primary);user-select:none;transition:background 0.2s;}
+.section-header:hover{background:linear-gradient(135deg,#ebf8ff 0%,#e6fffa 100%);}
+.section-icon{font-size:1.4rem;margin-right:0.8rem;}
+.section-title{flex:1;font-size:1.05rem;font-weight:700;color:var(--primary);}
+.toggle-icon::after{content:'\25BC';font-size:0.8rem;color:var(--text-light);transition:transform 0.3s;}
+details[open]>.section-header .toggle-icon::after,.question-card[open]>summary .toggle-icon.section-toggle::after{content:'\25B2';}
+.section-content{padding:1.5rem;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+.section-content h3{color:var(--primary-light);margin:1.2rem 0 0.6rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border);font-size:1rem;}
+.section-content h4{color:var(--primary);margin:0.8rem 0 0.4rem;font-size:0.95rem;}
+.section-content p{margin-bottom:0.6rem;}
+.section-content ul,.section-content ol{margin:0.5rem 0 0.5rem 1.5rem;}
+.section-content li{margin-bottom:0.4rem;line-height:1.5;}
+.section-content strong{color:var(--primary);}
+.section-content code{background:#edf2f7;padding:0.1rem 0.4rem;border-radius:3px;font-size:0.88em;font-family:'Cascadia Code',Consolas,monospace;}
+.section-content pre{background:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;margin:0.8rem 0;font-family:'Cascadia Code',Consolas,monospace;}
+.section-content table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.88rem;}
+.section-content th{background:var(--primary);color:white;padding:0.5rem 0.8rem;text-align:left;}
+.section-content tr{border-bottom:1px solid var(--border);}
+.section-content td{padding:0.5rem 0.8rem;vertical-align:top;}
+.section-content tr:nth-child(even){background:#f7fafc;}
+.section-intro>:last-child,.question-body>:last-child{margin-bottom:0;}
+.question-list{display:flex;flex-direction:column;gap:1rem;margin-top:1rem;}
+.question-list:empty{display:none;}
+.question-card{border:1px solid var(--border);border-radius:10px;background:white;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.question-card>summary{display:flex;align-items:center;gap:0.75rem;padding:0.9rem 1rem;background:#fbfdff;transition:all 0.2s;}
+.question-card>summary:hover{background:#edf7ff;}
+.question-card[open]>summary{background:linear-gradient(135deg,#ebf8ff 0%,#f0fff4 100%);border-bottom:1px solid var(--border);}
+.question-index{flex-shrink:0;width:2rem;height:2rem;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;}
+.question-title-wrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.35rem;}
+.question-title{font-size:0.96rem;font-weight:600;color:var(--primary);line-height:1.45;}
+.question-meta{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.badge{display:inline-flex;align-items:center;padding:0.18rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:700;border:1px solid transparent;}
+.badge.topic{background:#ebf8ff;color:#1a365d;border-color:#bee3f8;}
+.badge.role{background:#f7fafc;color:#2d3748;border-color:#e2e8f0;}
+.badge.role-foundation{background:#e6fffa;color:#234e52;border-color:#b2f5ea;}
+.badge.role-intermediate{background:#ebf8ff;color:#2a4365;border-color:#bee3f8;}
+.badge.role-advanced{background:#fffaf0;color:#975a16;border-color:#fbd38d;}
+.badge.role-architect{background:#fff5f5;color:#9b2c2c;border-color:#feb2b2;}
+.question-body{padding:1rem 1.1rem;background:white;}
+.answer{background:#f8fbff;border:1px solid var(--border);border-radius:8px;padding:1rem;}
+.tip{margin-top:0.85rem;padding:0.8rem 0.95rem;background:#ebf8ff;border-left:4px solid var(--accent);border-radius:6px;}
+.tip strong{color:var(--primary-light);}
+.definition-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1rem 0;}
+.definition-card{background:#fbfdff;border:1px solid var(--border);border-radius:10px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.definition-card h3{margin-top:0;}
+.back-to-top-inline{display:block;text-align:right;padding:0.5rem 1rem;font-size:0.8rem;color:var(--accent);text-decoration:none;border-top:1px solid var(--border);background:#f7fafc;}
+.back-to-top-inline:hover{background:#ebf8ff;color:var(--primary);}
+.scroll-btn{position:fixed;bottom:2rem;right:2rem;width:48px;height:48px;border-radius:50%;background:var(--primary);color:white;border:none;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:none;align-items:center;justify-content:center;transition:all 0.3s;z-index:1000;}
+.scroll-btn:hover{background:var(--accent);transform:scale(1.08);}
+.scroll-btn.visible{display:flex;}
+.visually-hidden{display:none !important;}
+.pill.topic-definitions{border-color:#4c51bf;}.pill.topic-definitions.active{background:#4c51bf;border-color:#4c51bf;}
+.pill.topic-azure{border-color:#0078d4;}.pill.topic-azure.active{background:#0078d4;border-color:#0078d4;}
+.pill.topic-cicd{border-color:#2b6cb0;}.pill.topic-cicd.active{background:#2b6cb0;border-color:#2b6cb0;}
+.pill.topic-git{border-color:#dd6b20;}.pill.topic-git.active{background:#dd6b20;border-color:#dd6b20;}
+.pill.topic-sql{border-color:#cc2927;}.pill.topic-sql.active{background:#cc2927;border-color:#cc2927;}
+.pill.topic-cosmos{border-color:#805ad5;}.pill.topic-cosmos.active{background:#805ad5;border-color:#805ad5;}
+.pill.topic-mongo{border-color:#2f855a;}.pill.topic-mongo.active{background:#2f855a;border-color:#2f855a;}
+.pill.topic-dataverse{border-color:#6b46c1;}.pill.topic-dataverse.active{background:#6b46c1;border-color:#6b46c1;}
+.pill.topic-scenario{border-color:#d69e2e;}.pill.topic-scenario.active{background:#d69e2e;border-color:#d69e2e;}
+.pill.topic-quickfire{border-color:#0f766e;}.pill.topic-quickfire.active{background:#0f766e;border-color:#0f766e;}
+.pill.topic-labs{border-color:#b83280;}.pill.topic-labs.active{background:#b83280;border-color:#b83280;}
+.quickfire-table pre{margin:0;font-size:0.78rem;}
+@media print{.sidebar,.nav-bar,.scroll-btn,.back-to-top-inline,.progress-bar,.stats-bar,.hero,.filter-bar,.active-filter-banner{display:none!important;}.main-content{padding:0;}details{display:block;}.content-section,.question-card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;}}
+@media(max-width:768px){.sidebar{display:none;}.container{flex-direction:column;}.main-content{padding:1rem;}.filter-bar{padding:0.4rem 0.5rem;}.section-header,.question-card>summary{align-items:flex-start;}.question-meta{margin-right:0.5rem;}.definition-grid{grid-template-columns:1fr;}.quickfire-table{font-size:0.8rem;display:block;overflow-x:auto;}}
+    </style>
+</head>
+<body id="top">
+<div id="page-nav" style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:'Segoe UI',sans-serif;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+    <span style="font-weight:600;color:#0078d4;font-size:0.9em;">&#x1F4DA; Career Prep</span>
+    <a href="STAR_Interview_Preparation_Guide.html" class="page-tab" data-page="STAR_Interview_Preparation_Guide.html">Amazon STAR(L)</a>
+    <a href="STAR_Data_Analytics_Support_Lead_Interview_Guide.html" class="page-tab" data-page="STAR_Data_Analytics_Support_Lead_Interview_Guide.html">Microsoft Data Analytics</a>
+    <a href="Microsoft_DevOps_Interview_Prep.html" class="page-tab" data-page="Microsoft_DevOps_Interview_Prep.html">Microsoft DevOps</a>
+    <a href="SupportServices_DevOps_Interview_Prep.html" class="page-tab" data-page="SupportServices_DevOps_Interview_Prep.html">SupportServices DevOps</a>
+</div>
+<style>
+    .page-tab{color:#333;text-decoration:none;padding:5px 14px;border-radius:20px;background:#f0f0f0;font-size:0.85em;transition:all 0.2s;}
+    .page-tab:hover{background:#e0e0e0;}
+    .page-tab.active{color:#fff!important;background:#0078d4!important;font-weight:600;}
+</style>
+<script>
+(function(){
+    var current=window.location.pathname.split('/').pop();
+    document.querySelectorAll('.page-tab').forEach(function(tab){
+        if(tab.getAttribute('data-page')===current){tab.classList.add('active');}
+    });
+})();
+</script>
+<div style="height:45px;"></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-bar">
+        <button onclick="expandAll()">📂 Expand All</button>
+        <button onclick="collapseAll()">📁 Collapse All</button>
+        <button onclick="resetFilters()">🔄 Show All</button>
+        <button onclick="window.print()">🖨️ Print</button>
+        <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search questions, keywords, technologies..." oninput="searchContent()">
+    </nav>
+    <div class="filter-bar" id="filterBar">
+        <div class="filter-group">
+            <span class="filter-label">📌 Sections:</span>
+            <a class="pill topic-definitions" data-filter="topic" data-value="definitions" onclick="toggleFilter(this)"><span class="pill-icon">📘</span> Definitions</a>
+            <a class="pill topic-azure" data-filter="topic" data-value="azure" onclick="toggleFilter(this)"><span class="pill-icon">☁️</span> Azure</a>
+            <a class="pill topic-cicd" data-filter="topic" data-value="cicd" onclick="toggleFilter(this)"><span class="pill-icon">🔄</span> CI/CD</a>
+            <a class="pill topic-git" data-filter="topic" data-value="git" onclick="toggleFilter(this)"><span class="pill-icon">🌿</span> Git</a>
+            <a class="pill topic-sql" data-filter="topic" data-value="sql" onclick="toggleFilter(this)"><span class="pill-icon">🗃️</span> SQL Server</a>
+            <a class="pill topic-cosmos" data-filter="topic" data-value="cosmos" onclick="toggleFilter(this)"><span class="pill-icon">🌐</span> Cosmos DB</a>
+            <a class="pill topic-mongo" data-filter="topic" data-value="mongo" onclick="toggleFilter(this)"><span class="pill-icon">🍃</span> MongoDB</a>
+            <a class="pill topic-dataverse" data-filter="topic" data-value="dataverse" onclick="toggleFilter(this)"><span class="pill-icon">🧩</span> Dataverse</a>
+            <a class="pill topic-scenario" data-filter="topic" data-value="scenario" onclick="toggleFilter(this)"><span class="pill-icon">🎯</span> Scenarios</a>
+            <a class="pill topic-quickfire" data-filter="topic" data-value="quickfire" onclick="toggleFilter(this)"><span class="pill-icon">⚡</span> Quick-Fire</a>
+            <a class="pill topic-labs" data-filter="topic" data-value="labs" onclick="toggleFilter(this)"><span class="pill-icon">🧪</span> Labs</a>
+        </div>
+        <div class="divider"></div>
+        <div class="filter-group">
+            <span class="filter-label">🎚️ Levels:</span>
+            <a class="pill" data-filter="role" data-value="foundation" onclick="toggleFilter(this)"><span class="pill-icon">🌱</span> Foundation</a>
+            <a class="pill" data-filter="role" data-value="intermediate" onclick="toggleFilter(this)"><span class="pill-icon">🧭</span> Intermediate</a>
+            <a class="pill" data-filter="role" data-value="advanced" onclick="toggleFilter(this)"><span class="pill-icon">🚀</span> Advanced</a>
+            <a class="pill" data-filter="role" data-value="architect" onclick="toggleFilter(this)"><span class="pill-icon">🏛️</span> Architect</a>
+        </div>
+    </div>
+    <div class="active-filter-banner" id="filterBanner">
+        <span id="filterBannerText">Showing: All content</span>
+        <button onclick="resetFilters()">✕ Clear Filters</button>
+    </div>
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <h3>📑 Navigation</h3>
+            <div class="group-header">🚀 Foundations</div>
+            <ul>
+                <li><a href="#definitions" class="toc-link" data-target="definitions">Section 0: Key Definitions</a></li>
+                <li><a href="#azure-core" class="toc-link" data-target="azure-core">Section 1: Azure Core Services</a></li>
+                <li><a href="#cicd-ado" class="toc-link" data-target="cicd-ado">Section 2: CI/CD & Azure DevOps</a></li>
+                <li><a href="#git-advanced" class="toc-link" data-target="git-advanced">Section 3: Git Advanced</a></li>
+            </ul>
+            <div class="group-header">🗄️ Data Platforms</div>
+            <ul>
+                <li><a href="#sql-server" class="toc-link" data-target="sql-server">Section 4: SQL Server</a></li>
+                <li><a href="#cosmos-db" class="toc-link" data-target="cosmos-db">Section 5: Cosmos DB</a></li>
+                <li><a href="#mongodb" class="toc-link" data-target="mongodb">Section 6: MongoDB</a></li>
+                <li><a href="#dataverse" class="toc-link" data-target="dataverse">Section 7: Dataverse</a></li>
+            </ul>
+            <div class="group-header">🎯 Practice</div>
+            <ul>
+                <li><a href="#scenario-based" class="toc-link" data-target="scenario-based">Section 8: Scenario-Based</a></li>
+                <li><a href="#quick-fire" class="toc-link" data-target="quick-fire">Quick-Fire Q29-Q38</a></li>
+                <li><a href="#hands-on-labs" class="toc-link" data-target="hands-on-labs">Hands-On Labs</a></li>
+            </ul>
+        </aside>
+        <main class="main-content" id="mainContent">
+            <div class="hero">
+                <h1>SupportServices DevOps - Cloud, Databases &amp; CI/CD Interview Prep</h1>
+                <p>Azure, CI/CD, Git, SQL Server, Cosmos DB, MongoDB, Dataverse, architecture, and production operations.</p>
+                <p style="margin-top:0.5rem;font-size:0.85rem;">Built for structured interview practice with concise theory, detailed examples, and hands-on drills.</p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">38</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">11</div><div class="stat-label">Sections</div></div>
+                <div class="stat"><div class="stat-value">4</div><div class="stat-label">Hands-On Labs</div></div>
+                <div class="stat"><div class="stat-value">8</div><div class="stat-label">Core Platforms</div></div>
+            </div>
+
+            <section id="definitions" class="content-section" data-category="definitions foundation intermediate advanced architect" data-role="foundation intermediate advanced architect">
+                <details open>
+                    <summary class="section-header">
+                        <span class="section-icon">📘</span>
+                        <span class="section-title">Section 0: Key Definitions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro">
+                            <p>This section creates a shared vocabulary before the interview drills. Use these definitions to anchor concise opening answers, then layer examples from architecture, delivery, and operations.</p>
+                        </div>
+                        
+                        <div class="section-intro">
+                            <p>This section creates a shared vocabulary before the interview drills. Use these definitions to anchor concise opening answers, then layer examples from architecture, delivery, and operations.</p>
+                        </div>
+                        <div class="definition-grid">
+                            <div class="definition-card">
+                                <h3>What is Azure?</h3>
+                                <p>Azure is Microsoft&#39;s cloud platform with <strong>200+ services</strong> deployed across <strong>60+ regions</strong>. It supports <strong>IaaS</strong>, <strong>PaaS</strong>, and <strong>SaaS</strong> patterns for compute, networking, identity, data, analytics, AI, and operations.</p>
+                                <ul>
+                                    <li>IaaS example: Virtual Machines and Virtual Networks</li>
+                                    <li>PaaS example: App Service, Azure Functions, Azure SQL</li>
+                                    <li>SaaS example: Microsoft 365 and Dynamics 365</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is CI/CD?</h3>
+                                <p><strong>Continuous Integration</strong> means every merge triggers automated build and test validation. <strong>Continuous Delivery/Deployment</strong> adds automated release flow so validated code moves through environments consistently.</p>
+                                <ul>
+                                    <li>CI focuses on fast feedback and broken-build prevention</li>
+                                    <li>CD standardizes promotion, approvals, rollout, and rollback</li>
+                                    <li>Net effect: fewer manual errors and faster release cycles</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is DevOps?</h3>
+                                <p>DevOps is a culture and engineering practice model that unifies development and operations to improve flow, resilience, and feedback. A useful frame is <strong>CALMS</strong>: <strong>Culture</strong>, <strong>Automation</strong>, <strong>Lean</strong>, <strong>Measurement</strong>, and <strong>Sharing</strong>.</p>
+                                <ul>
+                                    <li>Goal: shorter delivery cycles with reliable production outcomes</li>
+                                    <li>Success signals: lower change failure rate, faster recovery, higher deployment frequency</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is Azure DevOps?</h3>
+                                <p>Azure DevOps is Microsoft&#39;s integrated software delivery platform spanning source control, planning, testing, packaging, and pipelines.</p>
+                                <ul>
+                                    <li><strong>Azure Repos</strong> for Git repositories</li>
+                                    <li><strong>Azure Pipelines</strong> for CI/CD</li>
+                                    <li><strong>Azure Boards</strong> for work tracking</li>
+                                    <li><strong>Test Plans</strong> and <strong>Artifacts</strong> for quality and packages</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is Git?</h3>
+                                <p>Git is the distributed version control system created by <strong>Linus Torvalds</strong>. Every clone has full history, which makes branching, merging, and offline work fast.</p>
+                                <ul>
+                                    <li>Core ideas: commits, branches, merge or rebase, and remotes</li>
+                                    <li>Teams use Git to audit changes, collaborate safely, and recover quickly</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is GitHub?</h3>
+                                <p>GitHub is Microsoft&#39;s cloud platform for hosting Git repositories and surrounding collaboration workflows.</p>
+                                <ul>
+                                    <li>Pull requests, reviews, Issues, Discussions, and Projects</li>
+                                    <li>GitHub Actions, Copilot, Pages, Dependabot, and Advanced Security</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is GitLab?</h3>
+                                <p>GitLab is an all-in-one DevOps platform that combines source control, CI/CD, package storage, security scanning, and planning in one product experience.</p>
+                                <ul>
+                                    <li>Strong built-in pipeline and security posture</li>
+                                    <li>Often chosen when teams want a single integrated DevSecOps suite</li>
+                                </ul>
+                            </div>
+                            <div class="definition-card">
+                                <h3>What is GitHub Actions?</h3>
+                                <p>GitHub Actions is GitHub&#39;s CI/CD capability. Workflows live in <code>.github/workflows/</code> and are composed of events, jobs, steps, reusable actions, and environment controls.</p>
+                                <ul>
+                                    <li>Trigger on push, PR, schedule, release, or manual dispatch</li>
+                                    <li>Use marketplace actions or private reusable workflows</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <h3>Comparison: Git vs GitHub vs GitLab vs Azure DevOps vs GitHub Actions</h3>
+                        <table>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Primary purpose</th>
+                                <th>Strengths</th>
+                                <th>Typical use</th>
+                            </tr>
+                            <tr>
+                                <td>Git</td>
+                                <td>Distributed version control</td>
+                                <td>Fast branching, local history, merge/rebase workflows</td>
+                                <td>Track code changes on every developer machine</td>
+                            </tr>
+                            <tr>
+                                <td>GitHub</td>
+                                <td>Cloud Git hosting and collaboration</td>
+                                <td>PR review, Issues, security, Pages, ecosystem adoption</td>
+                                <td>Team collaboration around Git repositories</td>
+                            </tr>
+                            <tr>
+                                <td>GitLab</td>
+                                <td>Integrated DevOps platform</td>
+                                <td>Built-in CI/CD, registry, security scanning, self-hosting flexibility</td>
+                                <td>Unified DevSecOps workflows in one product</td>
+                            </tr>
+                            <tr>
+                                <td>Azure DevOps</td>
+                                <td>Planning + repos + pipelines + artifacts + testing</td>
+                                <td>Enterprise governance, approvals, boards integration, hybrid runners</td>
+                                <td>Microsoft-centric delivery organizations and regulated release processes</td>
+                            </tr>
+                            <tr>
+                                <td>GitHub Actions</td>
+                                <td>CI/CD automation inside GitHub</td>
+                                <td>YAML workflows, marketplace actions, tight PR integration</td>
+                                <td>Build, test, scan, and deploy directly from GitHub events</td>
+                            </tr>
+                        </table>
+                        <pre>Interview memory aid
+                        Git                = version control engine
+                        GitHub             = collaboration + hosting for Git
+                        GitLab             = integrated DevOps suite
+                        Azure DevOps       = Microsoft ALM + pipeline platform
+                        GitHub Actions     = CI/CD automation inside GitHub</pre>
+                        
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="azure-core" class="content-section" data-category="azure intermediate advanced architect" data-role="foundation intermediate advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">☁️</span>
+                        <span class="section-title">Section 1: Microsoft Azure (Core Services) — 5 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Focus on service selection, event-driven design, platform security, and practical architecture trade-offs.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="azure" data-role="foundation">
+                                                    <summary>
+                                                        <span class="question-index">1</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q1. App Service vs Azure Functions — when do you choose each?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Azure</span>
+                                                                <span class="badge role badge role-foundation">Foundation</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Decision framework</h4>
+                                                            <table>
+                                                                <tr><th>Choose</th><th>Best for</th><th>Why</th></tr>
+                                                                <tr><td>App Service</td><td>Always-on web apps, APIs, admin portals, predictable traffic</td><td>Long-running HTTP workloads, custom startup, stable hosting model, easy deployment slots</td></tr>
+                                                                <tr><td>Azure Functions</td><td>Event-driven automation, bursty traffic, background jobs, glue code</td><td>Scales by trigger volume, pay-per-execution model, many triggers/bindings</td></tr>
+                                                            </table>
+                                                            <ul>
+                                                                <li><strong>Use App Service</strong> when the application owns routing, middleware, sessionless APIs, and sustained requests.</li>
+                                                                <li><strong>Use Functions</strong> when business logic is triggered by queue messages, timers, storage events, or lightweight HTTP endpoints.</li>
+                                                                <li>Latency-sensitive front-door APIs usually fit App Service better because cold starts are easier to avoid.</li>
+                                                                <li>Back-office workflows, fraud scoring, notifications, and ETL fan-out often fit Functions.</li>
+                                                            </ul>
+                                                            <pre>// Simple rule of thumb
+                                                            if (workload == "always-on web application" || requiresCustomMiddleware) {
+                                                                choose = "Azure App Service";
+                                                            } else if (workload == "event-driven" || trafficPattern == "bursty") {
+                                                                choose = "Azure Functions";
+                                                            } else {
+                                                                choose = "Evaluate latency, cost, scaling, and hosting controls";
+                                                            }</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Map one current workload into both services. State the trade-offs for latency, scaling, cost, and operational controls in under 60 seconds.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="azure" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">2</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q2. Explain Azure Functions triggers and bindings using a fraud detection example.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Azure</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Real-world framing</h4>
+                                                            <ul>
+                                                                <li><strong>Trigger</strong> starts the function: HTTP, Service Bus, Event Hub, Blob, Queue, Cosmos DB change feed, or Timer.</li>
+                                                                <li><strong>Input bindings</strong> hydrate related data without boilerplate connection code.</li>
+                                                                <li><strong>Output bindings</strong> push results to destinations such as Cosmos DB, Service Bus, or Storage.</li>
+                                                            </ul>
+                                                            <p>For fraud detection, an Event Hub trigger can ingest transactions, pull device history from Cosmos DB, and emit high-risk findings to Service Bus for analyst workflows.</p>
+                                                            <pre>public class FraudScreenFunction
+                                                            {
+                                                                [FunctionName("FraudScreenFunction")]
+                                                                public static async Task Run(
+                                                                    [EventHubTrigger("txn-stream", Connection = "EventHubConnection")] string transactionJson,
+                                                                    [CosmosDB(
+                                                                        databaseName: "risk",
+                                                                        containerName: "deviceProfiles",
+                                                                        Connection = "CosmosConnection",
+                                                                        SqlQuery = "SELECT * FROM c WHERE c.deviceId = {deviceId}")]
+                                                                    IEnumerable&lt;DeviceProfile&gt; priorProfiles,
+                                                                    [ServiceBus("high-risk-alerts", Connection = "ServiceBusConnection")]
+                                                                    IAsyncCollector&lt;FraudAlert&gt; alerts,
+                                                                    ILogger log)
+                                                                {
+                                                                    var score = FraudRules.Calculate(transactionJson, priorProfiles);
+                                                                    if (score &gt;= 80)
+                                                                    {
+                                                                        await alerts.AddAsync(new FraudAlert { Severity = "High", Score = score });
+                                                                    }
+                                                                    log.LogInformation($"Fraud score: {score}");
+                                                                }
+                                                            }</pre>
+                                                            <ul>
+                                                                <li>Bindings reduce plumbing, but for complex retries, transactions, or batching, the SDK may still be preferable.</li>
+                                                                <li>Idempotency matters: duplicate events can happen, so use event IDs or dedupe keys.</li>
+                                                            </ul>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Build a small Function locally with an HTTP trigger and a Queue output binding, then add an idempotency key to prevent duplicate processing.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="azure" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">3</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q3. Compare WebJobs vs Azure Functions.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Azure</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Comparison table</h4>
+                                                            <table>
+                                                                <tr><th>Area</th><th>WebJobs</th><th>Azure Functions</th></tr>
+                                                                <tr><td>Hosting</td><td>Runs inside an App Service plan</td><td>Consumption, Premium, or App Service</td></tr>
+                                                                <tr><td>Scaling</td><td>Scales with the App Service plan</td><td>Trigger-based elastic scale</td></tr>
+                                                                <tr><td>Programming model</td><td>Code-centric background job</td><td>Event-driven serverless model with bindings</td></tr>
+                                                                <tr><td>Operational maturity</td><td>Good for existing App Service estates</td><td>Best for new event-driven integrations</td></tr>
+                                                                <tr><td>Triggers</td><td>Timer, Queue, SDK-driven patterns</td><td>Broad trigger ecosystem</td></tr>
+                                                                <tr><td>Recommendation</td><td>Keep when already embedded and stable</td><td>Prefer for greenfield serverless workloads</td></tr>
+                                                            </table>
+                                                            <p>A practical answer is: <strong>WebJobs are fine for legacy background jobs attached to a web app, but Azure Functions are the default modern choice for event-driven work.</strong></p>
+                                                            <pre>{
+                                                              "legacy-job": "WebJobs if you already have an App Service and the workload is stable",
+                                                              "new-integration": "Azure Functions for event triggers, bindings, and elastic scaling",
+                                                              "burst-traffic": "Azure Functions Premium if cold starts must be minimized"
+                                                            }</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Take one cron-style task and explain how you would modernize it from WebJobs to Functions, including trigger choice and observability changes.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="azure" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">4</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q4. Describe a device/browser fingerprinting architecture on Azure.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Azure</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Architecture highlights</h4>
+                                                            <ul>
+                                                                <li>Collect browser/device signals from the client: user agent, canvas hints, IP reputation, timezone, velocity, cookie or token lineage, and risk metadata.</li>
+                                                                <li>Use <strong>API Management</strong> or <strong>Front Door</strong> in front of an <strong>App Service</strong> or <strong>Azure Functions</strong> API.</li>
+                                                                <li>Publish raw telemetry to <strong>Event Hubs</strong> for near-real-time scoring.</li>
+                                                                <li>Store current and historical fingerprints in <strong>Cosmos DB</strong> with device or account partition strategy.</li>
+                                                                <li>Use <strong>Azure Functions</strong> or <strong>Stream Analytics</strong> for enrichment, dedupe, geovelocity checks, and anomaly scoring.</li>
+                                                                <li>Persist curated outcomes to <strong>SQL Server</strong> for analyst reporting and case management.</li>
+                                                            </ul>
+                                                            <pre>Client SDK
+                                                               |
+                                                               v
+                                                            Azure Front Door / API Management
+                                                               |
+                                                               v
+                                                            Fingerprint API (App Service or Azure Functions)
+                                                               |-------------------------------|
+                                                               |                               |
+                                                               v                               v
+                                                            Event Hubs                     Cosmos DB (device profiles)
+                                                               |
+                                                               v
+                                                            Fraud Scoring Function ----&gt; Service Bus queue ----&gt; Analyst / support platform workflow
+                                                               |
+                                                               v
+                                                            Application Insights + Azure Monitor + SQL reporting</pre>
+                                                            <p>Design the model so the online scoring path is fast and the investigative path is richer but asynchronous.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Sketch the above flow and mark which hops are synchronous versus asynchronous. Then explain where you would cache, partition, and alert.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="azure" data-role="architect">
+                                                    <summary>
+                                                        <span class="question-index">5</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q5. How do you secure Azure Functions in production?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Azure</span>
+                                                                <span class="badge role badge role-architect">Architect</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Production security checklist</h4>
+                                                            <ul>
+                                                                <li><strong>Identity:</strong> prefer managed identity over connection strings or embedded secrets.</li>
+                                                                <li><strong>Secrets:</strong> store in Azure Key Vault and reference them through managed identity.</li>
+                                                                <li><strong>Networking:</strong> private endpoints, VNet integration, IP restrictions, and APIM in front of public endpoints when needed.</li>
+                                                                <li><strong>Authorization:</strong> Entra ID auth for internal APIs; function keys alone are not enough for sensitive workloads.</li>
+                                                                <li><strong>Compliance:</strong> enforce 1ES-aligned scans such as CredScan, BinSkim, CodeQL, dependency scanning, and branch protection.</li>
+                                                                <li><strong>Observability:</strong> structured logs, secret redaction, and alerting on auth failures or elevated error rates.</li>
+                                                            </ul>
+                                                            <pre>from azure.identity import ManagedIdentityCredential
+                                                            from azure.keyvault.secrets import SecretClient
+                                                            
+                                                            credential = ManagedIdentityCredential()
+                                                            client = SecretClient(
+                                                                vault_url="https://risk-vault.vault.azure.net/",
+                                                                credential=credential
+                                                            )
+                                                            cosmos_key = client.get_secret("CosmosPrimaryKey").value
+                                                            
+                                                            # Better still: avoid keys entirely when the downstream service supports managed identity.</pre>
+                                                            <pre># host.json hardening ideas
+                                                            {
+                                                              "version": "2.0",
+                                                              "logging": {
+                                                                "applicationInsights": {
+                                                                  "samplingSettings": { "isEnabled": true }
+                                                                }
+                                                              },
+                                                              "extensions": {
+                                                                "http": {
+                                                                  "routePrefix": "api"
+                                                                }
+                                                              }
+                                                            }</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Review one function app and replace any secret-bearing app settings with Key Vault references or managed identity-based access.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="cicd-ado" class="content-section" data-category="cicd intermediate advanced architect" data-role="foundation intermediate advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🔄</span>
+                        <span class="section-title">Section 2: CI/CD & Azure DevOps — 5 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>These questions test how well the candidate can turn source code into repeatable, governed, low-risk releases.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="cicd" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">6</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q6. Show a YAML-based CI/CD pipeline for a React app.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">CI/CD</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>What a strong answer includes</h4>
+                                                            <ul>
+                                                                <li>Separate <strong>build</strong>, <strong>test</strong>, <strong>security</strong>, and <strong>deployment</strong> stages</li>
+                                                                <li>Use artifacts so each later stage deploys the exact same build output</li>
+                                                                <li>Gate production behind approvals or protected environments</li>
+                                                            </ul>
+                                                            <pre>trigger:
+                                                              branches:
+                                                                include:
+                                                                  - main
+                                                                  - feature/*
+                                                            
+                                                            pr:
+                                                              branches:
+                                                                include:
+                                                                  - main
+                                                            
+                                                            pool:
+                                                              vmImage: ubuntu-latest
+                                                            
+                                                            variables:
+                                                              nodeVersion: '20.x'
+                                                              buildFolder: 'dist'
+                                                            
+                                                            stages:
+                                                              - stage: Build
+                                                                jobs:
+                                                                  - job: BuildReact
+                                                                    steps:
+                                                                      - task: NodeTool@0
+                                                                        inputs:
+                                                                          versionSpec: $(nodeVersion)
+                                                                      - task: Cache@2
+                                                                        inputs:
+                                                                          key: 'npm | "$(Agent.OS)" | package-lock.json'
+                                                                          path: $(Pipeline.Workspace)/.npm
+                                                                      - script: npm ci
+                                                                        displayName: Install dependencies
+                                                                      - script: npm run lint
+                                                                        displayName: Lint
+                                                                      - script: npm test -- --runInBand --ci
+                                                                        displayName: Unit tests
+                                                                      - script: npm run build
+                                                                        displayName: Build
+                                                                      - publish: $(buildFolder)
+                                                                        artifact: webapp
+                                                            
+                                                              - stage: Security
+                                                                dependsOn: Build
+                                                                jobs:
+                                                                  - job: Scan
+                                                                    steps:
+                                                                      - download: current
+                                                                        artifact: webapp
+                                                                      - script: echo "Run SCA, secret scanning, and static analysis here"
+                                                                        displayName: Security checks
+                                                            
+                                                              - stage: Deploy_Staging
+                                                                dependsOn: Security
+                                                                condition: succeeded()
+                                                                jobs:
+                                                                  - deployment: DeployStaging
+                                                                    environment: supportservices-staging
+                                                                    strategy:
+                                                                      runOnce:
+                                                                        deploy:
+                                                                          steps:
+                                                                            - download: current
+                                                                              artifact: webapp
+                                                                            - task: AzureStaticWebApp@0
+                                                                              inputs:
+                                                                                app_location: '.'
+                                                                                output_location: 'dist'
+                                                            
+                                                              - stage: Deploy_Production
+                                                                dependsOn: Deploy_Staging
+                                                                condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+                                                                jobs:
+                                                                  - deployment: DeployProd
+                                                                    environment: supportservices-production
+                                                                    strategy:
+                                                                      runOnce:
+                                                                        deploy:
+                                                                          steps:
+                                                                            - download: current
+                                                                              artifact: webapp
+                                                                            - script: echo "Promote approved artifact to production"
+                                                                              displayName: Production deploy</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Fork a small React app and wire in lint, tests, and artifact publishing before adding deployment stages. Explain why artifact promotion is safer than rebuilding later.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cicd" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">7</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q7. What branch policies and PR validation would you set in Azure DevOps?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">CI/CD</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Recommended branch governance</h4>
+                                                            <ul>
+                                                                <li>Require PRs into <code>main</code>; block direct pushes.</li>
+                                                                <li>Require successful build validation, status checks, and linked work items where needed.</li>
+                                                                <li>Minimum two reviewers for risky areas; optional code owners or path-based reviewers.</li>
+                                                                <li>Require comments to be resolved before completion.</li>
+                                                                <li>Prefer squash merge for short-lived feature branches to keep history readable.</li>
+                                                            </ul>
+                                                            <pre>az repos policy build create ^
+                                                              --branch main ^
+                                                              --blocking true ^
+                                                              --enabled true ^
+                                                              --build-definition-id 42 ^
+                                                              --manual-queue-only false ^
+                                                              --valid-duration 0 ^
+                                                              --repository-id 00000000-0000-0000-0000-000000000000
+                                                            
+                                                            az repos policy approver-count create ^
+                                                              --branch main ^
+                                                              --minimum-approver-count 2 ^
+                                                              --creator-vote-counts false ^
+                                                              --allow-downvotes true ^
+                                                              --reset-on-source-push true</pre>
+                                                            <p>In interviews, connect policies to outcomes: smaller blast radius, consistent quality gates, and traceable releases.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Design separate policy sets for application code versus infrastructure code. Call out where extra approvals or change windows should apply.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cicd" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">8</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q8. How do multi-stage pipelines with approvals and gates work?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">CI/CD</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Each stage represents an environment or release milestone such as build, test, staging, and production.</li>
+                                                                <li><strong>Approvals</strong> are human checks on protected environments.</li>
+                                                                <li><strong>Gates</strong> are automated checks like health probes, query-based quality rules, change ticket validation, or security scan success.</li>
+                                                                <li>The key is <strong>promotion of the same artifact</strong>, not rebuilding at every stage.</li>
+                                                            </ul>
+                                                            <pre>stages:
+                                                              - stage: Deploy_Staging
+                                                                jobs:
+                                                                  - deployment: web
+                                                                    environment: staging
+                                                                    strategy:
+                                                                      runOnce:
+                                                                        deploy:
+                                                                          steps:
+                                                                            - script: echo "Deploy to staging"
+                                                            
+                                                              - stage: Deploy_Prod
+                                                                dependsOn: Deploy_Staging
+                                                                condition: succeeded()
+                                                                jobs:
+                                                                  - deployment: web
+                                                                    environment: production   # approvals/checks are configured on the environment
+                                                                    strategy:
+                                                                      runOnce:
+                                                                        deploy:
+                                                                          steps:
+                                                                            - script: echo "Deploy approved artifact to prod"</pre>
+                                                            <table>
+                                                                <tr><th>Control</th><th>Purpose</th></tr>
+                                                                <tr><td>Pre-deployment approval</td><td>Human accountability for risky releases</td></tr>
+                                                                <tr><td>Health gate</td><td>Verify smoke tests, availability, and latency before proceeding</td></tr>
+                                                                <tr><td>Change management gate</td><td>Ensure release aligns with operational process</td></tr>
+                                                                <tr><td>Post-deployment validation</td><td>Catch regressions early and trigger rollback</td></tr>
+                                                            </table>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Take one existing pipeline and convert it into artifact promotion across dev, test, staging, and prod with at least one human approval and one automated gate.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cicd" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">9</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q9. How do you manage secrets with variable groups and Key Vault?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">CI/CD</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Use variable groups for non-secret configuration shared across pipelines.</li>
+                                                                <li>For secrets, link Azure Key Vault and let the pipeline resolve values at runtime.</li>
+                                                                <li>Mask secrets in logs and avoid writing them into artifacts, config files, or echoed command output.</li>
+                                                                <li>Grant the pipeline identity least-privilege Key Vault access.</li>
+                                                            </ul>
+                                                            <pre>variables:
+                                                              - group: supportservices-shared
+                                                            
+                                                            steps:
+                                                              - task: AzureKeyVault@2
+                                                                inputs:
+                                                                  azureSubscription: 'svc-connection-prod'
+                                                                  KeyVaultName: 'supportservices-kv'
+                                                                  SecretsFilter: 'ApiToken,CosmosEndpoint'
+                                                                  RunAsPreJob: true
+                                                            
+                                                              - script: |
+                                                                  echo "Using non-secret config: $(environmentName)"
+                                                                  echo "Secrets are available as masked variables"
+                                                                displayName: Use config safely</pre>
+                                                            <p>Strong answers mention rotation strategy, audit trails, break-glass access, and secretless auth where possible.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Move one pipeline off hard-coded secrets. Document what changed in access control, rotation, and logging behavior.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cicd" data-role="architect">
+                                                    <summary>
+                                                        <span class="question-index">10</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q10. What does 1ES compliance mean in pipelines?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">CI/CD</span>
+                                                                <span class="badge role badge role-architect">Architect</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Expected talking points</h4>
+                                                            <ul>
+                                                                <li>1ES-oriented pipelines standardize secure engineering controls, traceability, and policy enforcement.</li>
+                                                                <li>Common controls include <strong>CredScan</strong> for secret detection, <strong>BinSkim</strong> for binary analysis, <strong>CodeQL</strong> for code scanning, dependency and container scanning, and provenance checks.</li>
+                                                                <li>Compliance is not just tool execution; it also includes enforcement, reporting, and blocking unsafe releases.</li>
+                                                            </ul>
+                                                            <pre>stages:
+                                                              - stage: Compliance
+                                                                jobs:
+                                                                  - job: OneEngineeringChecks
+                                                                    steps:
+                                                                      - script: echo "Run CredScan"
+                                                                        displayName: CredScan
+                                                                      - script: echo "Run BinSkim"
+                                                                        displayName: BinSkim
+                                                                      - script: echo "Run CodeQL"
+                                                                        displayName: CodeQL
+                                                                      - script: echo "Publish SARIF and compliance evidence"
+                                                                        displayName: Evidence publishing</pre>
+                                                            <table>
+                                                                <tr><th>Control</th><th>Why it matters</th></tr>
+                                                                <tr><td>CredScan</td><td>Prevents accidental secret leakage</td></tr>
+                                                                <tr><td>BinSkim</td><td>Checks secure binary/linker posture</td></tr>
+                                                                <tr><td>CodeQL</td><td>Finds classes of security and quality defects early</td></tr>
+                                                                <tr><td>Policy gates</td><td>Stops release if mandatory evidence is missing</td></tr>
+                                                            </table>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Pick one repo and define which scans should be required at PR time versus nightly or release time, with justification for developer experience and risk.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="git-advanced" class="content-section" data-category="git foundation advanced" data-role="foundation advanced">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🌿</span>
+                        <span class="section-title">Section 3: Git Advanced — 2 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Keep answers tactical. Interviewers want to hear safe collaboration patterns, not only command memorization.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="git" data-role="foundation">
+                                                    <summary>
+                                                        <span class="question-index">11</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q11. Describe a trunk-based Git branching strategy with feature branches.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Git</span>
+                                                                <span class="badge role badge role-foundation">Foundation</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li><strong>Main</strong> stays releasable at all times.</li>
+                                                                <li>Developers create short-lived feature branches from <code>main</code>.</li>
+                                                                <li>PRs should be small, validated by CI, and merged quickly.</li>
+                                                                <li>Use feature flags when work spans multiple merges but should stay dark in production.</li>
+                                                            </ul>
+                                                            <pre>git checkout main
+                                                            git pull origin main
+                                                            git checkout -b feature/device-risk-cache
+                                                            
+                                                            # work, commit, push
+                                                            git add .
+                                                            git commit -m "Add device risk cache adapter"
+                                                            git push -u origin feature/device-risk-cache
+                                                            
+                                                            # keep branch fresh
+                                                            git fetch origin
+                                                            git rebase origin/main</pre>
+                                                            <p>Why interviewers like this answer: it balances flow speed, low merge pain, and production safety.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Simulate a one-day feature branch and explain when you would rebase, when you would merge, and when you would split the work behind a feature flag.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="git" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">12</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q12. How do you resolve complex merge conflicts effectively?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Git</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Workflow</h4>
+                                                            <ol class="numbered">
+                                                                <li>Understand both branches before editing conflict markers.</li>
+                                                                <li>Use <code>git rerere</code> to remember repeated conflict resolutions.</li>
+                                                                <li>Use a visual merge tool when files have broad structural overlap.</li>
+                                                                <li>Prefer rebase for linear cleanup on private branches; avoid rewriting shared history without coordination.</li>
+                                                            </ol>
+                                                            <pre>git config --global rerere.enabled true
+                                                            git fetch origin
+                                                            git rebase origin/main
+                                                            
+                                                            # inspect conflicts
+                                                            git status
+                                                            git mergetool
+                                                            
+                                                            # after resolving
+                                                            git add src/risk-engine.ts
+                                                            git rebase --continue</pre>
+                                                            <pre># Useful conflict inspection
+                                                            git diff --name-only --diff-filter=U
+                                                            git checkout --ours path/to/file
+                                                            git checkout --theirs path/to/file</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Create a deliberate conflict in a sample repo, resolve it with rerere enabled, then repeat the same conflict to show how Git reuses your prior resolution.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="sql-server" class="content-section" data-category="sql advanced architect" data-role="advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🗃️</span>
+                        <span class="section-title">Section 4: SQL Server — 4 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Lean into execution plans, indexing rationale, and window function fluency.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="sql" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">13</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q13. Write a fraud detection query using CTEs, window functions, and JOINs.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">SQL Server</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>What the query should prove</h4>
+                                                            <ul>
+                                                                <li>Find repeated high-value attempts from the same device or account</li>
+                                                                <li>Use windows to compare recent behavior</li>
+                                                                <li>Join reference data such as allow-lists, prior chargebacks, or country risk</li>
+                                                            </ul>
+                                                            <pre>WITH recent_txn AS (
+                                                                SELECT
+                                                                    t.TransactionId,
+                                                                    t.AccountId,
+                                                                    t.DeviceId,
+                                                                    t.Amount,
+                                                                    t.CountryCode,
+                                                                    t.CreatedUtc,
+                                                                    ROW_NUMBER() OVER (
+                                                                        PARTITION BY t.AccountId
+                                                                        ORDER BY t.CreatedUtc DESC
+                                                                    ) AS rn,
+                                                                    COUNT(*) OVER (
+                                                                        PARTITION BY t.DeviceId
+                                                                        ORDER BY t.CreatedUtc
+                                                                        ROWS BETWEEN 9 PRECEDING AND CURRENT ROW
+                                                                    ) AS last_10_attempts
+                                                                FROM dbo.Transactions t
+                                                                WHERE t.CreatedUtc >= DATEADD(HOUR, -24, SYSUTCDATETIME())
+                                                            ),
+                                                            chargeback_accounts AS (
+                                                                SELECT DISTINCT AccountId
+                                                                FROM dbo.Cases
+                                                                WHERE CaseType = 'Chargeback'
+                                                            )
+                                                            SELECT
+                                                                r.TransactionId,
+                                                                r.AccountId,
+                                                                r.DeviceId,
+                                                                r.Amount,
+                                                                r.CountryCode,
+                                                                r.last_10_attempts,
+                                                                CASE
+                                                                    WHEN cb.AccountId IS NOT NULL THEN 'High'
+                                                                    WHEN r.Amount >= 500 AND r.last_10_attempts >= 4 THEN 'High'
+                                                                    WHEN cr.RiskTier = 'Elevated' THEN 'Review'
+                                                                    ELSE 'Normal'
+                                                                END AS RiskDecision
+                                                            FROM recent_txn r
+                                                            LEFT JOIN chargeback_accounts cb
+                                                                ON cb.AccountId = r.AccountId
+                                                            LEFT JOIN dbo.CountryRisk cr
+                                                                ON cr.CountryCode = r.CountryCode
+                                                            WHERE r.rn <= 5
+                                                            ORDER BY r.CreatedUtc DESC;</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Load sample transaction data and add one more fraud rule, such as impossible travel or device-sharing across many accounts.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="sql" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">14</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q14. What indexing strategies matter most in SQL Server?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">SQL Server</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <table>
+                                                                <tr><th>Index type</th><th>Best use</th><th>Interview note</th></tr>
+                                                                <tr><td>Covering nonclustered</td><td>Frequent selective lookups</td><td>Use <code>INCLUDE</code> columns to avoid key lookups</td></tr>
+                                                                <tr><td>Filtered</td><td>Queries over a small subset, such as active tickets only</td><td>Smaller index, lower maintenance cost</td></tr>
+                                                                <tr><td>Columnstore</td><td>Large analytics scans and aggregates</td><td>Excellent for reporting, not OLTP point lookups</td></tr>
+                                                                <tr><td>Clustered</td><td>Base row storage order</td><td>Pick a stable narrow key when possible</td></tr>
+                                                            </table>
+                                                            <pre>CREATE NONCLUSTERED INDEX IX_Transactions_Account_CreatedUtc
+                                                            ON dbo.Transactions (AccountId, CreatedUtc DESC)
+                                                            INCLUDE (Amount, DeviceId, CountryCode);
+                                                            
+                                                            CREATE NONCLUSTERED INDEX IX_Tickets_OpenOnly
+                                                            ON dbo.SupportTickets (Status, Priority)
+                                                            WHERE Status IN ('Open', 'Investigating');
+                                                            
+                                                            CREATE CLUSTERED COLUMNSTORE INDEX CCI_FraudEvents
+                                                            ON dbo.FraudEvents;</pre>
+                                                            <ul>
+                                                                <li>Index for the query pattern, not just for columns that &quot;seem important.&quot;</li>
+                                                                <li>Balance read gain against write amplification and maintenance cost.</li>
+                                                            </ul>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Capture an actual execution plan before and after adding a covering index, then explain which operators disappeared and why.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="sql" data-role="architect">
+                                                    <summary>
+                                                        <span class="question-index">15</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q15. How do you optimize a slow stored procedure?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">SQL Server</span>
+                                                                <span class="badge role badge role-architect">Architect</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ol class="numbered">
+                                                                <li>Get the actual execution plan and identify the expensive operator.</li>
+                                                                <li>Check cardinality estimate errors, missing indexes, spills, scans, and parameter sniffing symptoms.</li>
+                                                                <li>Validate statistics freshness and data skew.</li>
+                                                                <li>Rewrite predicates to stay SARGable and reduce row width early.</li>
+                                                            </ol>
+                                                            <pre>CREATE OR ALTER PROCEDURE dbo.GetRecentHighRisk
+                                                                @AccountId bigint = NULL
+                                                            AS
+                                                            BEGIN
+                                                                SET NOCOUNT ON;
+                                                            
+                                                                SELECT TOP (100)
+                                                                    TransactionId,
+                                                                    AccountId,
+                                                                    Amount,
+                                                                    RiskScore,
+                                                                    CreatedUtc
+                                                                FROM dbo.Transactions
+                                                                WHERE (@AccountId IS NULL OR AccountId = @AccountId)
+                                                                  AND RiskScore >= 80
+                                                                ORDER BY CreatedUtc DESC
+                                                                OPTION (RECOMPILE);  -- use selectively when parameter skew is severe
+                                                            END;</pre>
+                                                            <pre>-- Useful diagnostics
+                                                            SET STATISTICS IO, TIME ON;
+                                                            EXEC dbo.GetRecentHighRisk @AccountId = 101;
+                                                            EXEC dbo.GetRecentHighRisk @AccountId = NULL;
+                                                            SET STATISTICS IO, TIME OFF;</pre>
+                                                            <p>Discuss <strong>parameter sniffing</strong> explicitly: good for many procedures, painful when data distribution is highly skewed.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Take one slow proc, compare estimated and actual rows, then decide whether the right fix is indexing, rewrite, statistics, or parameter-handling strategy.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="sql" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">16</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q16. Build a monthly trend report with LAG, running totals, and month-over-month percentage.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">SQL Server</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <pre>WITH monthly AS (
+                                                                SELECT
+                                                                    DATEFROMPARTS(YEAR(CreatedUtc), MONTH(CreatedUtc), 1) AS MonthStart,
+                                                                    COUNT(*) AS TicketCount,
+                                                                    SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS HighSeverityCount
+                                                                FROM dbo.SupportTickets
+                                                                WHERE CreatedUtc >= DATEADD(MONTH, -12, SYSUTCDATETIME())
+                                                                GROUP BY DATEFROMPARTS(YEAR(CreatedUtc), MONTH(CreatedUtc), 1)
+                                                            )
+                                                            SELECT
+                                                                MonthStart,
+                                                                TicketCount,
+                                                                HighSeverityCount,
+                                                                SUM(TicketCount) OVER (ORDER BY MonthStart) AS RunningTotal,
+                                                                LAG(TicketCount) OVER (ORDER BY MonthStart) AS PriorMonthCount,
+                                                                CASE
+                                                                    WHEN LAG(TicketCount) OVER (ORDER BY MonthStart) IS NULL THEN NULL
+                                                                    WHEN LAG(TicketCount) OVER (ORDER BY MonthStart) = 0 THEN NULL
+                                                                    ELSE ROUND(
+                                                                        (TicketCount - LAG(TicketCount) OVER (ORDER BY MonthStart)) * 100.0
+                                                                        / LAG(TicketCount) OVER (ORDER BY MonthStart), 2
+                                                                    )
+                                                                END AS MoMPercent
+                                                            FROM monthly
+                                                            ORDER BY MonthStart;</pre>
+                                                            <ul>
+                                                                <li><strong>LAG</strong> compares current month with previous month.</li>
+                                                                <li><strong>SUM OVER</strong> gives the running total without self-joins.</li>
+                                                                <li>Wrap divide-by-zero cases safely.</li>
+                                                            </ul>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Add a rolling three-month average to the query and explain why leaders often prefer trend smoothing over single-month spikes.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="cosmos-db" class="content-section" data-category="cosmos intermediate advanced architect" data-role="intermediate advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🌐</span>
+                        <span class="section-title">Section 5: Cosmos DB — 4 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Be explicit about partitioning, consistency, RU costs, and how Cosmos complements relational reporting systems.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="cosmos" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">17</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q17. When do you choose Cosmos DB vs SQL Server?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Cosmos DB</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <table>
+                                                                <tr><th>Choose</th><th>When</th><th>Reason</th></tr>
+                                                                <tr><td>Cosmos DB</td><td>Global scale, flexible JSON, low-latency reads/writes, event-heavy workloads</td><td>Elastic throughput, multi-region replication, schema flexibility</td></tr>
+                                                                <tr><td>SQL Server</td><td>Strong relational consistency, rich joins, complex reporting, stored procedures, mature transactional patterns</td><td>Relational modeling and T-SQL depth</td></tr>
+                                                            </table>
+                                                            <ul>
+                                                                <li>Fraud telemetry, device profiles, and event streams often fit Cosmos DB.</li>
+                                                                <li>Analyst reporting, reconciliations, and finance-grade relational workloads often fit SQL Server.</li>
+                                                                <li>Many real systems use <strong>both</strong>: Cosmos for operational scale, SQL Server for curated relational analytics.</li>
+                                                            </ul>
+                                                            <pre>{
+                                                              "operational_store": "Cosmos DB for hot JSON device/profile data",
+                                                              "reporting_store": "SQL Server for trend analysis, joins, and controlled reporting schemas"
+                                                            }</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Take one use case and force yourself to justify why a single database is enough; then explain why a polyglot approach may still win.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cosmos" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">18</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q18. How would you design a Cosmos DB container for device fingerprints?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Cosmos DB</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Design choices</h4>
+                                                            <ul>
+                                                                <li><strong>Container:</strong> <code>deviceFingerprints</code></li>
+                                                                <li><strong>Partition key:</strong> choose a high-cardinality stable key such as <code>/deviceId</code> or <code>/accountId</code> depending on access pattern.</li>
+                                                                <li><strong>TTL:</strong> useful for ephemeral telemetry or short-lived raw evidence.</li>
+                                                                <li><strong>Schema:</strong> keep a compact current-state document plus optional event feed for history.</li>
+                                                            </ul>
+                                                            <pre>{
+                                                              "id": "fp_20260614_1001",
+                                                              "deviceId": "device-7f21",
+                                                              "accountId": "acct-839",
+                                                              "fingerprintHash": "sha256:9e3d...",
+                                                              "browser": {
+                                                                "family": "Edge",
+                                                                "version": "125",
+                                                                "timezone": "UTC-8"
+                                                              },
+                                                              "network": {
+                                                                "ip": "203.0.113.10",
+                                                                "asn": 64500,
+                                                                "country": "US"
+                                                              },
+                                                              "risk": {
+                                                                "score": 73,
+                                                                "signals": ["new-device", "velocity-spike"]
+                                                              },
+                                                              "lastSeenUtc": "2026-06-14T15:00:00Z",
+                                                              "ttl": 2592000
+                                                            }</pre>
+                                                            <p>If queries regularly need all devices for one account, consider a second container or materialized projection rather than forcing cross-partition scans.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> List your top three query patterns first, then defend the partition key. If you cannot do that, the design is not done yet.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cosmos" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">19</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q19. Explain Cosmos DB consistency levels. Which would you choose for fraud detection?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Cosmos DB</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li><strong>Strong:</strong> most consistent, highest coordination cost</li>
+                                                                <li><strong>Bounded Staleness:</strong> reads lag by a bounded number of versions or time interval</li>
+                                                                <li><strong>Session:</strong> read-your-own-writes per client session</li>
+                                                                <li><strong>Consistent Prefix:</strong> ordered updates without gaps, but may be stale</li>
+                                                                <li><strong>Eventual:</strong> fastest and loosest consistency</li>
+                                                            </ul>
+                                                            <p>For distributed fraud detection, <strong>Bounded Staleness</strong> is often the balanced answer: it limits stale reads while preserving better global performance than Strong consistency across regions.</p>
+                                                            <pre>// Example concept
+                                                            CosmosClientOptions options = new CosmosClientOptions
+                                                            {
+                                                                ConsistencyLevel = ConsistencyLevel.BoundedStaleness
+                                                            };</pre>
+                                                            <p>Why not Session only? Because multiple services may read the same device/account state, not just the original writer session.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Write down one scenario where Strong consistency is worth the cost and one where Eventual is acceptable. That contrast sharpens your interview answer.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="cosmos" data-role="architect">
+                                                    <summary>
+                                                        <span class="question-index">20</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q20. How do you optimize Request Units in Cosmos DB?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Cosmos DB</span>
+                                                                <span class="badge role badge role-architect">Architect</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Prefer <strong>point reads</strong> by <code>id</code> and partition key over queries.</li>
+                                                                <li>Use <strong>projections</strong> to avoid returning large documents when only a few fields are needed.</li>
+                                                                <li>Use the <strong>change feed</strong> for downstream processing instead of repeatedly polling the same data.</li>
+                                                                <li>Tune the <strong>indexing policy</strong>; exclude paths that never need indexing.</li>
+                                                                <li>Watch for hot partitions and rebalance if one key dominates traffic.</li>
+                                                            </ul>
+                                                            <pre>{
+                                                              "indexingMode": "consistent",
+                                                              "automatic": true,
+                                                              "includedPaths": [
+                                                                { "path": "/deviceId/?" },
+                                                                { "path": "/accountId/?" },
+                                                                { "path": "/risk/score/?" }
+                                                              ],
+                                                              "excludedPaths": [
+                                                                { "path": "/rawTelemetry/*" }
+                                                              ]
+                                                            }</pre>
+                                                            <pre>// Better than query when possible
+                                                            var response = await container.ReadItemAsync&lt;DeviceProfile&gt;(
+                                                                id: "fp_20260614_1001",
+                                                                partitionKey: new PartitionKey("device-7f21"));</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Take a sample query and rewrite it as a point read or narrow projection. Then estimate why the RU cost should drop.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="mongodb" class="content-section" data-category="mongo intermediate advanced" data-role="intermediate advanced">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🍃</span>
+                        <span class="section-title">Section 6: MongoDB — 2 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Document-model questions are strongest when tied to access patterns, document growth, and index design.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="mongo" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">21</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q21. Compare MongoDB with Cosmos DB using the MongoDB API.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">MongoDB</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <table>
+                                                                <tr><th>Area</th><th>MongoDB</th><th>Cosmos DB MongoDB API</th></tr>
+                                                                <tr><td>Core identity</td><td>Native MongoDB database platform</td><td>Azure-managed service exposing MongoDB-compatible API</td></tr>
+                                                                <tr><td>Global distribution</td><td>Possible with Atlas and topology choices</td><td>Built-in multi-region capabilities in Azure</td></tr>
+                                                                <tr><td>Compatibility</td><td>Full native behavior for supported version</td><td>Compatibility subset; verify feature support carefully</td></tr>
+                                                                <tr><td>Billing model</td><td>Cluster/storage model</td><td>RU-based throughput model</td></tr>
+                                                                <tr><td>Best fit</td><td>Teams wanting native Mongo ecosystem</td><td>Teams already standardized on Azure governance and Cosmos operations</td></tr>
+                                                            </table>
+                                                            <pre>// Generic connection example
+                                                            const client = new MongoClient(process.env.MONGO_CONNECTION);
+                                                            await client.connect();
+                                                            const collection = client.db("support").collection("tickets");</pre>
+                                                            <p>A strong answer acknowledges that API compatibility does not mean every feature, command, or performance profile is identical.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Pick one MongoDB feature your application depends on and verify whether Cosmos DB Mongo API supports it before promising a migration path.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="mongo" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">22</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q22. Design a MongoDB schema for a support ticket system.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">MongoDB</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Embed small, tightly coupled subdocuments such as recent status history or requester snapshot.</li>
+                                                                <li>Reference large or high-churn entities such as attachments or long audit trails if document growth would become excessive.</li>
+                                                                <li>Index by ticket number, status, assignee, and update timestamp.</li>
+                                                            </ul>
+                                                            <pre>{
+                                                              "_id": "TCK-2026-00421",
+                                                              "title": "Payment verification issue",
+                                                              "status": "Investigating",
+                                                              "priority": "High",
+                                                              "requester": {
+                                                                "accountId": "acct-839",
+                                                                "region": "NA"
+                                                              },
+                                                              "assignee": {
+                                                                "agentId": "agent-17",
+                                                                "team": "support-ops"
+                                                              },
+                                                              "recentHistory": [
+                                                                { "at": "2026-06-14T09:00:00Z", "state": "Open" },
+                                                                { "at": "2026-06-14T09:30:00Z", "state": "Investigating" }
+                                                              ],
+                                                              "tags": ["billing", "verification", "fraud-review"],
+                                                              "updatedUtc": "2026-06-14T09:30:00Z"
+                                                            }</pre>
+                                                            <pre>db.tickets.createIndex({ status: 1, priority: 1, updatedUtc: -1 })
+                                                            db.tickets.createIndex({ "requester.accountId": 1, updatedUtc: -1 })
+                                                            db.tickets.createIndex({ tags: 1 })</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Estimate document growth for a busy ticket. If history grows too large, split audit events into a separate collection and explain why.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="dataverse" class="content-section" data-category="dataverse intermediate" data-role="intermediate">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🧩</span>
+                        <span class="section-title">Section 7: Dataverse — 1 Question</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Use this section to show that platform choice depends on workflow, governance, and change velocity, not only raw throughput.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="dataverse" data-role="intermediate">
+                                                    <summary>
+                                                        <span class="question-index">23</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q23. What is Dataverse and when would you use it in an enterprise support platform?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Dataverse</span>
+                                                                <span class="badge role badge role-intermediate">Intermediate</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Dataverse is Microsoft&#39;s managed business data platform for the Power Platform and Dynamics ecosystem.</li>
+                                                                <li>It provides relational tables, metadata, security roles, business rules, auditing, and low-code integration.</li>
+                                                                <li>Use it when support operations need workflow-driven business data, model-driven apps, forms, approvals, or integration with Power Apps and Power Automate.</li>
+                                                            </ul>
+                                                            <table>
+                                                                <tr><th>Use Dataverse when...</th><th>Prefer custom app + database when...</th></tr>
+                                                                <tr><td>You want rapid low-code business workflows, role-based data access, and platform-managed forms</td><td>You need high-throughput custom APIs, specialized latency behavior, or very bespoke schemas/processing</td></tr>
+                                                                <tr><td>Operational teams need quick changes without deep engineering cycles</td><td>The system is engineering-heavy and optimized for scale-first service patterns</td></tr>
+                                                            </table>
+                                                            <pre>&lt;fetch version="1.0" output-format="xml-platform" mapping="logical"&gt;
+                                                              &lt;entity name="incident"&gt;
+                                                                &lt;attribute name="title" /&gt;
+                                                                &lt;attribute name="prioritycode" /&gt;
+                                                                &lt;filter&gt;
+                                                                  &lt;condition attribute="statecode" operator="eq" value="0" /&gt;
+                                                                &lt;/filter&gt;
+                                                              &lt;/entity&gt;
+                                                            &lt;/fetch&gt;</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Compare one support workflow implemented in Dataverse versus custom code. Focus on speed of change, governance, and throughput expectations.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="scenario-based" class="content-section" data-category="scenario advanced architect" data-role="advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🎯</span>
+                        <span class="section-title">Section 8: Scenario-Based — 5 Questions</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>These prompts are where system design, troubleshooting discipline, and production judgment come together.</p></div>
+                        <div class="question-list">
+                        
+                                                <details class="question-card" data-topic="scenario" data-role="architect">
+                                                    <summary>
+                                                        <span class="question-index">24</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q24. Design a fraud detection pipeline architecture using Azure services.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Scenario</span>
+                                                                <span class="badge role badge role-architect">Architect</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <h4>Architecture answer</h4>
+                                                            <pre>Client / support portal
+                                                                    |
+                                                                    v
+                                                             Azure Front Door + WAF
+                                                                    |
+                                                                    v
+                                                            API Management
+                                                                    |
+                                                                    v
+                                                            Transaction Intake API (App Service)
+                                                                    |
+                                                                    +---- synchronous rules engine ----+
+                                                                    |                                 |
+                                                                    v                                 v
+                                                               Event Hubs --------------------&gt; Cosmos DB (device/account profiles)
+                                                                    |                                 |
+                                                                    v                                 |
+                                                            Fraud Scoring Function / Durable Function |
+                                                                    |                                 |
+                                                                    +----&gt; Service Bus high-risk queue|
+                                                                    |                                 |
+                                                                    v                                 v
+                                                             Analyst workflow / support platform   SQL Server reporting
+                                                                    |
+                                                                    v
+                                                             Application Insights + Log Analytics + Azure Monitor alerts</pre>
+                                                            <ul>
+                                                                <li><strong>Synchronous path:</strong> lightweight rules for immediate allow/review/deny response.</li>
+                                                                <li><strong>Asynchronous path:</strong> deeper enrichment, device correlation, and case generation.</li>
+                                                                <li><strong>Data split:</strong> Cosmos DB for hot JSON profiles, SQL Server for investigative analytics.</li>
+                                                                <li><strong>Messaging:</strong> Event Hubs for ingestion, Service Bus for reliable workflow orchestration.</li>
+                                                            </ul>
+                                                            <pre>{
+                                                              "transactionId": "txn-90210",
+                                                              "accountId": "acct-839",
+                                                              "deviceId": "device-7f21",
+                                                              "amount": 650.00,
+                                                              "ipAddress": "203.0.113.10",
+                                                              "riskSignals": ["new-device", "velocity-spike", "country-mismatch"]
+                                                            }</pre>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Practice explaining the architecture in two passes: a 30-second executive summary and a 3-minute technical deep dive.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="scenario" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">25</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q25. How would you troubleshoot intermittent CI/CD failures?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Scenario</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ol class="numbered">
+                                                                <li>Classify the failure: infrastructure, test flakiness, dependency drift, secrets, timing, or environment differences.</li>
+                                                                <li>Correlate by commit, agent image, branch, time window, and failing stage.</li>
+                                                                <li>Add deterministic logging and artifact capture for failed runs.</li>
+                                                                <li>Separate retryable external failures from genuine code defects.</li>
+                                                            </ol>
+                                                            <pre>steps:
+                                                              - script: |
+                                                                  echo "Node version:"
+                                                                  node --version
+                                                                  echo "NPM version:"
+                                                                  npm --version
+                                                                  echo "Environment snapshot:"
+                                                                  printenv | sort
+                                                                displayName: Diagnostic snapshot
+                                                            
+                                                              - script: npm test -- --ci --reporters=default --reporters=jest-junit
+                                                                displayName: Run tests
+                                                            
+                                                              - publish: junit.xml
+                                                                artifact: test-results
+                                                                condition: failed()</pre>
+                                                            <ul>
+                                                                <li>Look for non-determinism: time zones, race conditions, unpinned images, leaked state, and parallel test collisions.</li>
+                                                                <li>If the build is flaky, treat that as a product defect; it erodes trust in the pipeline.</li>
+                                                            </ul>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Take one flaky test and make it deterministic by removing timing assumptions or shared mutable state. Show the before/after failure rate.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="scenario" data-role="architect">
+                                                    <summary>
+                                                        <span class="question-index">26</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q26. How would you migrate a monolith to serverless using Strangler Fig and Durable Functions?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Scenario</span>
+                                                                <span class="badge role badge role-architect">Architect</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Start with the <strong>Strangler Fig</strong> pattern: route a small bounded capability away from the monolith first.</li>
+                                                                <li>Pick a workflow with clear inputs/outputs such as payment verification, fraud review enrichment, or notification orchestration.</li>
+                                                                <li>Use <strong>Durable Functions</strong> when the flow has fan-out/fan-in, retries, timers, or human steps.</li>
+                                                            </ul>
+                                                            <pre>[FunctionName("FraudReviewOrchestrator")]
+                                                            public static async Task Run(
+                                                                [OrchestrationTrigger] IDurableOrchestrationContext context)
+                                                            {
+                                                                var payload = context.GetInput&lt;FraudReviewRequest&gt;();
+                                                                var deviceTask = context.CallActivityAsync&lt;DeviceContext&gt;("LoadDeviceContext", payload);
+                                                                var accountTask = context.CallActivityAsync&lt;AccountContext&gt;("LoadAccountContext", payload);
+                                                                await Task.WhenAll(deviceTask, accountTask);
+                                                            
+                                                                var risk = await context.CallActivityAsync&lt;RiskDecision&gt;(
+                                                                    "ComputeRiskDecision",
+                                                                    new { payload, Device = deviceTask.Result, Account = accountTask.Result });
+                                                            
+                                                                if (risk.RequiresAnalyst)
+                                                                {
+                                                                    await context.CallActivityAsync("QueueAnalystCase", risk);
+                                                                }
+                                                            }</pre>
+                                                            <p>Keep the monolith as system of record initially; peel off well-bounded side workflows before touching core transactional paths.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Draw the first capability you would extract, define its contract, and list the rollback path if the new serverless flow misbehaves.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="scenario" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">27</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q27. Explain blue-green deployments with deployment slots.</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Scenario</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Blue-green means two production-like environments: one live, one idle.</li>
+                                                                <li>In App Service, deployment slots provide a practical mechanism for this pattern.</li>
+                                                                <li>Deploy to the non-live slot, warm it up, validate health, then swap.</li>
+                                                                <li>If issues appear, swap back quickly.</li>
+                                                            </ul>
+                                                            <pre>az webapp deployment slot create ^
+                                                              --name supportservices-api ^
+                                                              --resource-group rg-supportservices ^
+                                                              --slot staging
+                                                            
+                                                            az webapp deployment source config-zip ^
+                                                              --name supportservices-api ^
+                                                              --resource-group rg-supportservices ^
+                                                              --slot staging ^
+                                                              --src build.zip
+                                                            
+                                                            az webapp deployment slot swap ^
+                                                              --name supportservices-api ^
+                                                              --resource-group rg-supportservices ^
+                                                              --slot staging ^
+                                                              --target-slot production</pre>
+                                                            <p>Mention slot-specific settings, warm-up endpoints, smoke tests, and session/cache considerations after swap.</p>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Run a mock swap plan and define the go/no-go metrics you would inspect before promoting the staging slot.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        
+                                                <details class="question-card" data-topic="scenario" data-role="advanced">
+                                                    <summary>
+                                                        <span class="question-index">28</span>
+                                                        <span class="question-title-wrap">
+                                                            <span class="question-title">Q28. What monitoring and alerting strategy would you use for Azure Functions?</span>
+                                                            <span class="question-meta">
+                                                                <span class="badge topic">Scenario</span>
+                                                                <span class="badge role badge role-advanced">Advanced</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="toggle-icon section-toggle"></span>
+                                                    </summary>
+                                                    <div class="question-body">
+                                                        <div class="answer">
+                                                            <ul>
+                                                                <li>Use <strong>Application Insights</strong> for traces, dependencies, exceptions, and request telemetry.</li>
+                                                                <li>Use <strong>Log Analytics</strong> and <strong>Azure Monitor alerts</strong> for thresholds, anomaly rules, and action groups.</li>
+                                                                <li>Track function duration, failures, queue length, cold starts, downstream dependency failures, and business KPIs such as fraud alerts per minute.</li>
+                                                            </ul>
+                                                            <pre>requests
+                                                            | where timestamp &gt; ago(30m)
+                                                            | summarize Total=count(), Failures=countif(success == false), P95=percentile(duration, 95ms)
+                                                                      by operation_Name
+                                                            | order by Failures desc</pre>
+                                                            <table>
+                                                                <tr><th>Alert</th><th>Trigger</th><th>Response</th></tr>
+                                                                <tr><td>Error spike</td><td>Failure rate &gt; 2% for 10 min</td><td>Page on-call and attach recent deployment context</td></tr>
+                                                                <tr><td>Queue backlog</td><td>Messages age exceeds SLA</td><td>Scale investigation and downstream dependency check</td></tr>
+                                                                <tr><td>Latency regression</td><td>P95 exceeds threshold</td><td>Review cold starts, dependency latency, throttling</td></tr>
+                                                                <tr><td>Business anomaly</td><td>Fraud alerts drop to zero unexpectedly</td><td>Investigate ingestion or rule engine failure</td></tr>
+                                                            </table>
+                                                            <div class="tip"><strong>Hands-on tip:</strong> Define one technical alert and one business alert for the same workflow. Interviewers want to see that you monitor outcomes, not just CPU.</div>
+                                                        </div>
+                                                    </div>
+                                                </details>
+                        </div>
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="quick-fire" class="content-section" data-category="quickfire foundation intermediate advanced architect" data-role="foundation intermediate advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">⚡</span>
+                        <span class="section-title">Quick-Fire Section — Q29 to Q38</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro">
+                            <p>Use this table for rapid-fire rehearsal. Keep each answer to one crisp sentence, then optionally expand with the snippet if the interviewer wants detail.</p>
+                        </div>
+                        <table class="quickfire-table">
+                            <tr>
+                                <th>#</th>
+                                <th>Prompt</th>
+                                <th>Best answer</th>
+                                <th>Snippet</th>
+                                <th>Hands-on tip</th>
+                            </tr>
+                            <tr>
+                                <td>Q29</td>
+                                <td>What is the max execution time for Azure Functions?</td>
+                                <td>Consumption plan has time limits, while Premium and Dedicated plans support much longer-running workloads; always design long work as resumable.</td>
+                                <td><pre>{
+                          "decision": "Use Durable Functions for long workflows"
+                        }</pre></td>
+                                <td>Check your hosting plan before promising execution duration.</td>
+                            </tr>
+                            <tr>
+                                <td>Q30</td>
+                                <td>What causes cold starts?</td>
+                                <td>Cold starts happen when serverless compute must allocate and initialize a worker after idle time or scale-out.</td>
+                                <td><pre># Mitigations
+                        Premium plan
+                        warm instances
+                        smaller startup path</pre></td>
+                                <td>Measure startup time separately from handler time.</td>
+                            </tr>
+                            <tr>
+                                <td>Q31</td>
+                                <td>Why are partition keys important?</td>
+                                <td>They determine data distribution, scalability, and whether requests stay cheap point reads or become expensive cross-partition scans.</td>
+                                <td><pre>{
+                          "goodKey": "/deviceId",
+                          "badKey": "/country"
+                        }</pre></td>
+                                <td>List top query patterns before choosing the key.</td>
+                            </tr>
+                            <tr>
+                                <td>Q32</td>
+                                <td>Git merge vs rebase?</td>
+                                <td>Merge preserves branch history; rebase rewrites commits onto a new base for a cleaner linear history.</td>
+                                <td><pre>git merge main
+                        git rebase origin/main</pre></td>
+                                <td>Use rebase on private branches and coordinate before rewriting shared history.</td>
+                            </tr>
+                            <tr>
+                                <td>Q33</td>
+                                <td>What is a deadlock?</td>
+                                <td>It is a cycle where two or more transactions each hold locks the others need, so SQL Server kills one as the victim.</td>
+                                <td><pre>SET DEADLOCK_PRIORITY LOW;
+                        -- keep transactions short</pre></td>
+                                <td>Reproduce one with two sessions to remember it clearly.</td>
+                            </tr>
+                            <tr>
+                                <td>Q34</td>
+                                <td>Why do execution plans matter?</td>
+                                <td>They show how SQL Server actually accesses data, revealing scans, lookups, spills, bad estimates, and expensive joins.</td>
+                                <td><pre>SET STATISTICS IO, TIME ON;
+                        -- inspect actual plan</pre></td>
+                                <td>Never tune blind; capture plan plus IO/time first.</td>
+                            </tr>
+                            <tr>
+                                <td>Q35</td>
+                                <td>What is the CAP theorem in one line?</td>
+                                <td>In a distributed system under partition, you choose between strict consistency and full availability.</td>
+                                <td><pre>Partition event =&gt;
+                        choose C or A</pre></td>
+                                <td>Relate CAP back to Cosmos DB consistency choices.</td>
+                            </tr>
+                            <tr>
+                                <td>Q36</td>
+                                <td>Azure DevOps vs GitHub Actions?</td>
+                                <td>Azure DevOps is broader ALM with Boards, Repos, Pipelines, and Artifacts; GitHub Actions is GitHub-native workflow automation.</td>
+                                <td><pre>ADO = ALM suite
+                        GHA = GitHub CI/CD</pre></td>
+                                <td>Answer by matching platform choice to team workflow and governance needs.</td>
+                            </tr>
+                            <tr>
+                                <td>Q37</td>
+                                <td>What does <code>az login</code> do?</td>
+                                <td>It authenticates the Azure CLI so you can access subscriptions and run management commands under a user or device code flow.</td>
+                                <td><pre>az login
+                        az account show</pre></td>
+                                <td>Follow with <code>az account set</code> when multiple subscriptions exist.</td>
+                            </tr>
+                            <tr>
+                                <td>Q38</td>
+                                <td>What is a service principal?</td>
+                                <td>It is a non-human application identity used by automation to access Azure resources with scoped permissions.</td>
+                                <td><pre>az ad sp create-for-rbac \
+                          --name supportservices-cicd</pre></td>
+                                <td>Always mention least privilege and secret rotation or federated credentials.</td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+
+            <section id="hands-on-labs" class="content-section" data-category="labs foundation intermediate advanced architect" data-role="foundation intermediate advanced architect">
+                <details>
+                    <summary class="section-header">
+                        <span class="section-icon">🧪</span>
+                        <span class="section-title">Hands-On Labs — 4 Exercises</span>
+                        <span class="toggle-icon"></span>
+                    </summary>
+                    <div class="section-content">
+                        
+                        <div class="section-intro"><p>Use these labs to convert talking points into muscle memory. Practicing one or two labs is usually enough to make interview answers much sharper.</p></div>
+                        
+                        <div class="question-list">
+                            <details class="question-card" data-topic="labs" data-role="intermediate advanced architect">
+                                <summary>
+                                    <span class="question-index">L1</span>
+                                    <span class="question-title-wrap">
+                                        <span class="question-title">Lab 1: Build a Fraud Detection Function</span>
+                                        <span class="question-meta">
+                                            <span class="badge topic">Lab</span>
+                                            <span class="badge role badge role-intermediate">Intermediate+</span>
+                                        </span>
+                                    </span>
+                                    <span class="toggle-icon section-toggle"></span>
+                                </summary>
+                                <div class="question-body">
+                                    <div class="answer">
+                                        <ul>
+                                            <li>Create an HTTP-triggered or Event Hub-triggered Azure Function.</li>
+                                            <li>Accept transaction payload, calculate a simple risk score, and send high-risk events to a queue.</li>
+                                            <li>Log structured telemetry to Application Insights.</li>
+                                        </ul>
+                                        <pre>func init FraudLab --worker-runtime dotnet
+                        func new --name ScoreTransaction --template "HTTP trigger"
+                        
+                        # add queue output or Service Bus output binding
+                        # add risk rules and local.settings.json values</pre>
+                                        <div class="tip"><strong>Validation:</strong> Submit 10 sample payloads and confirm only the risky ones reach the downstream queue.</div>
+                                    </div>
+                                </div>
+                            </details>
+                            <details class="question-card" data-topic="labs" data-role="foundation intermediate advanced">
+                                <summary>
+                                    <span class="question-index">L2</span>
+                                    <span class="question-title-wrap">
+                                        <span class="question-title">Lab 2: CI/CD Pipeline from Scratch</span>
+                                        <span class="question-meta">
+                                            <span class="badge topic">Lab</span>
+                                            <span class="badge role badge role-foundation">Foundation+</span>
+                                        </span>
+                                    </span>
+                                    <span class="toggle-icon section-toggle"></span>
+                                </summary>
+                                <div class="question-body">
+                                    <div class="answer">
+                                        <ul>
+                                            <li>Start with a tiny web app repo.</li>
+                                            <li>Add build, lint, test, artifact publish, and environment-based deploy stages.</li>
+                                            <li>Protect production with approvals.</li>
+                                        </ul>
+                                        <pre>trigger:
+                          - main
+                        
+                        steps:
+                          - script: npm ci
+                          - script: npm test
+                          - script: npm run build</pre>
+                                        <div class="tip"><strong>Validation:</strong> Intentionally break a test to confirm PR validation blocks the merge.</div>
+                                    </div>
+                                </div>
+                            </details>
+                            <details class="question-card" data-topic="labs" data-role="advanced architect">
+                                <summary>
+                                    <span class="question-index">L3</span>
+                                    <span class="question-title-wrap">
+                                        <span class="question-title">Lab 3: Database Performance Tuning</span>
+                                        <span class="question-meta">
+                                            <span class="badge topic">Lab</span>
+                                            <span class="badge role badge role-advanced">Advanced+</span>
+                                        </span>
+                                    </span>
+                                    <span class="toggle-icon section-toggle"></span>
+                                </summary>
+                                <div class="question-body">
+                                    <div class="answer">
+                                        <ul>
+                                            <li>Load a table with skewed data and a slow reporting query.</li>
+                                            <li>Capture actual execution plan, IO, and time.</li>
+                                            <li>Add one index, update statistics, and compare.</li>
+                                        </ul>
+                                        <pre>SET STATISTICS IO, TIME ON;
+                        -- run baseline query
+                        CREATE INDEX IX_Report ON dbo.SupportTickets(Status, UpdatedUtc) INCLUDE (Priority);
+                        -- run again and compare reads/time
+                        SET STATISTICS IO, TIME OFF;</pre>
+                                        <div class="tip"><strong>Validation:</strong> Record logical reads before and after. Explain the result rather than just celebrating a faster runtime.</div>
+                                    </div>
+                                </div>
+                            </details>
+                            <details class="question-card" data-topic="labs" data-role="foundation intermediate">
+                                <summary>
+                                    <span class="question-index">L4</span>
+                                    <span class="question-title-wrap">
+                                        <span class="question-title">Lab 4: Git Workflow Simulation</span>
+                                        <span class="question-meta">
+                                            <span class="badge topic">Lab</span>
+                                            <span class="badge role badge role-foundation">Foundation+</span>
+                                        </span>
+                                    </span>
+                                    <span class="toggle-icon section-toggle"></span>
+                                </summary>
+                                <div class="question-body">
+                                    <div class="answer">
+                                        <ul>
+                                            <li>Create a repo, branch from main, open a PR, and rebase after main changes.</li>
+                                            <li>Introduce a conflict and resolve it with <code>mergetool</code> or manual editing.</li>
+                                            <li>Enable <code>rerere</code> and repeat.</li>
+                                        </ul>
+                                        <pre>git init
+                        git checkout -b feature/pipeline-doc
+                        git config rerere.enabled true
+                        git fetch origin
+                        git rebase origin/main</pre>
+                                        <div class="tip"><strong>Validation:</strong> Explain each Git command aloud as you run it; that fluency helps the interview as much as the mechanics.</div>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                        
+                    </div>
+                </details>
+                <a href="#top" class="back-to-top-inline">↑ Back to Top</a>
+            </section>
+        </main>
+    </div>
+    <button class="scroll-btn" id="scrollTopBtn" onclick="scrollToTop()" title="Back to Top">⬆</button>
+    <script>
+        let activeFilters = { topic: null, role: null };
+        function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});}
+        function updateProgressAndButtons(){
+            const scrollY = window.scrollY;
+            const docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+            document.getElementById('progressBar').style.width = (scrollY / docHeight) * 100 + '%';
+            document.getElementById('scrollTopBtn').classList.toggle('visible', scrollY > 300);
+            updateActiveTOC();
+        }
+        function expandAll(){document.querySelectorAll('.content-section > details').forEach(d=>d.open=true);document.querySelectorAll('.question-card').forEach(d=>d.open=true);}
+        function collapseAll(){document.querySelectorAll('.content-section > details').forEach(d=>d.open=false);document.querySelectorAll('.question-card').forEach(d=>d.open=false);}
+        function toggleFilter(el){
+            const filterType = el.getAttribute('data-filter');
+            const value = el.getAttribute('data-value');
+            if(activeFilters[filterType] === value){
+                activeFilters[filterType] = null;
+                el.classList.remove('active');
+            } else {
+                document.querySelectorAll('.pill[data-filter="' + filterType + '"]').forEach(p=>p.classList.remove('active'));
+                activeFilters[filterType] = value;
+                el.classList.add('active');
+            }
+            applyFilters();
+        }
+        function getQuery(){return document.getElementById('searchBox').value.trim().toLowerCase();}
+        function cardMatches(card, query){
+            const topics = (card.dataset.topic || '').split(' ').filter(Boolean);
+            const roles = (card.dataset.role || '').split(' ').filter(Boolean);
+            const topicMatch = !activeFilters.topic || topics.includes(activeFilters.topic);
+            const roleMatch = !activeFilters.role || roles.includes(activeFilters.role);
+            const searchMatch = !query || card.textContent.toLowerCase().includes(query);
+            return topicMatch && roleMatch && searchMatch;
+        }
+        function sectionMatches(section, query){
+            const topics = (section.dataset.category || '').split(' ').filter(Boolean);
+            const roles = (section.dataset.role || '').split(' ').filter(Boolean);
+            const topicMatch = !activeFilters.topic || topics.includes(activeFilters.topic);
+            const roleMatch = !activeFilters.role || roles.includes(activeFilters.role);
+            const searchMatch = !query || section.textContent.toLowerCase().includes(query);
+            return topicMatch && roleMatch && searchMatch;
+        }
+        function applyFilters(){
+            const query = getQuery();
+            const sections = document.querySelectorAll('.content-section');
+            let visibleCount = 0;
+            sections.forEach(section => {
+                const cards = [...section.querySelectorAll('.question-card')];
+                const intro = section.querySelector('.section-intro');
+                let sectionVisible = false;
+                if(cards.length){
+                    let visibleCards = 0;
+                    cards.forEach(card => {
+                        const match = cardMatches(card, query);
+                        card.classList.toggle('visually-hidden', !match);
+                        if(match){
+                            visibleCards++;
+                            if(query || activeFilters.topic || activeFilters.role){ card.open = true; }
+                        }
+                    });
+                    if(intro){
+                        const introMatch = !query || intro.textContent.toLowerCase().includes(query) || visibleCards > 0;
+                        intro.classList.toggle('visually-hidden', !(introMatch && sectionMatches(section, query)));
+                    }
+                    sectionVisible = visibleCards > 0 || (!!intro && !intro.classList.contains('visually-hidden'));
+                } else {
+                    sectionVisible = sectionMatches(section, query);
+                }
+                section.classList.toggle('visually-hidden', !sectionVisible);
+                if(sectionVisible){
+                    visibleCount++;
+                    if(query || activeFilters.topic || activeFilters.role){
+                        const details = section.querySelector(':scope > details');
+                        if(details) details.open = true;
+                    }
+                }
+            });
+            const banner = document.getElementById('filterBanner');
+            const bannerText = document.getElementById('filterBannerText');
+            const hasAny = !!(activeFilters.topic || activeFilters.role || query);
+            if(hasAny){
+                banner.classList.add('visible');
+                const parts = [];
+                if(activeFilters.topic) parts.push('Section: ' + activeFilters.topic.toUpperCase());
+                if(activeFilters.role) parts.push('Level: ' + activeFilters.role.toUpperCase());
+                if(query) parts.push('Search: "' + query + '"');
+                bannerText.textContent = 'Showing ' + visibleCount + ' sections — ' + parts.join(' + ');
+            } else {
+                banner.classList.remove('visible');
+            }
+            updateActiveTOC();
+        }
+        function resetFilters(){
+            activeFilters = { topic: null, role: null };
+            document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+            document.getElementById('searchBox').value = '';
+            document.querySelectorAll('.content-section, .question-card, .section-intro').forEach(el=>el.classList.remove('visually-hidden'));
+            document.getElementById('filterBanner').classList.remove('visible');
+            document.querySelectorAll('.content-section > details').forEach((d,i)=>d.open=i===0);
+            document.querySelectorAll('.question-card').forEach(d=>d.open=false);
+            updateActiveTOC();
+        }
+        function searchContent(){applyFilters();}
+        function updateActiveTOC(){
+            const sections = [...document.querySelectorAll('.content-section:not(.visually-hidden)')];
+            const links = document.querySelectorAll('.toc-link');
+            let current = sections.length ? sections[0].id : '';
+            sections.forEach(section => {
+                if(section.getBoundingClientRect().top <= 140){ current = section.id; }
+            });
+            links.forEach(link => link.classList.toggle('active', link.dataset.target === current));
+        }
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e){
+                e.preventDefault();
+                const target = document.getElementById(this.dataset.target);
+                if(!target) return;
+                target.classList.remove('visually-hidden');
+                const details = target.querySelector(':scope > details');
+                if(details) details.open = true;
+                target.scrollIntoView({behavior:'smooth',block:'start'});
+            });
+        });
+        window.addEventListener('scroll', updateProgressAndButtons);
+        window.addEventListener('load', () => {
+            updateProgressAndButtons();
+            const first = document.querySelector('.content-section > details');
+            if(first) first.open = true;
+        });
+        document.addEventListener('keydown', function(e){
+            if((e.ctrlKey && e.key === 'f') || (e.key === '/' && document.activeElement.tagName !== 'INPUT')){
+                e.preventDefault();
+                document.getElementById('searchBox').focus();
+            }
+            if(e.key === 'Escape'){
+                resetFilters();
+                document.getElementById('searchBox').blur();
+            }
+        });
+    </script>
+</body>
+</html>
