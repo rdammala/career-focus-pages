@@ -115,4 +115,5 @@ User provides: JD + LinkedIn link + Career portal link
 6. Cyan/Electric Blue gradient (used for Senior-Manager-SRE) — deep space bg, metric cards hero, split about with signal cards, engineering approach section
 7. Lime/Chartreuse gradient (used for Application-SRE-Manager) — dark charcoal bg, badge hero, timeline experience, numbered principles section
 8. Indigo/Deep Blue gradient (used for Senior-IT-Systems-Operations-Manager) — dark slate bg, split hero with floating metrics, stacked exp cards, progress bar impact section
-9. Next color TBD
+9. Magenta/Fuchsia gradient (used for TPM-Infrastructure) — dark obsidian bg, asymmetric split hero with floating stats panel, impact-featured card, numbered philosophy cards ✅
+10. Next color TBD
