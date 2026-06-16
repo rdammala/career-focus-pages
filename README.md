@@ -11,6 +11,12 @@ Interactive interview preparation guides for tech roles.
 | **Data Analytics Support Lead** | [Open](https://rdammala.github.io/career-focus-pages/STAR_Data_Analytics_Support_Lead_Interview_Guide.html) |
 | **SupportServices DevOps (Cloud, DB & CI/CD)** | [Open](https://rdammala.github.io/career-focus-pages/SupportServices_DevOps_Interview_Prep.html) |
 
+## Tools
+
+| Tool | Description |
+|------|-------------|
+| **Job Application & Networking Tracker** | Track applications, networking contacts, voice notes — mobile-friendly. [Open](https://rdammala.github.io/career-focus-pages/Job_Application_Tracker.html) |
+
 Each page has a navigation bar at the top to jump between guides.
 
 ---
