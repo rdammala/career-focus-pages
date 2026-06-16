@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker — Architecture & Code Study Guide</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%236366f1'/><stop offset='100%25' stop-color='%2306b6d4'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><text x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='800' font-size='30' fill='white'>RD</text></svg>">
+    <style>
+        :root {
+            --bg: #0f1117; --surface: #1c2030; --border: #2a3045;
+            --accent: #6366f1; --accent-light: #818cf8; --text: #eef2ff; --text-muted: #94a3b8;
+            --code-bg: #161922; --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
+            --font: 'Segoe UI', system-ui, sans-serif;
+            --mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.7; }
+        
+        .header { background: linear-gradient(135deg, #1a1040, #0f1117); border-bottom: 1px solid var(--border); padding: 2rem; text-align: center; }
+        .header h1 { font-size: 1.8rem; background: linear-gradient(135deg,#6366f1,#06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: .5rem; }
+        .header p { color: var(--text-muted); font-size: .95rem; max-width: 700px; margin: 0 auto; }
+        .header .badge { display: inline-block; margin-top: .75rem; padding: .3rem .8rem; background: rgba(99,102,241,.15); color: var(--accent-light); border-radius: 12px; font-size: .8rem; font-weight: 600; }
+
+        .toc { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+        .toc h2 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--accent-light); }
+        .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .75rem; }
+        .toc-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .75rem 1rem; text-decoration: none; color: var(--text); transition: all .2s; }
+        .toc-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .toc-item .num { font-size: .75rem; color: var(--accent-light); font-weight: 700; }
+        .toc-item .title { font-size: .88rem; font-weight: 600; }
+
+        main { max-width: 900px; margin: 0 auto; padding: 1rem 1.5rem 4rem; }
+
+        .section { margin-bottom: 3rem; scroll-margin-top: 2rem; }
+        .section-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 2px solid var(--border); }
+        .section-num { background: linear-gradient(135deg, var(--accent), #7c3aed); color: #fff; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .85rem; font-weight: 700; flex-shrink: 0; }
+        .section-title { font-size: 1.3rem; font-weight: 700; }
+
+        .decision-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+        .decision-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .6rem; display: flex; align-items: center; gap: .5rem; }
+        .decision-card p { color: var(--text-muted); font-size: .9rem; margin-bottom: .6rem; }
+
+        .why-box { background: rgba(99,102,241,.06); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: .85rem 1rem; margin: .75rem 0; }
+        .why-box h4 { font-size: .82rem; font-weight: 700; color: var(--accent-light); margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .04em; }
+        .why-box p, .why-box li { font-size: .88rem; color: var(--text-muted); }
+        .why-box ol, .why-box ul { padding-left: 1.2rem; margin-top: .3rem; }
+        .why-box li { margin-bottom: .2rem; }
+
+        .alt-box { background: rgba(239,68,68,.04); border-left: 4px solid var(--danger); border-radius: 0 8px 8px 0; padding: .75rem 1rem; margin: .5rem 0; }
+        .alt-box h4 { font-size: .8rem; font-weight: 700; color: var(--danger); margin-bottom: .2rem; }
+        .alt-box p { font-size: .85rem; color: var(--text-muted); }
+
+        .tradeoff-box { background: rgba(245,158,11,.05); border-left: 4px solid var(--warning); border-radius: 0 8px 8px 0; padding: .75rem 1rem; margin: .5rem 0; }
+        .tradeoff-box h4 { font-size: .8rem; font-weight: 700; color: var(--warning); margin-bottom: .2rem; }
+        .tradeoff-box p, .tradeoff-box li { font-size: .85rem; color: var(--text-muted); }
+        .tradeoff-box ul { padding-left: 1.2rem; margin-top: .3rem; }
+
+        .scale-box { background: rgba(34,197,94,.05); border-left: 4px solid var(--success); border-radius: 0 8px 8px 0; padding: .75rem 1rem; margin: .5rem 0; }
+        .scale-box h4 { font-size: .8rem; font-weight: 700; color: var(--success); margin-bottom: .2rem; }
+        .scale-box p, .scale-box li { font-size: .85rem; color: var(--text-muted); }
+        .scale-box ul { padding-left: 1.2rem; margin-top: .3rem; }
+
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; overflow-x: auto; margin: .75rem 0; font-size: .82rem; line-height: 1.6; }
+        code { font-family: var(--mono); }
+        pre code { color: var(--text-muted); }
+        .code-label { font-size: .72rem; font-weight: 600; color: var(--accent-light); text-transform: uppercase; letter-spacing: .04em; margin-bottom: .3rem; display: block; }
+        
+        .kw { color: #c792ea; } /* keyword */
+        .fn { color: #82aaff; } /* function */
+        .str { color: #c3e88d; } /* string */
+        .cm { color: #546e7a; font-style: italic; } /* comment */
+        .num { color: #f78c6c; } /* number */
+        .op { color: #89ddff; } /* operator */
+        .prop { color: #f07178; } /* property */
+
+        .pattern-tag { display: inline-block; padding: .15rem .5rem; background: rgba(99,102,241,.12); color: var(--accent-light); border-radius: 6px; font-size: .72rem; font-weight: 600; margin-right: .4rem; }
+
+        .interview-tip { background: linear-gradient(135deg, rgba(99,102,241,.08), rgba(6,182,212,.06)); border: 1px solid rgba(99,102,241,.2); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+        .interview-tip h4 { font-size: .85rem; color: var(--accent-light); margin-bottom: .4rem; }
+        .interview-tip p { font-size: .85rem; color: var(--text-muted); }
+
+        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: .8rem; }
+        footer a { color: var(--accent-light); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.3rem; }
+            .toc-grid { grid-template-columns: 1fr; }
+            main { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Job Application Tracker — Architecture Study Guide</h1>
+        <p>A deep-dive into every design decision behind the single-file Job Application & Networking Tracker. Built for interview prep — explains the WHY behind each pattern.</p>
+        <span class="badge">812 lines · Single-file SPA · Zero dependencies · Interview-ready</span>
+    </div>
+
+    <div class="toc">
+        <h2>📚 Table of Contents</h2>
+        <div class="toc-grid">
+            <a class="toc-item" href="#s1"><span class="num">01</span><span class="title">Single-File Architecture</span></a>
+            <a class="toc-item" href="#s2"><span class="num">02</span><span class="title">Data Layer — localStorage</span></a>
+            <a class="toc-item" href="#s3"><span class="num">03</span><span class="title">CSS Design Tokens & Theming</span></a>
+            <a class="toc-item" href="#s4"><span class="num">04</span><span class="title">XSS Prevention — esc() Pattern</span></a>
+            <a class="toc-item" href="#s5"><span class="num">05</span><span class="title">Sort & Filter Architecture</span></a>
+            <a class="toc-item" href="#s6"><span class="num">06</span><span class="title">Modal — Dual-Purpose (Add/Edit)</span></a>
+            <a class="toc-item" href="#s7"><span class="num">07</span><span class="title">ID Generation Strategy</span></a>
+            <a class="toc-item" href="#s8"><span class="num">08</span><span class="title">Voice Recording + Speech-to-Text</span></a>
+            <a class="toc-item" href="#s9"><span class="num">09</span><span class="title">Tab System — DOM Toggling</span></a>
+            <a class="toc-item" href="#s10"><span class="num">10</span><span class="title">Export/Import — Schema Evolution</span></a>
+            <a class="toc-item" href="#s11"><span class="num">11</span><span class="title">Contact Picker API (Mobile)</span></a>
+            <a class="toc-item" href="#s12"><span class="num">12</span><span class="title">Table Rendering — innerHTML vs DOM</span></a>
+        </div>
+    </div>
+
+    <main>
+        <!-- ═══════ SECTION 1 ═══════ -->
+        <div class="section" id="s1">
+            <div class="section-header">
+                <span class="section-num">1</span>
+                <span class="section-title">Single-File Architecture</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>🏗️ Why one HTML file with embedded CSS + JS?</h3>
+                <div class="why-box">
+                    <h4>Why This Approach</h4>
+                    <ol>
+                        <li><strong>Zero deployment friction</strong> — open from any file manager, no build step needed</li>
+                        <li><strong>GitHub Pages compatible</strong> — static hosting, no server runtime</li>
+                        <li><strong>Fully offline-capable</strong> — no network dependency after first load</li>
+                        <li><strong>Portable</strong> — email, USB drive, any browser works</li>
+                        <li><strong>~812 lines is manageable</strong> for a personal tool without code-splitting</li>
+                    </ol>
+                </div>
+
+                <div class="alt-box">
+                    <h4>❌ Alternative: React + Vite SPA</h4>
+                    <p>Rejected — npm install, build step, hosting complexity. Over-engineering for a single-user tool with &lt;1000 lines of logic.</p>
+                </div>
+
+                <div class="alt-box">
+                    <h4>❌ Alternative: Google Sheets / Airtable</h4>
+                    <p>Rejected — no voice recording, no offline, no custom UI, vendor lock-in. Sheets has no Contact Picker API or MediaRecorder integration.</p>
+                </div>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"I chose single-file because the complexity budget doesn't warrant a framework. The tool has ~812 lines of logic, 3 tabs, CRUD for 2 data models, and voice recording. A React app with the same features would have 15+ files, a build pipeline, and node_modules. For a personal productivity tool, that's negative ROI."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 2 ═══════ -->
+        <div class="section" id="s2">
+            <div class="section-header">
+                <span class="section-num">2</span>
+                <span class="section-title">Data Layer — localStorage</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>💾 Why localStorage over IndexedDB or a backend?</h3>
+                <div class="why-box">
+                    <h4>Why localStorage</h4>
+                    <ol>
+                        <li><strong>Synchronous reads</strong> — no async/await ceremony for simple key-value storage</li>
+                        <li><strong>5-10 MB per origin</strong> is plenty for text + base64 audio (&lt;50 contacts)</li>
+                        <li><strong>JSON.parse/stringify</strong> is simple and debuggable in DevTools</li>
+                        <li><strong>No schema migrations</strong> — flat JSON arrays are schema-flexible</li>
+                    </ol>
+                </div>
+
+                <span class="code-label">Implementation</span>
+<pre><code><span class="kw">const</span> APP_KEY = <span class="str">'rd_job_tracker'</span>;
+<span class="kw">const</span> CONTACT_KEY = <span class="str">'rd_contacts'</span>;
+
+<span class="cm">// Load with fallback to default data</span>
+<span class="kw">function</span> <span class="fn">loadApps</span>() {
+    <span class="kw">const</span> s = localStorage.<span class="fn">getItem</span>(APP_KEY);
+    apps = s ? JSON.<span class="fn">parse</span>(s) : [...defaultApps];
+    <span class="kw">if</span> (!s) <span class="fn">saveApps</span>();  <span class="cm">// Persist defaults on first load</span>
+}
+<span class="kw">function</span> <span class="fn">saveApps</span>() {
+    localStorage.<span class="fn">setItem</span>(APP_KEY, JSON.<span class="fn">stringify</span>(apps));
+}
+</code></pre>
+
+                <div class="tradeoff-box">
+                    <h4>⚠️ Trade-offs Acknowledged</h4>
+                    <ul>
+                        <li>localStorage is <strong>synchronous and blocks main thread</strong> on large reads</li>
+                        <li><strong>5MB limit</strong> could be hit if storing many base64 audio clips (~200KB each)</li>
+                        <li><strong>No full-text indexing</strong> — search iterates all records linearly O(n)</li>
+                    </ul>
+                    <p style="margin-top:.4rem">→ For this use case (&lt;100 records), these are acceptable trade-offs.</p>
+                </div>
+
+                <div class="scale-box">
+                    <h4>🚀 If Scaling to 1000+ Records</h4>
+                    <ul>
+                        <li>Migrate to <strong>IndexedDB with Dexie.js</strong> wrapper</li>
+                        <li><strong>Blob storage</strong> for audio (no base64 encoding overhead)</li>
+                        <li><strong>Indexed queries</strong> on status, date, company</li>
+                        <li><strong>Async non-blocking</strong> reads</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 3 ═══════ -->
+        <div class="section" id="s3">
+            <div class="section-header">
+                <span class="section-num">3</span>
+                <span class="section-title">CSS Design Tokens & Theming</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>🎨 Why CSS Custom Properties for theming?</h3>
+                <div class="why-box">
+                    <h4>Why This Approach</h4>
+                    <ol>
+                        <li><strong>Runtime-switchable</strong> — theme toggle works without rebuilding CSS</li>
+                        <li><strong>Cascade-aware</strong> — child components inherit automatically</li>
+                        <li><strong>No build tool needed</strong> — works natively (97%+ browser support)</li>
+                        <li><strong>DevTools inspectable</strong> — modify live for prototyping</li>
+                    </ol>
+                </div>
+
+                <span class="code-label">Token-Based Theme System</span>
+<pre><code><span class="cm">/* Define semantic tokens, not raw colors */</span>
+<span class="kw">:root</span> {
+    <span class="prop">--bg</span>: <span class="str">#0f1117</span>;
+    <span class="prop">--surface</span>: <span class="str">#1c2030</span>;
+    <span class="prop">--accent</span>: <span class="str">#6366f1</span>;
+    <span class="prop">--text</span>: <span class="str">#eef2ff</span>;
+}
+
+<span class="cm">/* Override entire theme via data attribute — zero JS DOM work */</span>
+[<span class="prop">data-theme</span>=<span class="str">"light"</span>] {
+    <span class="prop">--bg</span>: <span class="str">#f8fafc</span>;
+    <span class="prop">--surface</span>: <span class="str">#ffffff</span>;
+    <span class="prop">--accent</span>: <span class="str">#6366f1</span>;  <span class="cm">/* accent stays the same! */</span>
+    <span class="prop">--text</span>: <span class="str">#1e293b</span>;
+}
+</code></pre>
+
+                <span class="code-label">Theme Toggle — One Line of JS</span>
+<pre><code><span class="cm">// The actual theme switch is just changing one attribute</span>
+<span class="cm">// CSS handles ALL visual updates automatically via custom properties</span>
+<span class="kw">const</span> next = document.documentElement.<span class="fn">getAttribute</span>(<span class="str">'data-theme'</span>) === <span class="str">'dark'</span> ? <span class="str">'light'</span> : <span class="str">'dark'</span>;
+document.documentElement.<span class="fn">setAttribute</span>(<span class="str">'data-theme'</span>, next);
+localStorage.<span class="fn">setItem</span>(<span class="str">'tracker_theme'</span>, next);
+</code></pre>
+
+                <div class="alt-box">
+                    <h4>❌ Alternative: Tailwind CSS</h4>
+                    <p>Requires build step (PostCSS), adds npm dependencies. Utility-first classes make HTML verbose. Overkill for a single-file app with &lt;120 lines of CSS.</p>
+                </div>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"The theme system uses zero JavaScript for visual changes. JS only toggles a data attribute on &lt;html&gt; — CSS custom properties cascade down and update every component automatically. This is the same pattern Tailwind, Radix, and shadcn/ui use under the hood."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 4 ═══════ -->
+        <div class="section" id="s4">
+            <div class="section-header">
+                <span class="section-num">4</span>
+                <span class="section-title">XSS Prevention — esc() Pattern</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>🔒 Why a custom esc() function instead of a library?</h3>
+                <p><span class="pattern-tag">OWASP Top 10</span><span class="pattern-tag">Input Sanitization</span></p>
+
+                <span class="code-label">The esc() Implementation</span>
+<pre><code><span class="kw">function</span> <span class="fn">esc</span>(s) {
+    <span class="kw">const</span> d = document.<span class="fn">createElement</span>(<span class="str">'div'</span>);
+    d.textContent = s || <span class="str">''</span>;
+    <span class="kw">return</span> d.innerHTML;
+}
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Why This Works</h4>
+                    <ol>
+                        <li><strong>Browser-native encoding</strong> — setting <code>.textContent</code> then reading <code>.innerHTML</code> leverages the browser's own HTML encoder</li>
+                        <li><strong>Handles all edge cases</strong> — &lt;, &gt;, &amp;, quotes, null bytes — without maintaining a regex</li>
+                        <li><strong>No library needed</strong> — DOMPurify is for when you intentionally render rich HTML; we never do</li>
+                        <li><strong>Zero false positives</strong> — unlike regex-based sanitizers that can break legitimate text</li>
+                    </ol>
+                </div>
+
+                <span class="code-label">Where It's Used (innerHTML Context)</span>
+<pre><code><span class="cm">// Every user-supplied value goes through esc() before innerHTML</span>
+tbody.innerHTML = filtered.<span class="fn">map</span>(d =&gt; <span class="str">`&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;${<span class="fn">esc</span>(d.portfolio)}&lt;/strong&gt;&lt;/td&gt;
+    &lt;td&gt;${<span class="fn">esc</span>(d.role)}&lt;/td&gt;
+    &lt;td&gt;${<span class="fn">esc</span>(d.company)}&lt;/td&gt;
+    ...
+&lt;/tr&gt;`</span>).<span class="fn">join</span>(<span class="str">''</span>);
+</code></pre>
+
+                <div class="alt-box">
+                    <h4>❌ Alternative: DOMPurify Library</h4>
+                    <p>DOMPurify is for intentionally rendering user-supplied HTML (rich text editors). We never render HTML — we always render <em>plain text</em> into HTML context. The esc() pattern is simpler and more appropriate.</p>
+                </div>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"We're using the browser's native HTML encoder via textContent→innerHTML. This is equivalent to React's automatic JSX escaping. The key insight: we never intentionally render user-supplied HTML, so encoding is sufficient — we don't need a sanitization library like DOMPurify."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 5 ═══════ -->
+        <div class="section" id="s5">
+            <div class="section-header">
+                <span class="section-num">5</span>
+                <span class="section-title">Sort & Filter Architecture</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>🔄 Sort state as a separate object — why?</h3>
+                <p><span class="pattern-tag">State Management</span><span class="pattern-tag">Multiplier Pattern</span></p>
+
+                <span class="code-label">Sort State</span>
+<pre><code><span class="kw">let</span> appSort = { field: <span class="str">'date'</span>, dir: <span class="num">-1</span> };
+<span class="cm">// dir: 1 = ascending, -1 = descending (multiplier for sort comparators)</span>
+
+<span class="kw">function</span> <span class="fn">sortApps</span>(f) {
+    <span class="cm">// Toggle: same field flips direction, new field resets to ascending</span>
+    <span class="kw">if</span> (appSort.field === f) appSort.dir *= <span class="num">-1</span>;
+    <span class="kw">else</span> { appSort.field = f; appSort.dir = <span class="num">1</span>; }
+    <span class="fn">renderApps</span>();
+}
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Why a Separate Sort State Object</h4>
+                    <ol>
+                        <li><strong>Single source of truth</strong> — sort state is in memory, not derived from CSS classes on table headers</li>
+                        <li><strong>Toggle logic is simple</strong> — if same field, flip dir; else set new field ascending</li>
+                        <li><strong>Multiplier pattern</strong> — <code>dir</code> as 1/-1 is a clean multiplier for sort comparators</li>
+                    </ol>
+                </div>
+
+                <span class="code-label">Sort + Filter in renderApps()</span>
+<pre><code><span class="kw">function</span> <span class="fn">renderApps</span>() {
+    <span class="kw">const</span> q = document.<span class="fn">getElementById</span>(<span class="str">'search-input'</span>).value.<span class="fn">toLowerCase</span>();
+    <span class="kw">const</span> sf = document.<span class="fn">getElementById</span>(<span class="str">'filter-status'</span>).value;
+    
+    <span class="cm">// Filter: text search + status dropdown</span>
+    <span class="kw">let</span> filtered = apps.<span class="fn">filter</span>(d =&gt; {
+        <span class="kw">const</span> m = !q || [d.portfolio, d.role, d.company, d.comments]
+            .<span class="fn">some</span>(v =&gt; (v||<span class="str">''</span>).<span class="fn">toLowerCase</span>().<span class="fn">includes</span>(q));
+        <span class="kw">return</span> m && (!sf || d.status === sf);
+    });
+    
+    <span class="cm">// Sort: type-aware (dates vs strings)</span>
+    filtered.<span class="fn">sort</span>((a, b) =&gt; {
+        <span class="kw">let</span> va = a[appSort.field] || <span class="str">''</span>;
+        <span class="kw">let</span> vb = b[appSort.field] || <span class="str">''</span>;
+        <span class="kw">if</span> (appSort.field === <span class="str">'date'</span>) { va = <span class="kw">new</span> <span class="fn">Date</span>(va); vb = <span class="kw">new</span> <span class="fn">Date</span>(vb); }
+        <span class="kw">else</span> { va = va.<span class="fn">toLowerCase</span>(); vb = vb.<span class="fn">toLowerCase</span>(); }
+        <span class="kw">return</span> va &lt; vb ? -appSort.dir : va &gt; vb ? appSort.dir : <span class="num">0</span>;
+    });
+}
+</code></pre>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"The UX pattern: first click sorts ascending (A→Z, oldest→newest), second click on the same column flips to descending, clicking a different column resets to ascending. This is the standard table-sorting pattern users expect from GitHub, Jira, and Excel."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 6 ═══════ -->
+        <div class="section" id="s6">
+            <div class="section-header">
+                <span class="section-num">6</span>
+                <span class="section-title">Modal — Dual-Purpose (Add/Edit)</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>📝 One modal for both create and edit — why?</h3>
+                <p><span class="pattern-tag">DRY</span><span class="pattern-tag">DOM Efficiency</span></p>
+
+                <div class="why-box">
+                    <h4>Why One Modal for Both Operations</h4>
+                    <ol>
+                        <li><strong>DRY</strong> — same form fields, same save logic, just different initial values</li>
+                        <li><strong>Less DOM</strong> — one modal overlay vs two (halves the markup)</li>
+                        <li><strong>Hidden input for edit ID</strong> — determines create vs update in saveApp()</li>
+                        <li><strong>Title changes</strong> — "Add Application" vs "Edit Application" for user clarity</li>
+                    </ol>
+                </div>
+
+                <span class="code-label">Pattern</span>
+<pre><code><span class="kw">function</span> <span class="fn">openAppModal</span>(id) {
+    document.<span class="fn">getElementById</span>(<span class="str">'app-modal-overlay'</span>).classList.<span class="fn">add</span>(<span class="str">'active'</span>);
+    <span class="kw">if</span> (id) {
+        <span class="cm">// EDIT MODE: populate form with existing data</span>
+        <span class="kw">const</span> e = apps.<span class="fn">find</span>(d =&gt; d.id === id);
+        document.<span class="fn">getElementById</span>(<span class="str">'app-modal-title'</span>).textContent = <span class="str">'Edit Application'</span>;
+        document.<span class="fn">getElementById</span>(<span class="str">'app-edit-id'</span>).value = id;
+        <span class="cm">// ... populate fields from 'e' ...</span>
+    } <span class="kw">else</span> {
+        <span class="cm">// CREATE MODE: blank form with smart defaults</span>
+        document.<span class="fn">getElementById</span>(<span class="str">'app-modal-title'</span>).textContent = <span class="str">'Add Application'</span>;
+        document.<span class="fn">getElementById</span>(<span class="str">'app-edit-id'</span>).value = <span class="str">''</span>;
+        document.<span class="fn">getElementById</span>(<span class="str">'f-date'</span>).value = <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">toISOString</span>().<span class="fn">split</span>(<span class="str">'T'</span>)[<span class="num">0</span>];
+    }
+}
+
+<span class="kw">function</span> <span class="fn">saveApp</span>() {
+    <span class="kw">const</span> eid = document.<span class="fn">getElementById</span>(<span class="str">'app-edit-id'</span>).value;
+    <span class="cm">// ... build entry object ...</span>
+    <span class="kw">if</span> (eid) {
+        <span class="cm">// UPDATE: find by id, spread-merge</span>
+        <span class="kw">const</span> i = apps.<span class="fn">findIndex</span>(d =&gt; d.id === <span class="fn">parseInt</span>(eid));
+        apps[i] = { ...apps[i], ...entry };
+    } <span class="kw">else</span> {
+        <span class="cm">// CREATE: assign new id, push</span>
+        entry.id = Math.<span class="fn">max</span>(...apps.<span class="fn">map</span>(d =&gt; d.id)) + <span class="num">1</span>;
+        apps.<span class="fn">push</span>(entry);
+    }
+}
+</code></pre>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"The hidden input pattern (app-edit-id) keeps the 'which record am I editing?' state in the DOM. It's easier to debug (inspect the form to see current mode) and gets cleared when opening for 'add' — an explicit state reset."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 7 ═══════ -->
+        <div class="section" id="s7">
+            <div class="section-header">
+                <span class="section-num">7</span>
+                <span class="section-title">ID Generation Strategy</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>🔢 Math.max(...ids) + 1 — why not UUID?</h3>
+                <p><span class="pattern-tag">Simplicity</span><span class="pattern-tag">Debuggability</span></p>
+
+                <span class="code-label">Implementation</span>
+<pre><code>entry.id = apps.length ? Math.<span class="fn">max</span>(...apps.<span class="fn">map</span>(d =&gt; d.id)) + <span class="num">1</span> : <span class="num">1</span>;
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Why Sequential IDs</h4>
+                    <ol>
+                        <li><strong>Human-readable</strong> — "edit item 4" vs "edit item a7f3c..."</li>
+                        <li><strong>Sortable</strong> — IDs naturally reflect creation order</li>
+                        <li><strong>Debuggable</strong> — visual noise is reduced when inspecting localStorage</li>
+                        <li><strong>No concurrent writes</strong> — single-user, local-only app, no collision risk</li>
+                    </ol>
+                </div>
+
+                <div class="scale-box">
+                    <h4>🚀 When to Use UUID Instead</h4>
+                    <ul>
+                        <li>Multi-user systems with concurrent writes</li>
+                        <li>Distributed databases where IDs appear in URLs</li>
+                        <li>When IDs are shared across systems (would use <code>crypto.randomUUID()</code>)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 8 ═══════ -->
+        <div class="section" id="s8">
+            <div class="section-header">
+                <span class="section-num">8</span>
+                <span class="section-title">Voice Recording + Speech-to-Text</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>🎤 Dual-API approach: MediaRecorder + Web Speech API</h3>
+                <p><span class="pattern-tag">Progressive Enhancement</span><span class="pattern-tag">Parallel APIs</span></p>
+
+                <div class="why-box">
+                    <h4>Architecture Overview</h4>
+                    <ol>
+                        <li><strong>MediaRecorder API</strong> — records actual audio as WebM blob → stored in localStorage as base64</li>
+                        <li><strong>Web Speech API</strong> — runs in parallel during recording for real-time transcript</li>
+                        <li><strong>Both run simultaneously</strong> — audio recording is the source of truth, transcript is a convenience</li>
+                        <li><strong>Progressive enhancement</strong> — if Speech API isn't available (Firefox, Safari), recording still works, user just types notes manually</li>
+                    </ol>
+                </div>
+
+                <span class="code-label">Recording Flow</span>
+<pre><code><span class="kw">async function</span> <span class="fn">startRecording</span>() {
+    <span class="kw">const</span> stream = <span class="kw">await</span> navigator.mediaDevices.<span class="fn">getUserMedia</span>({ audio: <span class="kw">true</span> });
+    mediaRecorder = <span class="kw">new</span> <span class="fn">MediaRecorder</span>(stream);
+    
+    mediaRecorder.ondataavailable = e =&gt; {
+        <span class="kw">if</span> (e.data.size &gt; <span class="num">0</span>) recordingChunks.<span class="fn">push</span>(e.data);
+    };
+    
+    mediaRecorder.onstop = () =&gt; {
+        <span class="kw">const</span> blob = <span class="kw">new</span> <span class="fn">Blob</span>(recordingChunks, { type: <span class="str">'audio/webm'</span> });
+        <span class="kw">const</span> reader = <span class="kw">new</span> <span class="fn">FileReader</span>();
+        reader.onloadend = () =&gt; {
+            currentVoiceBlob = reader.result; <span class="cm">// base64 data URI</span>
+        };
+        reader.<span class="fn">readAsDataURL</span>(blob);
+        stream.<span class="fn">getTracks</span>().<span class="fn">forEach</span>(t =&gt; t.<span class="fn">stop</span>()); <span class="cm">// Release microphone</span>
+    };
+    
+    mediaRecorder.<span class="fn">start</span>();
+    <span class="fn">startSpeechRecognition</span>(); <span class="cm">// Parallel transcript</span>
+}
+</code></pre>
+
+                <span class="code-label">Speech Recognition — Auto-Restart Pattern</span>
+<pre><code>speechRecognition.onerror = (e) =&gt; {
+    <span class="cm">// Auto-restart on transient errors (no-speech, audio-capture)</span>
+    <span class="cm">// These happen naturally during pauses in speech</span>
+    <span class="kw">if</span> (e.error === <span class="str">'no-speech'</span> || e.error === <span class="str">'audio-capture'</span>) {
+        <span class="kw">try</span> { speechRecognition.<span class="fn">start</span>(); } <span class="kw">catch</span>(x) {}
+    }
+};
+
+speechRecognition.onend = () =&gt; {
+    <span class="cm">// Auto-restart if user is still recording</span>
+    <span class="kw">if</span> (mediaRecorder && mediaRecorder.state === <span class="str">'recording'</span>) {
+        <span class="kw">try</span> { speechRecognition.<span class="fn">start</span>(); } <span class="kw">catch</span>(x) {}
+    }
+};
+</code></pre>
+
+                <div class="tradeoff-box">
+                    <h4>⚠️ Trade-offs</h4>
+                    <ul>
+                        <li>Base64 audio in localStorage (~200KB per clip) limits total contacts to ~25 before hitting 5MB</li>
+                        <li>Web Speech API only works in Chrome/Edge — not Firefox/Safari</li>
+                        <li>No server-side transcription fallback (would need Whisper API)</li>
+                    </ul>
+                </div>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"The dual-API design is progressive enhancement in action. The core feature (voice recording) works everywhere that supports getUserMedia. The bonus feature (live transcription) gracefully degrades — if Web Speech API isn't available, the transcript textarea is just empty and the user can type notes manually."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 9 ═══════ -->
+        <div class="section" id="s9">
+            <div class="section-header">
+                <span class="section-num">9</span>
+                <span class="section-title">Tab System — DOM Toggling</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>📑 CSS class toggling vs. client-side routing</h3>
+
+                <span class="code-label">Implementation (5 lines)</span>
+<pre><code><span class="kw">function</span> <span class="fn">switchTab</span>(tab) {
+    document.<span class="fn">querySelectorAll</span>(<span class="str">'.tab'</span>).<span class="fn">forEach</span>(t =&gt;
+        t.classList.<span class="fn">toggle</span>(<span class="str">'active'</span>, t.dataset.tab === tab));
+    document.<span class="fn">querySelectorAll</span>(<span class="str">'.tab-content'</span>).<span class="fn">forEach</span>(c =&gt;
+        c.classList.<span class="fn">toggle</span>(<span class="str">'active'</span>, c.id === <span class="str">'tab-'</span> + tab));
+}
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Why Simple Class Toggling</h4>
+                    <ol>
+                        <li><strong>No router needed</strong> — 3 tabs don't warrant react-router or hash-based routing</li>
+                        <li><strong>All content is pre-rendered</strong> — no lazy loading, instant tab switches</li>
+                        <li><strong>CSS handles show/hide</strong> — <code>.tab-content { display: none }</code> / <code>.tab-content.active { display: block }</code></li>
+                        <li><strong>Data attribute binding</strong> — <code>data-tab</code> on buttons maps to <code>id="tab-{name}"</code> on content</li>
+                    </ol>
+                </div>
+
+                <div class="scale-box">
+                    <h4>🚀 When to Use a Router Instead</h4>
+                    <ul>
+                        <li>Deep-linking requirements (users share URLs to specific tabs)</li>
+                        <li>Back/forward browser navigation expectations</li>
+                        <li>Lazy-loaded tab content (API calls per tab)</li>
+                        <li>5+ tabs with significantly different content weights</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 10 ═══════ -->
+        <div class="section" id="s10">
+            <div class="section-header">
+                <span class="section-num">10</span>
+                <span class="section-title">Export/Import — Schema Evolution</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>📦 JSON export as data portability + backup strategy</h3>
+                <p><span class="pattern-tag">Data Portability</span><span class="pattern-tag">Backward Compatibility</span></p>
+
+                <span class="code-label">Export</span>
+<pre><code><span class="kw">function</span> <span class="fn">exportAll</span>() {
+    <span class="kw">const</span> payload = { applications: apps, contacts: contacts };
+    <span class="kw">const</span> blob = <span class="kw">new</span> <span class="fn">Blob</span>([JSON.<span class="fn">stringify</span>(payload, <span class="kw">null</span>, <span class="num">2</span>)], 
+        { type: <span class="str">'application/json'</span> });
+    <span class="kw">const</span> a = document.<span class="fn">createElement</span>(<span class="str">'a'</span>);
+    a.href = URL.<span class="fn">createObjectURL</span>(blob);
+    a.download = <span class="str">`job_tracker_${new Date().toISOString().split('T')[0]}.json`</span>;
+    a.<span class="fn">click</span>();
+}
+</code></pre>
+
+                <span class="code-label">Import — Backward Compatible</span>
+<pre><code><span class="kw">function</span> <span class="fn">importAll</span>(event) {
+    <span class="kw">const</span> reader = <span class="kw">new</span> <span class="fn">FileReader</span>();
+    reader.onload = (e) =&gt; {
+        <span class="kw">const</span> d = JSON.<span class="fn">parse</span>(e.target.result);
+        <span class="cm">// Handle both formats:</span>
+        <span class="cm">// v1: plain array (just apps)</span>
+        <span class="cm">// v2: { applications: [...], contacts: [...] }</span>
+        <span class="kw">if</span> (d.applications) { apps = d.applications; }
+        <span class="kw">else if</span> (Array.<span class="fn">isArray</span>(d)) { apps = d; } <span class="cm">// legacy format</span>
+        <span class="kw">if</span> (d.contacts) { contacts = d.contacts; }
+    };
+}
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Schema Evolution Strategy</h4>
+                    <ol>
+                        <li><strong>Spread operator for saves</strong> — <code>{...existing, ...newFields}</code> preserves fields not in the form</li>
+                        <li><strong>Optional chaining in reads</strong> — new fields like <code>c.phones</code> gracefully handle undefined</li>
+                        <li><strong>Import detects format</strong> — supports both old (array) and new (object) export formats</li>
+                        <li><strong>No version field needed</strong> — duck typing (check for known keys) is sufficient</li>
+                    </ol>
+                </div>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"The spread operator pattern <code>{...apps[i], ...entry}</code> is key to schema evolution. When I added the 'phones' array field later, existing records without it continued working perfectly. New records get it, old records don't lose any fields. This is the same additive-only schema strategy used in production APIs."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 11 ═══════ -->
+        <div class="section" id="s11">
+            <div class="section-header">
+                <span class="section-num">11</span>
+                <span class="section-title">Contact Picker API (Mobile)</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>📱 Progressive API detection for mobile-only features</h3>
+                <p><span class="pattern-tag">Feature Detection</span><span class="pattern-tag">Progressive Enhancement</span></p>
+
+                <span class="code-label">Detection + Conditional Rendering</span>
+<pre><code><span class="cm">// Only show the button if the API exists (mobile Chrome on Android)</span>
+<span class="kw">if</span> (<span class="str">'contacts'</span> <span class="kw">in</span> navigator && <span class="str">'ContactsManager'</span> <span class="kw">in</span> window) {
+    document.<span class="fn">getElementById</span>(<span class="str">'picker-btn'</span>).style.display = <span class="str">'inline-flex'</span>;
+}
+
+<span class="cm">// Usage — gracefully handles cancellation</span>
+<span class="kw">async function</span> <span class="fn">pickFromContacts</span>() {
+    <span class="kw">try</span> {
+        <span class="kw">const</span> picked = <span class="kw">await</span> navigator.contacts.<span class="fn">select</span>(
+            [<span class="str">'name'</span>, <span class="str">'email'</span>, <span class="str">'tel'</span>], { multiple: <span class="kw">false</span> }
+        );
+        <span class="cm">// Pre-fill the contact form with selected data</span>
+    } <span class="kw">catch</span> (err) {
+        console.<span class="fn">log</span>(<span class="str">'Cancelled or not available'</span>);
+    }
+}
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Why Feature Detection Over User-Agent Sniffing</h4>
+                    <ol>
+                        <li><strong>Future-proof</strong> — when Safari/Firefox add the API, it'll just work</li>
+                        <li><strong>No false positives</strong> — UA strings lie, API presence doesn't</li>
+                        <li><strong>Hidden by default</strong> — button has <code>display:none</code>, only shown if API is detected</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ SECTION 12 ═══════ -->
+        <div class="section" id="s12">
+            <div class="section-header">
+                <span class="section-num">12</span>
+                <span class="section-title">Table Rendering — innerHTML vs DOM APIs</span>
+            </div>
+
+            <div class="decision-card">
+                <h3>⚡ Template literals + innerHTML — why not createElement?</h3>
+                <p><span class="pattern-tag">Performance</span><span class="pattern-tag">Developer Experience</span></p>
+
+                <span class="code-label">The Pattern</span>
+<pre><code>tbody.innerHTML = filtered.<span class="fn">map</span>(d =&gt; <span class="str">`&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;${esc(d.portfolio)}&lt;/strong&gt;&lt;/td&gt;
+    &lt;td&gt;${esc(d.role)}&lt;/td&gt;
+    &lt;td&gt;${esc(d.company)}&lt;/td&gt;
+    &lt;td&gt;${fmtDate(d.date)}&lt;/td&gt;
+    &lt;td class="link-cell"&gt;&lt;a href="${esc(d.link)}"&gt;${esc(d.link)}&lt;/a&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;span class="status-badge status-${d.status.toLowerCase()}"&gt;${d.status}&lt;/span&gt;&lt;/td&gt;
+    &lt;td class="comments-cell"&gt;${esc(d.comments) || '—'}&lt;/td&gt;
+    &lt;td&gt;&lt;button onclick="editApp(${d.id})"&gt;✏️&lt;/button&gt;
+         &lt;button onclick="deleteApp(${d.id})"&gt;🗑️&lt;/button&gt;&lt;/td&gt;
+&lt;/tr&gt;`</span>).<span class="fn">join</span>(<span class="str">''</span>);
+</code></pre>
+
+                <div class="why-box">
+                    <h4>Why innerHTML with Template Literals</h4>
+                    <ol>
+                        <li><strong>Readability</strong> — the HTML structure is immediately visible vs. 50 createElement calls</li>
+                        <li><strong>Performance</strong> — single innerHTML assignment triggers one reflow; createElement per cell is multiple reflows</li>
+                        <li><strong>XSS is prevented</strong> by the esc() function on all user data (Section 4)</li>
+                        <li><strong>Batch rendering</strong> — map().join() creates the full string, one DOM write</li>
+                    </ol>
+                </div>
+
+                <div class="alt-box">
+                    <h4>❌ Alternative: Virtual DOM (React/Vue)</h4>
+                    <p>For &lt;50 rows being re-rendered on every keystroke, a virtual DOM adds overhead without measurable benefit. The real-DOM innerHTML approach completes in &lt;1ms for this dataset size.</p>
+                </div>
+
+                <div class="scale-box">
+                    <h4>🚀 When to Use Virtual List / createElement</h4>
+                    <ul>
+                        <li><strong>500+ rows</strong> — use virtual scrolling (render only visible rows)</li>
+                        <li><strong>Frequent partial updates</strong> — when only 1-2 cells change, targeted DOM updates are faster</li>
+                        <li><strong>Event delegation concerns</strong> — inline onclick is fine for &lt;100 rows; for 1000+, use event delegation on tbody</li>
+                    </ul>
+                </div>
+
+                <div class="interview-tip">
+                    <h4>💡 Interview Talking Point</h4>
+                    <p>"I chose innerHTML over createElement for developer ergonomics and batch performance. The key risk — XSS — is mitigated by the esc() function wrapping every user value. This is the same tradeoff React makes: JSX is compiled to createElement, but developers reason about it as 'HTML with expressions.' My template literals are the same mental model without the build step."</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Study guide for <a href="Job_Application_Tracker.html">Job Application Tracker</a> · Built by Rajesh Dammala · 2026</p>
+        <p style="margin-top:.4rem;font-size:.75rem">This page is a companion reference — the working tracker is a separate file.</p>
+    </footer>
+</body>
+</html>
