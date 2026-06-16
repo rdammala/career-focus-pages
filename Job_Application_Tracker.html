@@ -135,6 +135,7 @@
     <div class="tab-bar">
         <div class="tab active" data-tab="applications" onclick="switchTab('applications')">📄 Applications</div>
         <div class="tab" data-tab="contacts" onclick="switchTab('contacts')">🤝 Networking Contacts</div>
+        <div class="tab" data-tab="portfolios" onclick="switchTab('portfolios')">🎯 Portfolio Guide</div>
     </div>
 
     <!-- ==================== APPLICATIONS TAB ==================== -->
@@ -182,6 +183,87 @@
         <div class="empty-state" id="contact-empty" style="display:none"><h3>No networking contacts yet</h3><p>Add people you've connected with at events, referrals, or recruiters</p></div>
     </div>
 
+    <!-- ==================== PORTFOLIO GUIDE TAB ==================== -->
+    <div class="tab-content" id="tab-portfolios">
+        <div style="padding:1.5rem 2rem;max-width:1100px">
+            <p style="color:var(--text-muted);margin-bottom:1.25rem;font-size:.9rem">Use this guide to pick the right portfolio when sharing with recruiters or networking contacts. Each site is tailored for a specific role category.</p>
+            <div class="contacts-grid" style="padding:0">
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🌐 Engineering Leadership Portfolio</div><div class="cc-company">General / Broad Portfolio</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>SRE Leadership, Engineering Management, Technical Program Manager, VP/Director Engineering Ops — any senior role where you want to show the full breadth of your career.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/rajesh-dammala-portfolio/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/rajesh-dammala-portfolio</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🏗️ RD-Profile</div><div class="cc-company">Director / VP Technical Support Engineering</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Director of Support Engineering, VP Support, Head of T3, Support Org Builder — roles focused on building/scaling technical support orgs as a strategic function.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/RD-Profile/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/RD-Profile</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🚨 Senior-Incident-Manager</div><div class="cc-company">Incident Response Strategy & Command</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Senior Incident Manager, Incident Commander, Major Incident Manager — roles owning incident response operating models, tooling roadmaps, and high-severity command.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Senior-Incident-Manager/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Senior-Incident-Manager</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🤝 Staff-Escalation-Manager</div><div class="cc-company">Customer Advocacy & Executive Escalation</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Staff/Senior Escalation Manager, Customer Advocacy Manager, Critical Situation Manager — roles focused on customer-champion escalation, executive communication, and cross-functional coordination.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Staff-Escalation-Manager/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Staff-Escalation-Manager</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🚀 Technical-Lead-Deployment-Operations</div><div class="cc-company">Production Deployment & Fleet Operations</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Technical Lead Deployment Ops, Production Engineering Lead, Fleet Operations Manager — roles owning deployment lifecycle, operational readiness, and data center/fleet operations at scale.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Technical-Lead-Deployment-Operations/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Technical-Lead-Deployment-Operations</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">☁️ Manager-Cloud-Support</div><div class="cc-company">Cloud Support Engineering & Tier 3 Reliability</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Manager Cloud Support, Cloud Operations Manager, Tier 3 Engineering Manager — roles transforming reactive support into reliability engineering with problem management and global delivery.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Manager-Cloud-Support/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Manager-Cloud-Support</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🤖 Senior-Manager-SRE</div><div class="cc-company">AI-Powered Operations & IT Ops Transformation</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Senior Manager SRE, Director of SRE, IT Operations Transformation Lead — roles driving AIOps adoption, intelligent automation, and shifting from process-heavy to technology-focused operating models.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Senior-Manager-SRE/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Senior-Manager-SRE</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">🛡️ Application-SRE-Manager</div><div class="cc-company">App Reliability, Self-Healing & Prevention</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Application SRE Manager, Production App Reliability Lead, Service Reliability Manager — roles owning application stability, auto-detection/self-healing, and prevention-first production operations.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Application-SRE-Manager/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Application-SRE-Manager</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="cc-header"><div><div class="cc-name">📊 Senior-IT-Systems-Operations-Manager</div><div class="cc-company">Enterprise Infrastructure Strategy & Team Development</div></div></div>
+                    <div class="cc-detail" style="flex-direction:column;align-items:flex-start;gap:.25rem">
+                        <strong style="color:var(--text);font-size:.85rem">Best for:</strong>
+                        <span>Sr. IT Systems Ops Manager, Enterprise Ops Director, Infrastructure Operations Manager — roles translating business objectives into infrastructure strategy with team scaling and organizational development.</span>
+                    </div>
+                    <div class="cc-resume" style="margin-top:.75rem"><a href="https://rdammala.github.io/Senior-IT-Systems-Operations-Manager/" target="_blank" style="color:var(--accent-light)">🔗 rdammala.github.io/Senior-IT-Systems-Operations-Manager</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== APP MODAL ==================== -->
     <div class="modal-overlay" id="app-modal-overlay">
         <div class="modal">
@@ -222,8 +304,8 @@
             <div class="form-group"><label>How We Met</label>
                 <select id="c-source"><option value="Networking Event">Networking Event</option><option value="LinkedIn">LinkedIn</option><option value="Referral">Referral</option><option value="Recruiter">Recruiter</option><option value="Conference">Conference</option><option value="Friend">Friend</option><option value="Colleague">Colleague</option><option value="Cold Outreach">Cold Outreach</option><option value="Other">Other</option></select>
             </div>
-            <div class="form-group"><label>Resume Shared</label>
-                <select id="c-resume"><option value="">Not shared</option><option value="RD-Profile">RD-Profile</option><option value="Senior-Incident-Manager">Senior-Incident-Manager</option><option value="Staff-Escalation-Manager">Staff-Escalation-Manager</option><option value="Technical-Lead-Deployment-Operations">Technical-Lead-Deployment-Operations</option><option value="Manager-Cloud-Support">Manager-Cloud-Support</option><option value="Senior-Manager-SRE">Senior-Manager-SRE</option><option value="Application-SRE-Manager">Application-SRE-Manager</option><option value="Senior-IT-Systems-Operations-Manager">Senior-IT-Systems-Operations-Manager</option><option value="General Resume">General Resume</option></select>
+            <div class="form-group"><label>Resume / Portfolio Shared</label>
+                <select id="c-resume"><option value="">Not shared</option><option value="rajesh-dammala-portfolio">🌐 Engineering Leadership (General)</option><option value="RD-Profile">🏗️ RD-Profile (Director Support Eng)</option><option value="Senior-Incident-Manager">🚨 Senior-Incident-Manager (Incident Command)</option><option value="Staff-Escalation-Manager">🤝 Staff-Escalation-Manager (Customer Advocacy)</option><option value="Technical-Lead-Deployment-Operations">🚀 Tech Lead Deployment Ops (Fleet/DC Ops)</option><option value="Manager-Cloud-Support">☁️ Manager-Cloud-Support (Tier 3 Reliability)</option><option value="Senior-Manager-SRE">🤖 Senior-Manager-SRE (AIOps Transformation)</option><option value="Application-SRE-Manager">🛡️ Application-SRE-Manager (App Reliability)</option><option value="Senior-IT-Systems-Operations-Manager">📊 Sr IT Systems Ops Mgr (Enterprise Infra)</option><option value="General Resume">📄 General Resume (PDF)</option></select>
             </div>
             <div class="form-group"><label>Notes / Comments</label><textarea id="c-comments" placeholder="Discussion details, follow-up items, referral status..."></textarea></div>
             <div class="form-group">
