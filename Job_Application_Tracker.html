@@ -317,7 +317,8 @@
                     <audio id="rec-preview" controls style="display:none"></audio>
                     <button class="btn btn-xs btn-secondary" id="rec-delete" onclick="deleteRecording()" style="display:none">✕ Remove</button>
                 </div>
-                <div style="font-size:.72rem;color:var(--text-muted);margin-top:.25rem">Record a quick voice memo — works on mobile & desktop</div>
+                <div style="font-size:.72rem;color:var(--text-muted);margin-top:.25rem">Record a quick voice memo — auto-transcribes to text (Chrome/Edge)</div>
+                <textarea id="rec-transcript" placeholder="Transcript will appear here automatically..." style="width:100%;margin-top:.5rem;min-height:60px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;color:var(--text);font-size:.82rem;font-family:inherit;resize:vertical;display:none"></textarea>
             </div>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeContactModal()">Cancel</button>
@@ -442,15 +443,17 @@ function saveApp() {
 
 // ======================== CONTACTS ========================
 let currentVoiceBlob = null;
+let currentTranscript = '';
 let mediaRecorder = null;
 let recordingChunks = [];
 let recStartTime = null;
 let recTimer = null;
+let speechRecognition = null;
 
 function renderContacts() {
     const q = document.getElementById('contact-search').value.toLowerCase();
     let filtered = contacts.filter(c => {
-        return !q || [c.name,c.company,c.email,c.comments,c.source,c.resume].some(v => (v||'').toLowerCase().includes(q));
+        return !q || [c.name,c.company,c.email,c.comments,c.source,c.resume,c.voiceTranscript].some(v => (v||'').toLowerCase().includes(q));
     });
     filtered.sort((a,b) => new Date(b.created||0) - new Date(a.created||0));
     const grid = document.getElementById('contacts-grid');
@@ -460,6 +463,7 @@ function renderContacts() {
         const phoneLink = c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '';
         const linkedinLink = c.linkedin ? `<a href="${esc(c.linkedin)}" target="_blank">LinkedIn Profile</a>` : '';
         const voiceHtml = c.voiceNote ? `<div class="cc-voice"><audio src="${c.voiceNote}" controls preload="none"></audio></div>` : '';
+        const transcriptHtml = c.voiceTranscript ? `<div class="cc-transcript" style="font-size:.8rem;color:var(--text-muted);margin-top:.4rem;background:var(--bg-alt);border-radius:8px;padding:.5rem .75rem;border-left:3px solid var(--accent)"><strong style="font-size:.72rem;color:var(--accent-light);display:block;margin-bottom:.2rem">📝 Transcript</strong>${esc(c.voiceTranscript)}</div>` : '';
         return `<div class="contact-card">
             <div class="cc-header">
                 <div>
@@ -478,6 +482,7 @@ function renderContacts() {
             ${c.resume ? `<div class="cc-resume">📄 Resume shared: ${esc(c.resume)}</div>` : ''}
             ${c.comments ? `<div class="cc-comments">${esc(c.comments)}</div>` : ''}
             ${voiceHtml}
+            ${transcriptHtml}
             <div class="cc-meta">Added ${fmtDate(c.created)}</div>
         </div>`;
     }).join('');
@@ -494,9 +499,12 @@ function renderContacts() {
 function openContactModal(id) {
     document.getElementById('contact-modal-overlay').classList.add('active');
     currentVoiceBlob = null;
+    currentTranscript = '';
     document.getElementById('rec-preview').style.display = 'none';
     document.getElementById('rec-delete').style.display = 'none';
     document.getElementById('rec-timer').textContent = '';
+    document.getElementById('rec-transcript').value = '';
+    document.getElementById('rec-transcript').style.display = 'none';
     if (id) {
         const c = contacts.find(d=>d.id===id);
         document.getElementById('contact-modal-title').textContent = 'Edit Contact';
@@ -514,6 +522,11 @@ function openContactModal(id) {
             document.getElementById('rec-preview').src = c.voiceNote;
             document.getElementById('rec-preview').style.display = 'block';
             document.getElementById('rec-delete').style.display = 'inline-flex';
+        }
+        if (c.voiceTranscript) {
+            currentTranscript = c.voiceTranscript;
+            document.getElementById('rec-transcript').value = c.voiceTranscript;
+            document.getElementById('rec-transcript').style.display = 'block';
         }
     } else {
         document.getElementById('contact-modal-title').textContent = 'Add Networking Contact';
@@ -538,7 +551,8 @@ function saveContact() {
         source: document.getElementById('c-source').value,
         resume: document.getElementById('c-resume').value,
         comments: document.getElementById('c-comments').value.trim(),
-        voiceNote: currentVoiceBlob || null
+        voiceNote: currentVoiceBlob || null,
+        voiceTranscript: document.getElementById('rec-transcript').value.trim() || null
     };
     if (!entry.name) { alert('Name is required.'); return; }
     if (eid) {
@@ -552,7 +566,41 @@ function saveContact() {
     saveContacts(); closeContactModal(); renderContacts();
 }
 
-// ======================== VOICE RECORDING ========================
+// ======================== VOICE RECORDING + SPEECH-TO-TEXT ========================
+function startSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return; // Browser doesn't support
+    speechRecognition = new SpeechRecognition();
+    speechRecognition.continuous = true;
+    speechRecognition.interimResults = true;
+    speechRecognition.lang = 'en-US';
+    let finalTranscript = currentTranscript || '';
+    const transcriptEl = document.getElementById('rec-transcript');
+    transcriptEl.style.display = 'block';
+    speechRecognition.onresult = (event) => {
+        let interim = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript + ' ';
+            } else {
+                interim += event.results[i][0].transcript;
+            }
+        }
+        transcriptEl.value = finalTranscript + (interim ? '...' + interim : '');
+        currentTranscript = finalTranscript;
+    };
+    speechRecognition.onerror = (e) => { console.log('Speech recognition error:', e.error); };
+    speechRecognition.onend = () => {
+        // Finalize transcript
+        transcriptEl.value = currentTranscript.trim();
+    };
+    speechRecognition.start();
+}
+
+function stopSpeechRecognition() {
+    if (speechRecognition) { speechRecognition.stop(); speechRecognition = null; }
+}
+
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -581,6 +629,8 @@ async function startRecording() {
             const s = Math.floor((Date.now() - recStartTime) / 1000);
             document.getElementById('rec-timer').textContent = `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
         }, 500);
+        // Start speech-to-text in parallel
+        startSpeechRecognition();
     } catch (err) {
         alert('Microphone access denied. Please allow microphone permissions.');
     }
@@ -588,6 +638,7 @@ async function startRecording() {
 
 function stopRecording() {
     if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+    stopSpeechRecognition();
     document.getElementById('rec-start').style.display = 'inline-flex';
     document.getElementById('rec-stop').style.display = 'none';
     clearInterval(recTimer);
@@ -595,10 +646,13 @@ function stopRecording() {
 
 function deleteRecording() {
     currentVoiceBlob = null;
+    currentTranscript = '';
     document.getElementById('rec-preview').style.display = 'none';
     document.getElementById('rec-preview').src = '';
     document.getElementById('rec-delete').style.display = 'none';
     document.getElementById('rec-timer').textContent = '';
+    document.getElementById('rec-transcript').value = '';
+    document.getElementById('rec-transcript').style.display = 'none';
 }
 
 // ======================== CONTACT PICKER API (Mobile) ========================
