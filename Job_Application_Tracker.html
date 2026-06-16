@@ -4,184 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Tracker — Rajesh Dammala</title>
-    <!--
-    ╔══════════════════════════════════════════════════════════════════════════════════════╗
-    ║  JOB APPLICATION & NETWORKING TRACKER — ARCHITECTURE DECISIONS                      ║
-    ╠══════════════════════════════════════════════════════════════════════════════════════╣
-    ║                                                                                      ║
-    ║  WHY A SINGLE HTML FILE (vs React/Vue SPA or multi-page)?                           ║
-    ║  ────────────────────────────────────────────────────────                           ║
-    ║  1. Zero deployment friction — open from any file manager, no build step needed      ║
-    ║  2. GitHub Pages compatible — static hosting, no server runtime                      ║
-    ║  3. Fully offline-capable — no network dependency after first load                   ║
-    ║  4. Portable — email to someone, USB drive, any browser works                        ║
-    ║  5. ~812 lines is manageable for a personal tool without needing code-splitting      ║
-    ║                                                                                      ║
-    ║  ALTERNATIVE CONSIDERED: React + Vite SPA                                           ║
-    ║  ❌ Rejected because: npm install, build step, hosting complexity, over-engineering  ║
-    ║     for a single-user tool with < 1000 lines of logic                               ║
-    ║                                                                                      ║
-    ║  ALTERNATIVE CONSIDERED: Google Sheets / Airtable                                   ║
-    ║  ❌ Rejected because: no voice recording, no offline, no custom UI, vendor lock-in  ║
-    ║     Sheets has no Contact Picker API or MediaRecorder integration                    ║
-    ║                                                                                      ║
-    ║  WHY localStorage (vs IndexedDB, vs SQLite via WASM, vs backend API)?               ║
-    ║  ──────────────────────────────────────────────────────────────────                  ║
-    ║  1. Synchronous reads — no async/await ceremony for simple key-value storage         ║
-    ║  2. 5-10 MB per origin is plenty for text + base64 audio (< 50 contacts)            ║
-    ║  3. JSON.parse/stringify is simple and debuggable in DevTools                        ║
-    ║  4. No schema migrations needed — flat JSON arrays are schema-flexible               ║
-    ║                                                                                      ║
-    ║  TRADE-OFF ACKNOWLEDGED:                                                            ║
-    ║  ⚠️ localStorage is synchronous and blocks the main thread on large reads            ║
-    ║  ⚠️ 5MB limit could be hit if storing many base64 audio clips (each ~200KB)         ║
-    ║  ⚠️ No full-text indexing — search iterates all records linearly O(n)                ║
-    ║  → For this use case (< 100 records), these are acceptable trade-offs                ║
-    ║                                                                                      ║
-    ║  IF SCALING: Would migrate to IndexedDB with Dexie.js wrapper for:                  ║
-    ║  - Blob storage for audio (no base64 encoding overhead)                              ║
-    ║  - Indexed queries on status, date, company                                          ║
-    ║  - Async non-blocking reads                                                          ║
-    ║                                                                                      ║
-    ╚══════════════════════════════════════════════════════════════════════════════════════╝
-    -->
-
-    <!--
-    FAVICON: Inline SVG data URI
-    WHY data URI vs external file?
-    1. Single file architecture — no extra HTTP request, no 404 if file missing
-    2. Renders crisply at all DPI (vector, not raster)
-    3. Brand-consistent gradient matches header gradient
-    ALTERNATIVE: .ico file or .png — requires separate file + doesn't scale on retina
-    -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%236366f1'/><stop offset='100%25' stop-color='%2306b6d4'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><text x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='800' font-size='30' fill='white'>RD</text></svg>">
-
     <style>
-        /*
-        ══════════════════════════════════════════════════════════════
-        CSS CUSTOM PROPERTIES (Design Tokens)
-        ══════════════════════════════════════════════════════════════
-
-        WHY CSS Custom Properties (vs Sass variables, vs Tailwind classes)?
-        1. Runtime-switchable — theme toggle works without rebuilding CSS
-        2. Cascade-aware — child components inherit automatically
-        3. No build tool needed — works natively in all modern browsers (97%+ support)
-        4. Inspectable in DevTools — can modify live for prototyping
-
-        PATTERN: Token-based theming
-        - Define semantic tokens (--bg, --surface, --text) not raw colors
-        - Override entire theme via [data-theme="light"] selector on :root/<html>
-        - All components reference tokens, never raw hex values
-
-        WHY NOT Tailwind CSS?
-        ❌ Requires build step (PostCSS), adds npm dependencies
-        ❌ Utility-first classes make HTML verbose and hard to read
-        ❌ Overkill for a single-file app — we have < 120 lines of CSS
-        ✅ Custom properties give us dark/light theme with 0 JavaScript DOM manipulation
-
-        WHY NOT CSS-in-JS (styled-components)?
-        ❌ Requires React/framework dependency
-        ❌ Runtime overhead (style injection per component)
-        */
         :root {
-            /* Dark theme (default) — low-blue-light palette reduces eye strain */
-            --bg: #0f1117;          /* Page background — near-black with subtle blue tint */
-            --bg-alt: #161922;      /* Elevated surfaces (header, stats bar) */
-            --surface: #1c2030;     /* Card/input backgrounds — distinct from page bg */
-            --border: #2a3045;      /* Subtle borders — visible but not harsh */
-            --accent: #6366f1;      /* Primary brand (Indigo-500) — buttons, highlights */
-            --accent-light: #818cf8;/* Lighter accent for links, hover states */
-            --text: #eef2ff;        /* Primary text — not pure white (reduces contrast glare) */
-            --text-muted: #94a3b8;  /* Secondary text — labels, timestamps, hints */
-            --success: #22c55e;     /* Status: Offered */
-            --warning: #f59e0b;     /* Status: Interviewing */
-            --danger: #ef4444;      /* Status: Rejected, delete buttons */
-            --info: #06b6d4;        /* Informational highlights */
+            --bg: #0f1117; --bg-alt: #161922; --surface: #1c2030; --border: #2a3045;
+            --accent: #6366f1; --accent-light: #818cf8; --text: #eef2ff; --text-muted: #94a3b8;
+            --success: #22c55e; --warning: #f59e0b; --danger: #ef4444; --info: #06b6d4;
             --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            /*
-            WHY this font stack?
-            - Segoe UI: Native Windows font (where this app primarily runs)
-            - system-ui: Respects OS font on macOS (SF Pro), Linux (Ubuntu/Cantarell)
-            - -apple-system: Legacy Safari compatibility
-            - sans-serif: Ultimate fallback
-            WHY NOT Google Fonts (Inter)?
-            ❌ External HTTP request adds 100-200ms FOPT (Flash of Plain Text)
-            ❌ Privacy — Google tracks font requests
-            ✅ System fonts render instantly, feel native, respect user's accessibility settings
-            */
         }
-
-        /*
-        LIGHT THEME — Override only the tokens that change.
-        WHY [data-theme="light"] on html element?
-        - Attribute selector is more specific than :root for overrides
-        - data-* attributes are semantically correct for custom state
-        - Easily toggled via JS: document.documentElement.setAttribute('data-theme', 'light')
-        ALTERNATIVE: class-based (.theme-light) — works too, but data attributes
-        better express "state" vs "styling concern"
-        */
         [data-theme="light"] {
             --bg: #f8fafc; --bg-alt: #f1f5f9; --surface: #ffffff; --border: #e2e8f0;
             --text: #1e293b; --text-muted: #64748b;
-            /* Note: accent, success, warning, danger stay the same — they have enough
-               contrast on both dark and light backgrounds (WCAG AA verified) */
         }
-
-        /*
-        RESET: Universal box-sizing + margin/padding reset
-        WHY box-sizing: border-box globally?
-        - Padding and border are included in width calculations
-        - Without this, a 100%-width element with padding overflows its container
-        - Industry standard practice (used by Bootstrap, Tailwind, every modern framework)
-        WHY NOT normalize.css or reset.css?
-        ❌ 300+ lines of resets we don't need for this simple app
-        ✅ Three lines handle 95% of layout issues
-        */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; transition: background .3s, color .3s; }
 
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh; /* Prevent short pages on tall screens */
-            transition: background .3s, color .3s; /* Smooth theme switch animation */
-        }
-
-        /*
-        HEADER — Sticky positioning
-        WHY position: sticky (vs fixed)?
-        - sticky preserves document flow (no need for body padding-top hack)
-        - fixed requires compensating for the header height on the content below
-        - sticky + top:0 + z-index:50 gives the same visual result, less code
-        WHY z-index: 50 (not 9999)?
-        - Layering convention: header=50, modals=100, tooltips=200
-        - Predictable stacking context prevents z-index wars
-        */
         .header { background: var(--bg-alt); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; flex-wrap: wrap; gap: .5rem; }
-
-        /*
-        GRADIENT TEXT — Brand identity via CSS
-        WHY background-clip: text (vs SVG gradient text, vs <canvas>)?
-        1. Pure CSS — no extra DOM elements or SVG complexity
-        2. Remains selectable/accessible (screen readers see plain text)
-        3. Degrades gracefully — if unsupported, shows solid color
-        */
         .header h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg,#6366f1,#06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .header-actions { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
         .theme-toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .4rem .65rem; color: var(--text); cursor: pointer; font-size: 1rem; }
 
-        /*
-        TAB SYSTEM — Why manual tabs vs <details>/<summary> or radio-hack?
-        1. Full control over active state styling and transitions
-        2. Accessibility: role="tablist" pattern is well-understood by screen readers
-        3. Radio-hack (:checked) can't easily animate border-bottom
-        4. <details> doesn't support horizontal tab-bar UX pattern
-
-        WHY border-bottom indicator (vs background highlight)?
-        - Material Design / modern SaaS convention — users recognize active tab instantly
-        - 3px colored line is less visually heavy than a full background change
-        - Pairs well with hover state (text color change without layout shift)
-        */
+        /* Tabs */
         .tab-bar { display: flex; border-bottom: 2px solid var(--border); background: var(--bg-alt); }
         .tab { padding: .85rem 1.75rem; font-size: .92rem; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: var(--text-muted); transition: all .2s; }
         .tab:hover { color: var(--text); }
@@ -189,13 +32,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /*
-        STATS BAR — Aggregate metrics at a glance
-        WHY a dedicated stats bar (vs putting counts in the tab title)?
-        - Tab titles would get long ("Applications (8)" + "3 Interviewing, 2 Offered...")
-        - A horizontal chip bar is scannable in < 1 second
-        - Updates reactively when data changes
-        */
         .stats-bar { display: flex; gap: 1rem; padding: .75rem 2rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
         .stat-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .4rem .85rem; font-size: .82rem; }
         .stat-chip strong { color: var(--accent-light); margin-right: .2rem; }
@@ -205,21 +41,6 @@
         .toolbar input:focus, .toolbar select:focus { outline: none; border-color: var(--accent); }
         .toolbar input { flex: 1; min-width: 180px; }
 
-        /*
-        BUTTON SYSTEM — Semantic variants
-        WHY a class-based button system (vs button[type], vs data-attributes)?
-        - Composable: .btn + .btn-primary + .btn-sm = small primary button
-        - Familiar pattern from Bootstrap/Bulma — easy to maintain
-        - Inline handlers (onclick) are acceptable for a personal tool < 1K lines
-        WHY NOT <button type="submit"> relying on default browser styles?
-        ❌ Browser defaults are ugly and inconsistent across OS/browser combos
-        ❌ Form submission behavior is not needed (we use JS event handlers)
-
-        WHY transform: translateY(-1px) on hover (vs box-shadow only)?
-        - Micro-interaction: subtle "lift" effect gives tactile feedback
-        - Combined with box-shadow, creates a convincing depth illusion
-        - Performance: transform is GPU-composited (no layout reflow)
-        */
         .btn { display: inline-flex; align-items: center; gap: .35rem; padding: .5rem 1.1rem; border-radius: 8px; font-size: .85rem; font-weight: 600; border: none; cursor: pointer; transition: all .2s; }
         .btn-primary { background: linear-gradient(135deg,#6366f1,#7c3aed); color: #fff; }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,.3); }
@@ -231,23 +52,6 @@
         .btn-sm { padding: .3rem .65rem; font-size: .78rem; }
         .btn-xs { padding: .2rem .5rem; font-size: .72rem; border-radius: 6px; }
 
-        /*
-        TABLE — Sortable data grid
-        WHY a native <table> (vs CSS Grid, vs flexbox-based "table")?
-        1. Semantic HTML — screen readers announce row/column relationships
-        2. Browser handles column width distribution automatically
-        3. overflow-x: auto on wrapper gives horizontal scroll on mobile
-        4. <table> is the correct element for tabular data (applications list IS tabular)
-
-        WHY NOT a virtual/windowed list (react-virtual, tanstack-table)?
-        ❌ Framework dependency for < 100 rows
-        ❌ Complexity: virtual lists need fixed row heights, scroll math
-        ✅ At < 200 rows, full DOM render is instant (< 16ms)
-
-        WHY cursor: pointer + user-select: none on <th>?
-        - Signals that headers are clickable (sort triggers)
-        - Prevents accidental text selection during rapid sort clicks
-        */
         .table-wrapper { overflow-x: auto; padding: 0 1rem 2rem; }
         table { width: 100%; border-collapse: collapse; min-width: 900px; }
         th { background: var(--bg-alt); padding: .7rem .85rem; text-align: left; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; }
@@ -257,14 +61,6 @@
         .link-cell a { color: var(--accent-light); text-decoration: none; font-size: .8rem; word-break: break-all; }
         .link-cell a:hover { text-decoration: underline; }
 
-        /*
-        STATUS BADGES — Visual encoding of application state
-        WHY colored badges (vs plain text, vs icons)?
-        1. Pre-attentive processing — color is processed before reading text
-        2. At-a-glance scanning: green=good, amber=in-progress, red=rejected
-        3. Semi-transparent backgrounds (rgba) work on both dark and light themes
-        4. Pill shape (border-radius: 12px) creates visual hierarchy separation from body text
-        */
         .status-badge { display: inline-block; padding: .18rem .55rem; border-radius: 12px; font-size: .72rem; font-weight: 600; }
         .status-applied { background: rgba(99,102,241,.15); color: var(--accent-light); }
         .status-interviewing { background: rgba(245,158,11,.15); color: var(--warning); }
@@ -275,24 +71,7 @@
         .comments-cell { max-width: 220px; font-size: .8rem; color: var(--text-muted); white-space: pre-wrap; }
         .row-actions { display: flex; gap: .35rem; flex-wrap: wrap; }
 
-        /*
-        CONTACTS GRID — Responsive card layout
-        WHY CSS Grid with auto-fill (vs flexbox wrap, vs Masonry)?
-        1. auto-fill + minmax() creates responsive columns WITHOUT media queries
-        2. Cards automatically reflow: 3 columns on desktop → 2 on tablet → 1 on mobile
-        3. Equal-height columns for free (grid rows stretch)
-        4. minmax(320px, 1fr) ensures cards never get too narrow to read
-
-        WHY NOT flexbox?
-        ❌ flex-wrap doesn't guarantee equal column widths
-        ❌ Last row items stretch awkwardly without hacks
-        ❌ No intrinsic sizing — needs explicit width percentages + breakpoints
-
-        WHY NOT CSS Masonry (masonry-layout)?
-        ❌ Not yet supported natively (Firefox only behind flag as of 2026)
-        ❌ Would need JavaScript library (Masonry.js) for cross-browser
-        ✅ Equal-height grid is fine — contact cards have similar content length
-        */
+        /* Contacts cards */
         .contacts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; padding: 1rem 2rem 2rem; }
         .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem; transition: border-color .2s; }
         .contact-card:hover { border-color: var(--accent); }
@@ -308,24 +87,7 @@
         .cc-voice audio { width: 100%; height: 36px; border-radius: 8px; }
         .cc-meta { font-size: .72rem; color: var(--text-muted); margin-top: .5rem; }
 
-        /*
-        MODAL SYSTEM — Overlay + centered card
-        WHY a custom modal (vs <dialog>, vs a third-party modal library)?
-        1. <dialog> still has inconsistent styling across browsers (backdrop, focus trapping)
-        2. Custom modal gives us exact control over animation, z-index layering, and escape behavior
-        3. No library dependency for a two-modal app
-
-        WHY position: fixed + inset: 0 (vs position: absolute)?
-        - fixed: always relative to viewport, works even if page is scrolled
-        - inset: 0 is shorthand for top:0;right:0;bottom:0;left:0 — covers full viewport
-        - flexbox centering (align-items + justify-content) handles vertical centering without
-          transform: translate(-50%, -50%) hack which can cause blurry text on odd pixel widths
-
-        WHY click-outside-to-close?
-        - Standard UX pattern — users expect clicking the overlay to dismiss
-        - Implemented via: if (e.target === e.currentTarget) close()
-        - This checks if the click was on the overlay itself, not on the modal card
-        */
+        /* Modal */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 100; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
         .modal { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; width: 92%; max-width: 560px; max-height: 92vh; overflow-y: auto; }
@@ -339,13 +101,7 @@
         .form-row { display: flex; gap: .75rem; }
         .form-row .form-group { flex: 1; }
 
-        /*
-        VOICE RECORDER UI
-        WHY a pulsing red dot for "recording" indicator?
-        - Universal signifier — every camera/microphone app uses a red dot
-        - CSS animation (opacity pulse) is GPU-accelerated, no jank
-        - Provides continuous feedback that recording is active without user action
-        */
+        /* Voice recorder */
         .voice-recorder { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-top: .35rem; }
         .voice-recorder audio { height: 32px; border-radius: 6px; }
         .rec-indicator { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; animation: pulse 1s infinite; display: inline-block; }
@@ -354,17 +110,6 @@
         .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-muted); }
         .empty-state h3 { font-size: 1.1rem; margin-bottom: .4rem; color: var(--text); }
 
-        /*
-        RESPONSIVE DESIGN — Mobile-first adjustments at 768px
-        WHY 768px breakpoint (vs 640, vs 1024)?
-        - 768px is the standard tablet-portrait width (iPad)
-        - Below this, multi-column layouts become cramped
-        - flex-direction: column on form rows prevents input fields from being too narrow
-
-        WHY NOT mobile-first (min-width) media queries?
-        - For a power-user tool primarily used on desktop, desktop-first is pragmatic
-        - The app works on mobile (flexbox wrapping), just gets tighter spacing
-        */
         @media (max-width: 768px) {
             .header { padding: .75rem 1rem; }
             .header h1 { font-size: 1.05rem; }
@@ -381,12 +126,6 @@
         <h1>📋 Job Application & Networking Tracker</h1>
         <div class="header-actions">
             <button class="btn btn-secondary btn-sm" onclick="exportAll()">⬇ Export All</button>
-            <!--
-            WHY a hidden <input type="file"> inside a <label> (vs button + input.click())?
-            - <label> natively triggers the associated input on click — no JS needed
-            - The input is hidden with display:none, label is styled as a button
-            - This is more accessible than JS-triggered .click() which some browsers block
-            -->
             <label class="btn btn-secondary btn-sm" style="cursor:pointer">⬆ Import <input type="file" accept=".json" onchange="importAll(event)" style="display:none"></label>
             <button class="theme-toggle" id="theme-toggle">🌙</button>
         </div>
@@ -438,14 +177,6 @@
         <div class="toolbar">
             <input type="text" id="contact-search" placeholder="Search contacts by name, company, notes...">
             <button class="btn btn-primary" onclick="openContactModal()">+ Add Contact</button>
-            <!--
-            CONTACT PICKER API — Progressive Enhancement
-            WHY hidden by default (vs always showing)?
-            - Only available on Android Chrome (requires HTTPS + user gesture)
-            - Showing a broken button on desktop is bad UX
-            - Feature-detect on load: if ('contacts' in navigator) → show button
-            This is the progressive enhancement pattern: enhance if supported, degrade gracefully
-            -->
             <button class="btn btn-secondary btn-sm" id="picker-btn" onclick="pickFromContacts()" style="display:none">📱 From Phone Contacts</button>
         </div>
         <div class="contacts-grid" id="contacts-grid"></div>
@@ -604,75 +335,10 @@
     </div>
 
 <script>
-/*
-╔══════════════════════════════════════════════════════════════════════════════════════════╗
-║  JAVASCRIPT ARCHITECTURE OVERVIEW                                                        ║
-╠══════════════════════════════════════════════════════════════════════════════════════════╣
-║                                                                                          ║
-║  PATTERN: Flat Module / No Framework                                                     ║
-║  ─────────────────────────────────────                                                   ║
-║  This app uses plain functions + shared mutable state (arrays).                          ║
-║  This is intentionally simple for a personal tool.                                       ║
-║                                                                                          ║
-║  WHY NOT use a state management pattern (Redux, Zustand, MobX)?                         ║
-║  ❌ Overkill for 2 data arrays with < 100 entries each                                  ║
-║  ❌ Requires build tooling and adds cognitive overhead                                   ║
-║  ✅ Direct mutation → save → re-render is simple and debuggable                          ║
-║                                                                                          ║
-║  WHY NOT use class-based OOP (new ApplicationStore(), new ContactStore())?              ║
-║  ❌ Adds ceremony (constructor, this binding, inheritance) for 10 functions              ║
-║  ✅ Plain functions are easier to reason about in a single-file app                     ║
-║                                                                                          ║
-║  DATA FLOW PATTERN (one-way):                                                           ║
-║  User action → mutate array → saveToLocalStorage → re-render full list                  ║
-║  (Similar to React's setState → render, but without virtual DOM diffing)                ║
-║                                                                                          ║
-║  WHY re-render the full list on every change (vs surgical DOM updates)?                 ║
-║  1. innerHTML = template is simpler than tracking which <tr> changed                    ║
-║  2. At < 200 rows, full re-render is < 5ms (negligible to user)                        ║
-║  3. No complex diffing logic to maintain                                                ║
-║  4. If scaling to 1000+ rows: would switch to virtualized list or incremental DOM       ║
-║                                                                                          ║
-║  WHY inline onclick handlers (vs addEventListener)?                                      ║
-║  1. In a single-file app, inline handlers are more readable (handler is where the       ║
-║     button is, not in a separate init() function 300 lines away)                        ║
-║  2. For dynamic content (rendered via innerHTML), addEventListener requires              ║
-║     event delegation anyway — onclick in the template is simpler                        ║
-║  3. No memory leak concern (elements are replaced on re-render, not accumulated)        ║
-║  TRADE-OFF: If this were a team project with CSP headers, we'd use event delegation     ║
-║  and move all handlers to addEventListener (CSP blocks inline handlers)                 ║
-║                                                                                          ║
-╚══════════════════════════════════════════════════════════════════════════════════════════╝
-*/
-
 // ======================== DATA LAYER ========================
-/*
-WHY separate localStorage keys for apps vs contacts (vs one big JSON blob)?
-1. Partial updates — changing an app doesn't require rewriting contacts (less I/O)
-2. Debugging — can inspect each key independently in DevTools > Application > Storage
-3. Graceful degradation — if one key gets corrupted, the other tab still works
-4. Export/import can handle both keys as separate concerns
-
-WHY 'rd_' prefix on storage keys?
-- Namespacing prevents collisions if the same origin hosts multiple apps
-- 'rd' = Rajesh Dammala (personal branding in the tool itself)
-*/
 const APP_KEY = 'rd_job_tracker';
 const CONTACT_KEY = 'rd_contacts';
 
-/*
-DEFAULT DATA — Pre-populated applications
-WHY ship with default data (vs empty state)?
-1. First-run experience — user immediately sees how the app looks populated
-2. Demonstrates the data model (what fields exist, expected formats)
-3. These are real applications — the app serves double duty as data + viewer
-4. loadApps() checks localStorage first; only uses defaults on fresh start
-
-WHY an array of objects (vs Map, vs class instances)?
-- JSON.stringify/parse handles plain objects natively
-- Array methods (.filter, .sort, .map, .find) cover all needed operations
-- No serialization/deserialization logic needed for custom classes
-*/
 const defaultApps = [
     { id:1, portfolio:'RD-Profile', role:'Technical Support Director', company:'Boulevard', date:'2026-06-10', link:'https://rdammala.github.io/RD-Profile/', status:'Applied', comments:'' },
     { id:2, portfolio:'Senior-Incident-Manager', role:'Senior Incident Manager', company:'Amazon Prime Video', date:'2026-06-11', link:'https://rdammala.github.io/Senior-Incident-Manager/', status:'Applied', comments:'' },
@@ -686,106 +352,35 @@ const defaultApps = [
 ];
 
 let apps = [], contacts = [];
-/*
-SORT STATE — Stored as object { field, dir }
-WHY a separate sort state object (vs re-reading from the DOM)?
-- Single source of truth: the sort state is in memory, not derived from CSS classes
-- Toggle logic is simple: if same field, flip dir; else set new field with ascending
-- dir: 1 = ascending, -1 = descending (multiplier pattern for sort comparators)
-*/
-let appSort = { field:'date', dir:-1 }; // Default: newest first
+let appSort = { field:'date', dir:-1 };
 
-/*
-LOAD/SAVE FUNCTIONS — localStorage wrappers
-WHY separate load/save functions (vs direct localStorage calls everywhere)?
-1. DRY: key name is defined once, used in 2 functions
-2. If we migrate to IndexedDB, only these 4 functions change (adapter pattern)
-3. Default-data fallback logic is encapsulated in loadApps()
-*/
 function loadApps() { const s = localStorage.getItem(APP_KEY); apps = s ? JSON.parse(s) : [...defaultApps]; if (!s) saveApps(); }
 function saveApps() { localStorage.setItem(APP_KEY, JSON.stringify(apps)); }
 function loadContacts() { const s = localStorage.getItem(CONTACT_KEY); contacts = s ? JSON.parse(s) : []; }
 function saveContacts() { localStorage.setItem(CONTACT_KEY, JSON.stringify(contacts)); }
 
 // ======================== TABS ========================
-/*
-TAB SWITCHING — classList toggle pattern
-WHY classList.toggle with a condition (vs remove/add)?
-- toggle(class, condition) is a one-liner that handles both add and remove
-- Iterating all tabs with a condition is cleaner than finding the active one and swapping
-
-WHY NOT use hash-based routing (#applications, #contacts)?
-- Could enable bookmarking/back-button for tabs, but for a personal tool it's unnecessary
-- Hash routing adds complexity (hashchange listener, URL parsing)
-- Tabs switch instantly — no navigation delay to justify URL state
-*/
 function switchTab(tab) {
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
 }
 
 // ======================== APPLICATIONS ========================
-/*
-RENDER FUNCTION — Full re-render with filter + sort
-WHY filter AND sort on every render (vs caching filtered/sorted results)?
-- < 100 items: filter+sort is < 1ms even on low-end devices
-- Caching adds complexity (invalidation when data changes, when filter changes, when sort changes)
-- Simple > Fast when "fast" is already imperceptible to the user
-
-SEARCH APPROACH: Linear scan of multiple fields
-WHY not a search index (Fuse.js, Lunr.js)?
-- Array.some() with .includes() is 0-dependency and handles exact substring matching
-- For < 100 records, it's instant
-- Fuzzy search (Fuse.js) would be useful at 1000+ records with typo tolerance
-*/
 function renderApps() {
     const q = document.getElementById('search-input').value.toLowerCase();
     const sf = document.getElementById('filter-status').value;
     let filtered = apps.filter(d => {
-        // Multi-field substring search: checks portfolio name, role, company, and comments
         const m = !q || [d.portfolio,d.role,d.company,d.comments].some(v => (v||'').toLowerCase().includes(q));
         return m && (!sf || d.status === sf);
     });
-    /*
-    SORTING — In-memory comparator with direction multiplier
-    WHY this pattern (vs Array.sort with localeCompare)?
-    - Direction multiplier (1 or -1) is a clean toggle without if/else branches
-    - Date fields are compared as Date objects (proper chronological order)
-    - String fields use toLowerCase for case-insensitive ordering
-    - Ternary return avoids the verbose if/else if/else pattern
-
-    ALTERNATIVE: Intl.Collator for locale-aware string comparison
-    ✅ Would handle accented characters (ñ, ü) correctly
-    ❌ Overkill for English company/role names in a personal tool
-    */
     filtered.sort((a,b) => {
         let va = a[appSort.field]||'', vb = b[appSort.field]||'';
         if (appSort.field === 'date') { va = new Date(va); vb = new Date(vb); }
         else { va = va.toString().toLowerCase(); vb = vb.toString().toLowerCase(); }
         return va < vb ? -appSort.dir : va > vb ? appSort.dir : 0;
     });
-
     const tbody = document.getElementById('app-table-body');
     document.getElementById('app-empty').style.display = filtered.length ? 'none' : 'block';
-
-    /*
-    TABLE RENDERING — innerHTML with template literals
-    WHY innerHTML (vs createElement + appendChild, vs document.createDocumentFragment)?
-    1. Template literals with ${} interpolation are readable and maintainable
-    2. For a full re-render, innerHTML is faster than appending many individual nodes
-    3. Less code: 15 lines vs 60+ lines of createElement chains
-
-    SECURITY: XSS Prevention via esc() function
-    ⚠️ All user-supplied data (d.role, d.company, d.comments) goes through esc()
-    - esc() creates a temporary DOM text node to safely encode HTML entities
-    - Without this: a company name like "<script>alert('xss')</script>" would execute
-    - This is the equivalent of React's automatic JSX escaping
-
-    WHY NOT DOMPurify (a dedicated sanitization library)?
-    - esc() handles our case (plain text insertion) perfectly
-    - DOMPurify is for when you intentionally render HTML (rich text editors)
-    - We never intentionally render user-supplied HTML, so full encoding is correct
-    */
     tbody.innerHTML = filtered.map(d => `<tr>
         <td><strong>${esc(d.portfolio)}</strong></td>
         <td>${esc(d.role)}</td><td>${esc(d.company)}</td>
@@ -797,8 +392,6 @@ function renderApps() {
             <button class="btn btn-secondary btn-sm" onclick="editApp(${d.id})">✏️</button>
             <button class="btn btn-danger btn-sm" onclick="deleteApp(${d.id})">🗑️</button>
         </td></tr>`).join('');
-
-    // Stats bar — calculated from the full dataset (not filtered)
     const tot = apps.length, ap = apps.filter(d=>d.status==='Applied').length,
         iv = apps.filter(d=>d.status==='Interviewing').length,
         of = apps.filter(d=>d.status==='Offered').length,
@@ -811,29 +404,8 @@ function renderApps() {
         <div class="stat-chip"><strong>${rj}</strong> Rejected</div>`;
 }
 
-/*
-SORT TOGGLE — Toggle direction on same field, reset to ascending on new field
-WHY this UX pattern?
-- First click on a column sorts ascending (A→Z, oldest→newest)
-- Second click on same column flips to descending
-- Clicking a different column resets to ascending
-- This is the standard table-sorting pattern users expect (GitHub, Jira, Excel)
-*/
 function sortApps(f) { if (appSort.field===f) appSort.dir*=-1; else { appSort.field=f; appSort.dir=1; } renderApps(); }
 
-/*
-MODAL — Dual-purpose (Add/Edit) pattern
-WHY one modal for both create and edit (vs separate modals)?
-1. DRY: Same form fields, same save logic, just different initial values
-2. Less DOM duplication (one modal overlay vs two)
-3. Hidden input (app-edit-id) determines create vs update in saveApp()
-4. Title changes ("Add Application" vs "Edit Application") for user clarity
-
-WHY a hidden input for edit ID (vs a module-level variable)?
-- Both work; hidden input keeps the "which record am I editing?" state in the DOM
-- Easier to debug (inspect the form to see current mode)
-- Gets cleared when opening for "add" — explicit state reset
-*/
 function openAppModal(id) {
     document.getElementById('app-modal-overlay').classList.add('active');
     if (id) {
@@ -858,30 +430,8 @@ function openAppModal(id) {
 }
 function closeAppModal() { document.getElementById('app-modal-overlay').classList.remove('active'); }
 function editApp(id) { openAppModal(id); }
-
-/*
-DELETE — Confirm before destructive action
-WHY window.confirm() (vs custom confirmation modal)?
-- For a personal tool, native confirm() is sufficient
-- Zero additional code; browser handles focus, keyboard (Enter/Esc), and styling
-- In a production SaaS app: would use a custom modal with undo capability
-*/
 function deleteApp(id) { if (!confirm('Delete this application?')) return; apps = apps.filter(d=>d.id!==id); saveApps(); renderApps(); }
 
-/*
-SAVE — Create or Update pattern
-WHY spread operator ({...apps[i], ...entry}) for updates (vs Object.assign)?
-- Spread is immutable-style (creates a new object reference)
-- Object.assign mutates the first argument — same result here but spread is more modern
-- Preserves any fields not in `entry` (e.g., 'id' stays from the original)
-
-ID GENERATION: Math.max(...apps.map(d=>d.id)) + 1
-WHY this over UUID or crypto.randomUUID()?
-- Sequential IDs are human-readable and sortable
-- For a local-only app with no concurrent writes, collision is impossible
-- UUIDs add visual noise when debugging ("edit item 4" vs "edit item a7f3c...")
-WHEN TO USE UUID: Multi-user systems, distributed databases, or when IDs appear in URLs
-*/
 function saveApp() {
     const eid = document.getElementById('app-edit-id').value;
     const entry = {
@@ -900,63 +450,26 @@ function saveApp() {
 }
 
 // ======================== CONTACTS ========================
-/*
-CONTACT STATE — Module-level variables for recording session
-WHY module-level state for voice recording (vs encapsulating in an object)?
-- Only one recording can happen at a time (hardware limitation)
-- These variables track the active recording session across start/stop/save
-- Object encapsulation would add ceremony for 6 variables with 3 functions
-*/
-let currentVoiceBlob = null;   // base64 data URL of recorded audio
-let currentTranscript = '';    // accumulated speech-to-text result
-let mediaRecorder = null;      // MediaRecorder instance (active during recording)
-let recordingChunks = [];      // Array of Blob chunks from ondataavailable
-let recStartTime = null;       // Timestamp for the recording timer display
-let recTimer = null;           // setInterval ID for updating the timer
-let speechRecognition = null;  // SpeechRecognition instance (active during recording)
+let currentVoiceBlob = null;
+let currentTranscript = '';
+let mediaRecorder = null;
+let recordingChunks = [];
+let recStartTime = null;
+let recTimer = null;
+let speechRecognition = null;
 
-/*
-RENDER CONTACTS — Card-based layout
-WHY cards instead of a table (like applications)?
-1. Contacts have variable-length content (notes, voice notes, multiple phones)
-2. Cards accommodate this variability without awkward row height inconsistencies
-3. Visual hierarchy: name > company > details > notes reads top-to-bottom per card
-4. Each card is self-contained — can add/remove fields without affecting layout
-
-SORT: Newest first (by created date)
-WHY not user-sortable (like apps table)?
-- Contacts are viewed as a collection, not compared against each other
-- "Most recent contact first" is the natural recall order ("who did I just talk to?")
-- Apps table sort makes sense: comparing dates, statuses across companies
-*/
 function renderContacts() {
     const q = document.getElementById('contact-search').value.toLowerCase();
     let filtered = contacts.filter(c => {
-        // Search across all text fields including voice transcript
         return !q || [c.name,c.company,c.email,c.comments,c.source,c.resume,c.voiceTranscript].some(v => (v||'').toLowerCase().includes(q));
     });
     filtered.sort((a,b) => new Date(b.created||0) - new Date(a.created||0));
-
     const grid = document.getElementById('contacts-grid');
     document.getElementById('contact-empty').style.display = filtered.length ? 'none' : 'block';
-
     grid.innerHTML = filtered.map(c => {
         const emailLink = c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '';
         const phoneLink = c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '';
-
-        /*
-        MULTI-PHONE RENDERING — Backward compatible with old single-phone format
-        WHY check both c.phones (new) and c.phone (old)?
-        - Early contacts were saved with a single `phone` string field
-        - After the multi-phone feature, new contacts use `phones` array
-        - This backward-compatible check ensures old data still renders correctly
-        - This is the "schema migration without a database migration" pattern
-
-        WHY WhatsApp uses wa.me link (vs whatsapp:// protocol)?
-        - wa.me/<number> works on desktop, iOS, and Android uniformly
-        - whatsapp:// protocol only works if WhatsApp is installed (fails silently on desktop)
-        - wa.me opens in the browser, then redirects to the app if available
-        */
+        // Multi-phone support
         let phonesHtml = '';
         if (c.phones && c.phones.length > 0) {
             phonesHtml = c.phones.map(p => {
@@ -967,19 +480,9 @@ function renderContacts() {
         } else if (c.phone) {
             phonesHtml = `<div class="cc-detail">📱 <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a></div>`;
         }
-
         const linkedinLink = c.linkedin ? `<a href="${esc(c.linkedin)}" target="_blank">LinkedIn Profile</a>` : '';
-        /*
-        AUDIO PLAYBACK — preload="none" for performance
-        WHY preload="none" (vs preload="auto" or "metadata")?
-        - Voice notes are stored as base64 data URLs (large strings)
-        - preload="auto" would decode ALL audio blobs on page load (heavy)
-        - preload="none" only loads when user clicks play (lazy loading)
-        - Especially important if there are 20+ contacts with voice notes
-        */
         const voiceHtml = c.voiceNote ? `<div class="cc-voice"><audio src="${c.voiceNote}" controls preload="none"></audio></div>` : '';
         const transcriptHtml = c.voiceTranscript ? `<div class="cc-transcript" style="font-size:.8rem;color:var(--text-muted);margin-top:.4rem;background:var(--bg-alt);border-radius:8px;padding:.5rem .75rem;border-left:3px solid var(--accent)"><strong style="font-size:.72rem;color:var(--accent-light);display:block;margin-bottom:.2rem">📝 Transcript</strong>${esc(c.voiceTranscript)}</div>` : '';
-
         return `<div class="contact-card">
             <div class="cc-header">
                 <div>
@@ -1002,8 +505,6 @@ function renderContacts() {
             <div class="cc-meta">Added ${fmtDate(c.created)}</div>
         </div>`;
     }).join('');
-
-    // Contact stats — aggregate by source (how we met)
     const tot = contacts.length;
     const sources = {};
     contacts.forEach(c => { sources[c.source||'Other'] = (sources[c.source||'Other']||0)+1; });
@@ -1030,7 +531,7 @@ function openContactModal(id) {
         document.getElementById('c-name').value = c.name||'';
         document.getElementById('c-company').value = c.company||'';
         document.getElementById('c-email').value = c.email||'';
-        // Load phones — backward compatible with old single-phone format
+        // Load phones
         document.getElementById('phone-list').innerHTML = '';
         if (c.phones && c.phones.length > 0) {
             c.phones.forEach(p => addPhoneRow(p.number, p.label));
@@ -1097,76 +598,17 @@ function saveContact() {
 }
 
 // ======================== VOICE RECORDING + SPEECH-TO-TEXT ========================
-/*
-╔══════════════════════════════════════════════════════════════════════════════════╗
-║  DUAL-API APPROACH: MediaRecorder (audio) + Web Speech API (transcription)     ║
-╠══════════════════════════════════════════════════════════════════════════════════╣
-║                                                                                  ║
-║  WHY two separate APIs running in parallel?                                     ║
-║  1. MediaRecorder captures raw audio → stored as base64 for playback later      ║
-║  2. Web Speech API does real-time STT → provides searchable text transcript     ║
-║  3. They complement each other: audio is the "source of truth", transcript      ║
-║     is the searchable/scannable derivative                                      ║
-║                                                                                  ║
-║  WHY NOT use a cloud STT service (Whisper, Google Cloud Speech)?                ║
-║  ❌ Requires API key (security/cost concern for a client-side tool)             ║
-║  ❌ Requires network connectivity (breaks offline use case)                     ║
-║  ❌ Adds latency (upload audio → wait for response)                             ║
-║  ✅ Web Speech API is free, instant, runs entirely in-browser (Chrome/Edge)     ║
-║                                                                                  ║
-║  WHY NOT use ONLY Web Speech API (skip MediaRecorder)?                          ║
-║  ❌ Web Speech API has no "save audio" capability — it only outputs text        ║
-║  ❌ Transcription accuracy varies — having the audio is a backup                ║
-║  ❌ User may want to relisten to the voice note (memory aid)                    ║
-║                                                                                  ║
-║  KNOWN LIMITATION: Web Speech API is Chrome/Edge only (no Firefox/Safari)       ║
-║  GRACEFUL DEGRADATION: If SpeechRecognition is unavailable, recording still     ║
-║  works (audio is captured), just no auto-transcript. User can type manually.    ║
-║                                                                                  ║
-╚══════════════════════════════════════════════════════════════════════════════════╝
-*/
-
-/*
-SPEECH RECOGNITION — Continuous mode with auto-restart
-WHY continuous: true + interimResults: true?
-- continuous: true — keeps listening until explicitly stopped (vs stopping after first pause)
-- interimResults: true — shows partial text as user speaks (better UX feedback)
-  Without interimResults, user sees nothing until they pause — feels broken
-
-WHY auto-restart on onend and on certain onerror events?
-- Chrome's SpeechRecognition has a known behavior: it silently ends after ~60 seconds
-  of continuous listening, or after brief silence periods
-- Without auto-restart, the user thinks they're recording but no transcript accumulates
-- onerror 'no-speech': fires if no voice detected for a few seconds — restart to keep listening
-- onerror 'audio-capture': transient mic glitch — retry is reasonable
-- onerror 'not-allowed': user denied mic permission — DON'T restart (respect user choice)
-
-PATTERN: "Keep-alive" — similar to WebSocket reconnection logic
-- Check if mediaRecorder is still recording before restarting
-- This prevents zombie speech sessions after the user clicked "Stop"
-*/
 function startSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return; // Feature detection — graceful no-op if unsupported
-
+    if (!SpeechRecognition) return;
     speechRecognition = new SpeechRecognition();
     speechRecognition.continuous = true;
     speechRecognition.interimResults = true;
     speechRecognition.lang = 'en-US';
-
     let finalTranscript = currentTranscript || '';
     const transcriptEl = document.getElementById('rec-transcript');
     transcriptEl.style.display = 'block';
-
     speechRecognition.onresult = (event) => {
-        /*
-        RESULT HANDLING — Accumulate finals, show interims as preview
-        WHY separate final vs interim tracking?
-        - isFinal results are confirmed by the speech engine (won't change)
-        - Interim results are "best guess so far" (may change on next result)
-        - Displaying both gives real-time feedback while preserving accuracy
-        - Pattern: finalTranscript accumulates; interim is shown temporarily with "..."
-        */
         let interim = '';
         for (let i = event.resultIndex; i < event.results.length; i++) {
             if (event.results[i].isFinal) {
@@ -1178,25 +620,20 @@ function startSpeechRecognition() {
         transcriptEl.value = finalTranscript + (interim ? '...' + interim : '');
         currentTranscript = finalTranscript;
     };
-
     speechRecognition.onerror = (e) => {
         console.log('Speech recognition error:', e.error);
         if (e.error === 'no-speech' || e.error === 'audio-capture') {
-            // Auto-restart on transient errors (keep-alive pattern)
+            // Auto-restart on transient errors
             try { speechRecognition.start(); } catch(x) {}
         }
-        // 'not-allowed', 'network': don't restart — these are terminal errors
     };
-
     speechRecognition.onend = () => {
         transcriptEl.value = (currentTranscript || '').trim();
-        // Auto-restart if the audio recording is still active
-        // This is the "keep-alive" check: only restart if user hasn't pressed Stop
+        // Auto-restart if still recording
         if (mediaRecorder && mediaRecorder.state === 'recording') {
             try { speechRecognition.start(); } catch(x) {}
         }
     };
-
     try { speechRecognition.start(); } catch(x) {}
 }
 
@@ -1204,71 +641,35 @@ function stopSpeechRecognition() {
     if (speechRecognition) { speechRecognition.stop(); speechRecognition = null; }
 }
 
-/*
-MEDIA RECORDING — getUserMedia + MediaRecorder API
-WHY MediaRecorder (vs Web Audio API + manual encoding)?
-1. MediaRecorder handles encoding automatically (webm/opus codec)
-2. Simple event-driven API: start → ondataavailable → stop
-3. No need to manually manage audio buffers, sample rates, or encoding
-4. WebM is universally playable in modern browsers
-
-WHY store as base64 data URL (vs Blob URL, vs IndexedDB Blob)?
-- Blob URLs (createObjectURL) are session-scoped — lost on page reload
-- Base64 data URLs serialize into JSON → persist in localStorage
-- Trade-off: ~33% size overhead from base64 encoding
-- At < 50 voice notes (each 10-30 seconds ≈ 50-150KB base64), localStorage has room
-- IF SCALING: Would switch to IndexedDB for native Blob storage (no encoding overhead)
-
-WHY FileReader.readAsDataURL (vs modern blob.arrayBuffer() + btoa)?
-- readAsDataURL produces a ready-to-use "data:audio/webm;base64,..." string
-- Can be directly assigned to <audio>.src without any conversion
-- arrayBuffer + manual base64 encoding is more code for the same result
-*/
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         recordingChunks = [];
         mediaRecorder = new MediaRecorder(stream);
-
         mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordingChunks.push(e.data); };
-
         mediaRecorder.onstop = () => {
             const blob = new Blob(recordingChunks, { type: 'audio/webm' });
             const reader = new FileReader();
             reader.onloadend = () => {
-                currentVoiceBlob = reader.result; // base64 data URL
+                currentVoiceBlob = reader.result;
                 const preview = document.getElementById('rec-preview');
                 preview.src = currentVoiceBlob;
                 preview.style.display = 'block';
                 document.getElementById('rec-delete').style.display = 'inline-flex';
             };
             reader.readAsDataURL(blob);
-            // IMPORTANT: Stop all tracks to release the microphone
-            // Without this, the browser shows "recording" indicator indefinitely
             stream.getTracks().forEach(t => t.stop());
             clearInterval(recTimer);
         };
-
         mediaRecorder.start();
         recStartTime = Date.now();
-
-        // UI state: swap Record ↔ Stop buttons
         document.getElementById('rec-start').style.display = 'none';
         document.getElementById('rec-stop').style.display = 'inline-flex';
-
-        /*
-        RECORDING TIMER — setInterval for elapsed time display
-        WHY setInterval at 500ms (vs 1000ms)?
-        - 500ms updates feel responsive (sub-second feedback)
-        - 1000ms can show a "frozen" timer for up to 1s on first render
-        - CPU cost is negligible (one arithmetic operation per tick)
-        */
         recTimer = setInterval(() => {
             const s = Math.floor((Date.now() - recStartTime) / 1000);
             document.getElementById('rec-timer').textContent = `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
         }, 500);
-
-        // Start speech-to-text in parallel with audio recording
+        // Start speech-to-text in parallel
         startSpeechRecognition();
     } catch (err) {
         alert('Microphone access denied. Please allow microphone permissions.');
@@ -1295,17 +696,7 @@ function deleteRecording() {
     document.getElementById('transcribe-btn').style.display = 'none';
 }
 
-/*
-TRANSCRIBE EXISTING AUDIO — Fallback for previously recorded notes without transcript
-WHY this exists as a separate button?
-- Voice notes recorded before the transcript feature was added have audio but no text
-- This gives users a way to generate a transcript after the fact
-- LIMITATION: Browser speech recognition can't process pre-recorded audio files directly
-  (it only works with live microphone input)
-- So this is a UX hint: "play the audio and speak along, or type manually"
-- A future improvement could use Web Audio API to pipe recorded audio through
-  SpeechRecognition, but browser support for this is inconsistent
-*/
+// Transcribe existing audio using playback + speech recognition
 function transcribeExistingAudio() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) { alert('Speech recognition not supported in this browser. Use Chrome or Edge.'); return; }
@@ -1316,24 +707,6 @@ function transcribeExistingAudio() {
 }
 
 // ======================== MULTI-PHONE MANAGEMENT ========================
-/*
-DYNAMIC FORM ROWS — DOM manipulation pattern for variable-length inputs
-WHY createElement + innerHTML (vs template element, vs lit-html)?
-1. Simple DOM manipulation is fine for 1-5 phone rows max
-2. No framework dependency for a form that rarely has > 3 phones
-3. Each row is self-contained with its own remove button
-
-WHY inline styles on dynamic elements (vs CSS classes)?
-- These elements are generated programmatically (not in the static HTML)
-- Adding CSS classes would require knowing about .phone-row, .phone-select, etc.
-- For 3 dynamic elements with simple layout, inline styles are acceptable
-- In a larger app: would define .phone-row class in the stylesheet
-
-WHY the remove button uses this.parentElement.remove() (vs event delegation)?
-- Direct DOM relationship: button → parent div is the row to remove
-- No ID tracking needed — the parent IS the row
-- Automatic garbage collection — no orphaned event listeners
-*/
 function addPhoneRow(number, label) {
     const list = document.getElementById('phone-list');
     const row = document.createElement('div');
@@ -1350,41 +723,18 @@ function addPhoneRow(number, label) {
     list.appendChild(row);
 }
 
-/*
-GET PHONE ROWS — Read dynamic form data into array of objects
-WHY querySelectorAll on the container (vs tracking rows in a JS array)?
-- DOM IS the source of truth for form state — reading from it is idiomatic
-- No need to sync a JS array every time user adds/removes/edits a row
-- Pattern: "Read the DOM at save time" — simple and avoids stale state bugs
-*/
 function getPhoneRows() {
     const rows = document.querySelectorAll('#phone-list > div');
     const phones = [];
     rows.forEach(row => {
         const label = row.querySelector('select').value;
         const number = row.querySelector('input').value.trim();
-        if (number) phones.push({ label, number }); // Skip empty rows
+        if (number) phones.push({ label, number });
     });
     return phones;
 }
 
 // ======================== CONTACT PICKER API (Mobile) ========================
-/*
-CONTACT PICKER API — Native OS contacts integration
-WHY use this API?
-- On Android Chrome, this opens the native contacts UI — no typing needed
-- Fills form fields directly from the phone's address book
-- Reduces friction for adding contacts at networking events (one tap vs typing)
-
-BROWSER SUPPORT: Android Chrome only (requires HTTPS + secure context)
-- iOS Safari: NOT supported
-- Desktop browsers: NOT supported (no address book to pick from)
-- That's why the button is hidden by default and only shown via feature detection
-
-WHY multiple: false?
-- We're adding one contact at a time (modal is single-contact)
-- multiple: true would require batch processing logic we don't need
-*/
 async function pickFromContacts() {
     try {
         const props = ['name', 'email', 'tel'];
@@ -1401,27 +751,6 @@ async function pickFromContacts() {
 }
 
 // ======================== EXPORT / IMPORT ========================
-/*
-DATA PORTABILITY — JSON export/import
-WHY JSON (vs CSV, vs Excel)?
-1. Preserves data types (arrays, nested objects like `phones`)
-2. No escaping issues with commas in company names
-3. Both applications AND contacts in one file (single backup)
-4. Human-readable (can open in any text editor to inspect)
-5. Native to JavaScript — no parsing library needed
-
-WHY Blob + createObjectURL + click() pattern for download?
-- This is the standard "trigger file download from JavaScript" pattern
-- No server needed — entire download happens client-side
-- Works across all modern browsers
-- Alternative: window.open('data:...') — fails for large files in some browsers
-
-IMPORT: Backward compatible with old format
-- Old exports had just an array (applications only)
-- New exports have { applications, contacts } object
-- Import checks both: if (d.applications) {...} else if (Array.isArray(d)) {...}
-- This ensures users can import their old backups without data loss
-*/
 function exportAll() {
     const payload = { applications: apps, contacts: contacts };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -1429,8 +758,6 @@ function exportAll() {
     a.href = URL.createObjectURL(blob);
     a.download = `job_tracker_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
-    // Note: URL.revokeObjectURL(a.href) should be called after download completes
-    // but there's no reliable "download complete" event — small memory leak, acceptable
 }
 
 function importAll(event) {
@@ -1441,30 +768,17 @@ function importAll(event) {
         try {
             const d = JSON.parse(e.target.result);
             if (d.applications) { apps = d.applications; saveApps(); }
-            else if (Array.isArray(d)) { apps = d; saveApps(); } // backward compat
+            else if (Array.isArray(d)) { apps = d; saveApps(); }
             if (d.contacts) { contacts = d.contacts; saveContacts(); }
             renderApps(); renderContacts();
             alert('Data imported successfully.');
         } catch (err) { alert('Invalid JSON file.'); }
     };
     reader.readAsText(file);
-    event.target.value = ''; // Reset input so same file can be imported again
+    event.target.value = '';
 }
 
 // ======================== THEME ========================
-/*
-THEME TOGGLE — localStorage persistence
-WHY localStorage for theme (vs prefers-color-scheme media query)?
-1. User's explicit choice overrides OS preference
-2. Persists across sessions (OS setting might change without user wanting theme change)
-3. Both approaches could coexist: use OS as default, localStorage as override
-   Current implementation: default to dark (the user's preference for this app)
-
-WHY emoji for toggle button (☀️/🌙) vs icon font or SVG?
-- Zero dependencies — no font-awesome, no heroicons, no SVG sprite
-- Universally rendered on all OS (part of Unicode standard)
-- Semantic: sun = "click to go light", moon = "click to go dark"
-*/
 const toggle = document.getElementById('theme-toggle');
 const savedTheme = localStorage.getItem('tracker_theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -1477,25 +791,6 @@ toggle.addEventListener('click', () => {
 });
 
 // ======================== EVENTS ========================
-/*
-EVENT LISTENERS — Registered at initialization
-WHY addEventListener (vs onclick attribute) for these specific elements?
-- These are static elements that exist at page load (search input, filter, overlays)
-- addEventListener is cleaner for elements not dynamically created
-- For dynamic elements (table rows, card buttons): onclick in template is used because
-  those elements are re-created on every render (addEventListener would need re-binding)
-
-CLICK-OUTSIDE-TO-CLOSE PATTERN:
-- e.target === e.currentTarget checks if click was directly on the overlay (backdrop)
-  not on any child element (the modal card itself)
-- This gives the "click outside to dismiss" behavior without a complex event system
-
-DEBOUNCE consideration for search:
-WHY NOT debounce the search input?
-- At < 100 records, filter + render is < 5ms — no need to throttle
-- Debouncing adds 150-300ms delay which makes search feel laggy
-- IF SCALING to 1000+ records: would add a 150ms debounce to avoid jank
-*/
 document.getElementById('app-modal-overlay').addEventListener('click', e => { if (e.target===e.currentTarget) closeAppModal(); });
 document.getElementById('contact-modal-overlay').addEventListener('click', e => { if (e.target===e.currentTarget) closeContactModal(); });
 document.getElementById('search-input').addEventListener('input', renderApps);
@@ -1508,50 +803,10 @@ if ('contacts' in navigator && 'ContactsManager' in window) {
 }
 
 // ======================== HELPERS ========================
-/*
-XSS PREVENTION — Text node encoding (esc function)
-WHY this approach (vs regex replace, vs DOMPurify, vs template tag)?
-1. document.createElement('div') + .textContent = s → .innerHTML gives browser-native encoding
-2. Converts < > & " ' to HTML entities automatically
-3. Zero regex maintenance — handles ALL special characters, including Unicode
-4. Equivalent to React's JSX auto-escaping or Angular's {{ }} interpolation
-
-ALTERNATIVE: Manual regex — s.replace(/&/g,'&amp;').replace(/</g,'&lt;')...
-❌ Easy to miss characters (what about backticks? what about null bytes?)
-❌ Must be maintained if new edge cases discovered
-✅ Our approach delegates to the browser's built-in HTML parser — battle-tested
-
-THIS IS THE MOST CRITICAL SECURITY FUNCTION IN THE APP.
-Without it, a company name like "ACME<script>document.location='http://evil.com'</script>"
-would execute arbitrary JavaScript (Stored XSS via localStorage injection).
-*/
 function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
-
-/*
-DATE FORMATTING — Locale-aware display
-WHY toLocaleDateString with explicit options (vs toDateString, vs manual format)?
-1. Locale-aware: respects user's language/region settings
-2. Explicit options ({month:'short',...}) ensure consistent output regardless of locale
-3. 'T00:00:00' suffix prevents timezone-related off-by-one day errors
-   (without it, "2026-06-15" in UTC-8 becomes June 14 in local time)
-
-WHY NOT Intl.DateTimeFormat (the "proper" way)?
-- toLocaleDateString internally uses Intl.DateTimeFormat — same result, shorter syntax
-- Intl.DateTimeFormat is useful when formatting many dates with the same options (reusable)
-*/
 function fmtDate(d) { if (!d) return '—'; const dt = new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
 
 // ======================== INIT ========================
-/*
-INITIALIZATION — Load data and render both views
-WHY load + render both tabs at startup (vs lazy-loading inactive tabs)?
-1. < 100 records: rendering both takes < 10ms total — no perceived delay
-2. Stats bars in both tabs are immediately accurate (no stale counts)
-3. Search works immediately when switching tabs (no loading state)
-4. Lazy loading would add complexity (loading spinners, race conditions) for zero UX benefit
-
-IF SCALING to 1000+ contacts: Would lazy-render the inactive tab on first switch
-*/
 loadApps(); loadContacts(); renderApps(); renderContacts();
 </script>
 </body>
