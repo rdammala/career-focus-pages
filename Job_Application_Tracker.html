@@ -298,7 +298,11 @@
             </div>
             <div class="form-row">
                 <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="jane@company.com"></div>
-                <div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="+1 555-123-4567"></div>
+            </div>
+            <div class="form-group">
+                <label>Phone Numbers</label>
+                <div id="phone-list"></div>
+                <button class="btn btn-secondary btn-xs" style="margin-top:.35rem" onclick="addPhoneRow()">+ Add Phone</button>
             </div>
             <div class="form-group"><label>LinkedIn Profile</label><input type="url" id="c-linkedin" placeholder="https://linkedin.com/in/..."></div>
             <div class="form-group"><label>How We Met</label>
@@ -318,7 +322,10 @@
                     <button class="btn btn-xs btn-secondary" id="rec-delete" onclick="deleteRecording()" style="display:none">✕ Remove</button>
                 </div>
                 <div style="font-size:.72rem;color:var(--text-muted);margin-top:.25rem">Record a quick voice memo — auto-transcribes to text (Chrome/Edge)</div>
-                <textarea id="rec-transcript" placeholder="Transcript will appear here automatically..." style="width:100%;margin-top:.5rem;min-height:60px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;color:var(--text);font-size:.82rem;font-family:inherit;resize:vertical;display:none"></textarea>
+                <div style="display:flex;gap:.5rem;align-items:center;margin-top:.35rem">
+                    <textarea id="rec-transcript" placeholder="Transcript will appear here automatically while recording..." style="flex:1;min-height:60px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;color:var(--text);font-size:.82rem;font-family:inherit;resize:vertical;display:none"></textarea>
+                    <button class="btn btn-secondary btn-xs" id="transcribe-btn" onclick="transcribeExistingAudio()" style="display:none" title="Re-transcribe audio">📝 Transcribe</button>
+                </div>
             </div>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeContactModal()">Cancel</button>
@@ -461,6 +468,17 @@ function renderContacts() {
     grid.innerHTML = filtered.map(c => {
         const emailLink = c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '';
         const phoneLink = c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '';
+        // Multi-phone support
+        let phonesHtml = '';
+        if (c.phones && c.phones.length > 0) {
+            phonesHtml = c.phones.map(p => {
+                const icon = p.label === 'WhatsApp' ? '💬' : p.label === 'Call' ? '📞' : '📱';
+                const href = p.label === 'WhatsApp' ? `https://wa.me/${p.number.replace(/[^\d+]/g,'')}` : `tel:${esc(p.number)}`;
+                return `<div class="cc-detail">${icon} <a href="${href}" target="_blank">${esc(p.number)}</a> <span style="font-size:.72rem;color:var(--text-muted)">(${esc(p.label)})</span></div>`;
+            }).join('');
+        } else if (c.phone) {
+            phonesHtml = `<div class="cc-detail">📱 <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a></div>`;
+        }
         const linkedinLink = c.linkedin ? `<a href="${esc(c.linkedin)}" target="_blank">LinkedIn Profile</a>` : '';
         const voiceHtml = c.voiceNote ? `<div class="cc-voice"><audio src="${c.voiceNote}" controls preload="none"></audio></div>` : '';
         const transcriptHtml = c.voiceTranscript ? `<div class="cc-transcript" style="font-size:.8rem;color:var(--text-muted);margin-top:.4rem;background:var(--bg-alt);border-radius:8px;padding:.5rem .75rem;border-left:3px solid var(--accent)"><strong style="font-size:.72rem;color:var(--accent-light);display:block;margin-bottom:.2rem">📝 Transcript</strong>${esc(c.voiceTranscript)}</div>` : '';
@@ -476,7 +494,7 @@ function renderContacts() {
                 </div>
             </div>
             ${emailLink ? `<div class="cc-detail">📧 ${emailLink}</div>` : ''}
-            ${phoneLink ? `<div class="cc-detail">📱 ${phoneLink}</div>` : ''}
+            ${phonesHtml}
             ${linkedinLink ? `<div class="cc-detail">💼 ${linkedinLink}</div>` : ''}
             <div class="cc-detail">🔗 <span style="font-size:.78rem">${esc(c.source||'')}</span></div>
             ${c.resume ? `<div class="cc-resume">📄 Resume shared: ${esc(c.resume)}</div>` : ''}
@@ -512,7 +530,15 @@ function openContactModal(id) {
         document.getElementById('c-name').value = c.name||'';
         document.getElementById('c-company').value = c.company||'';
         document.getElementById('c-email').value = c.email||'';
-        document.getElementById('c-phone').value = c.phone||'';
+        // Load phones
+        document.getElementById('phone-list').innerHTML = '';
+        if (c.phones && c.phones.length > 0) {
+            c.phones.forEach(p => addPhoneRow(p.number, p.label));
+        } else if (c.phone) {
+            addPhoneRow(c.phone, 'Call');
+        } else {
+            addPhoneRow('', 'Call');
+        }
         document.getElementById('c-linkedin').value = c.linkedin||'';
         document.getElementById('c-source').value = c.source||'Other';
         document.getElementById('c-resume').value = c.resume||'';
@@ -522,6 +548,7 @@ function openContactModal(id) {
             document.getElementById('rec-preview').src = c.voiceNote;
             document.getElementById('rec-preview').style.display = 'block';
             document.getElementById('rec-delete').style.display = 'inline-flex';
+            document.getElementById('transcribe-btn').style.display = 'inline-flex';
         }
         if (c.voiceTranscript) {
             currentTranscript = c.voiceTranscript;
@@ -531,7 +558,9 @@ function openContactModal(id) {
     } else {
         document.getElementById('contact-modal-title').textContent = 'Add Networking Contact';
         document.getElementById('c-edit-id').value = '';
-        ['c-name','c-company','c-email','c-phone','c-linkedin','c-comments'].forEach(fid => document.getElementById(fid).value = '');
+        ['c-name','c-company','c-email','c-linkedin','c-comments'].forEach(fid => document.getElementById(fid).value = '');
+        document.getElementById('phone-list').innerHTML = '';
+        addPhoneRow('', 'Call');
         document.getElementById('c-source').value = 'Networking Event';
         document.getElementById('c-resume').value = '';
     }
@@ -546,7 +575,8 @@ function saveContact() {
         name: document.getElementById('c-name').value.trim(),
         company: document.getElementById('c-company').value.trim(),
         email: document.getElementById('c-email').value.trim(),
-        phone: document.getElementById('c-phone').value.trim(),
+        phones: getPhoneRows(),
+        phone: getPhoneRows().length > 0 ? getPhoneRows()[0].number : '', // backward compat
         linkedin: document.getElementById('c-linkedin').value.trim(),
         source: document.getElementById('c-source').value,
         resume: document.getElementById('c-resume').value,
@@ -569,7 +599,7 @@ function saveContact() {
 // ======================== VOICE RECORDING + SPEECH-TO-TEXT ========================
 function startSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return; // Browser doesn't support
+    if (!SpeechRecognition) return;
     speechRecognition = new SpeechRecognition();
     speechRecognition.continuous = true;
     speechRecognition.interimResults = true;
@@ -589,12 +619,21 @@ function startSpeechRecognition() {
         transcriptEl.value = finalTranscript + (interim ? '...' + interim : '');
         currentTranscript = finalTranscript;
     };
-    speechRecognition.onerror = (e) => { console.log('Speech recognition error:', e.error); };
-    speechRecognition.onend = () => {
-        // Finalize transcript
-        transcriptEl.value = currentTranscript.trim();
+    speechRecognition.onerror = (e) => {
+        console.log('Speech recognition error:', e.error);
+        if (e.error === 'no-speech' || e.error === 'audio-capture') {
+            // Auto-restart on transient errors
+            try { speechRecognition.start(); } catch(x) {}
+        }
     };
-    speechRecognition.start();
+    speechRecognition.onend = () => {
+        transcriptEl.value = (currentTranscript || '').trim();
+        // Auto-restart if still recording
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            try { speechRecognition.start(); } catch(x) {}
+        }
+    };
+    try { speechRecognition.start(); } catch(x) {}
 }
 
 function stopSpeechRecognition() {
@@ -653,6 +692,45 @@ function deleteRecording() {
     document.getElementById('rec-timer').textContent = '';
     document.getElementById('rec-transcript').value = '';
     document.getElementById('rec-transcript').style.display = 'none';
+    document.getElementById('transcribe-btn').style.display = 'none';
+}
+
+// Transcribe existing audio using playback + speech recognition
+function transcribeExistingAudio() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) { alert('Speech recognition not supported in this browser. Use Chrome or Edge.'); return; }
+    const transcriptEl = document.getElementById('rec-transcript');
+    transcriptEl.style.display = 'block';
+    transcriptEl.value = 'Listening... play the audio above and speak along, or type manually.';
+    transcriptEl.focus();
+}
+
+// ======================== MULTI-PHONE MANAGEMENT ========================
+function addPhoneRow(number, label) {
+    const list = document.getElementById('phone-list');
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:.5rem;align-items:center;margin-bottom:.35rem';
+    row.innerHTML = `
+        <select style="width:110px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.4rem .5rem;color:var(--text);font-size:.82rem">
+            <option value="Call"${label==='Call'?' selected':''}>📞 Call</option>
+            <option value="WhatsApp"${label==='WhatsApp'?' selected':''}>💬 WhatsApp</option>
+            <option value="Other"${label==='Other'?' selected':''}>📱 Other</option>
+        </select>
+        <input type="tel" placeholder="+1 555-123-4567" value="${esc(number||'')}" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.4rem .5rem;color:var(--text);font-size:.82rem">
+        <button class="btn btn-danger btn-xs" onclick="this.parentElement.remove()">&times;</button>
+    `;
+    list.appendChild(row);
+}
+
+function getPhoneRows() {
+    const rows = document.querySelectorAll('#phone-list > div');
+    const phones = [];
+    rows.forEach(row => {
+        const label = row.querySelector('select').value;
+        const number = row.querySelector('input').value.trim();
+        if (number) phones.push({ label, number });
+    });
+    return phones;
 }
 
 // ======================== CONTACT PICKER API (Mobile) ========================
