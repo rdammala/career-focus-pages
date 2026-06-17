@@ -399,6 +399,31 @@ function markLastUpdated() {
     renderLastUpdated();
 }
 
+function seedLastUpdatedIfMissing() {
+    const existing = localStorage.getItem(META_KEY);
+    if (existing) return;
+
+    const candidates = [];
+
+    apps.forEach((a) => {
+        if (!a || !a.date) return;
+        const dt = new Date(`${a.date}T12:00:00`);
+        if (!Number.isNaN(dt.getTime())) candidates.push(dt);
+    });
+
+    contacts.forEach((c) => {
+        if (!c || !c.created) return;
+        const dt = new Date(`${c.created}T12:00:00`);
+        if (!Number.isNaN(dt.getTime())) candidates.push(dt);
+    });
+
+    const fallback = candidates.length
+        ? new Date(Math.max(...candidates.map((d) => d.getTime())))
+        : new Date();
+
+    localStorage.setItem(META_KEY, JSON.stringify({ lastUpdated: fallback.toISOString() }));
+}
+
 function renderLastUpdated() {
     const badge = document.getElementById('last-updated-badge');
     if (!badge) return;
@@ -881,7 +906,7 @@ function esc(s) { const d = document.createElement('div'); d.textContent = s||''
 function fmtDate(d) { if (!d) return '—'; const dt = new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
 
 // ======================== INIT ========================
-loadApps(); loadContacts(); renderApps(); renderContacts(); renderLastUpdated();
+loadApps(); loadContacts(); seedLastUpdatedIfMissing(); renderApps(); renderContacts(); renderLastUpdated();
 </script>
 </body>
 </html>
