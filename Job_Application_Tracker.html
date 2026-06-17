@@ -394,7 +394,7 @@ function loadContacts() { const s = localStorage.getItem(CONTACT_KEY); contacts 
 function saveContacts() { localStorage.setItem(CONTACT_KEY, JSON.stringify(contacts)); }
 
 function markLastUpdated() {
-    const meta = { lastUpdated: new Date().toISOString() };
+    const meta = { lastUpdatedMs: Date.now() };
     localStorage.setItem(META_KEY, JSON.stringify(meta));
     renderLastUpdated();
 }
@@ -417,11 +417,11 @@ function seedLastUpdatedIfMissing() {
         if (!Number.isNaN(dt.getTime())) candidates.push(dt);
     });
 
-    const fallback = candidates.length
-        ? new Date(Math.max(...candidates.map((d) => d.getTime())))
-        : new Date();
+    const fallbackMs = candidates.length
+        ? Math.max(...candidates.map((d) => d.getTime()))
+        : Date.now();
 
-    localStorage.setItem(META_KEY, JSON.stringify({ lastUpdated: fallback.toISOString() }));
+    localStorage.setItem(META_KEY, JSON.stringify({ lastUpdatedMs: fallbackMs }));
 }
 
 function renderLastUpdated() {
@@ -434,12 +434,30 @@ function renderLastUpdated() {
     }
     try {
         const meta = JSON.parse(raw);
-        if (!meta.lastUpdated) {
+        let ts = Number(meta.lastUpdatedMs);
+
+        // Backward compatibility for older metadata that stored ISO timestamp.
+        if ((!Number.isFinite(ts) || ts <= 0) && meta.lastUpdated) {
+            const parsed = Date.parse(meta.lastUpdated);
+            if (Number.isFinite(parsed)) ts = parsed;
+        }
+
+        if (!Number.isFinite(ts) || ts <= 0) {
             badge.textContent = 'Last Updated: —';
             return;
         }
-        const dt = new Date(meta.lastUpdated);
-        badge.textContent = `Last Updated: ${dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} ${dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+
+        const dt = new Date(ts);
+        const localText = new Intl.DateTimeFormat(undefined, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        }).format(dt);
+        badge.textContent = `Last Updated: ${localText}`;
     } catch {
         badge.textContent = 'Last Updated: —';
     }
