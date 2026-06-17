@@ -22,6 +22,15 @@
         .header { background: var(--bg-alt); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; flex-wrap: wrap; gap: .5rem; }
         .header h1 { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg,#6366f1,#06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .header-actions { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+        .last-updated-badge {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: .35rem .7rem;
+            color: var(--text-muted);
+            font-size: .76rem;
+            white-space: nowrap;
+        }
         .theme-toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .4rem .65rem; color: var(--text); cursor: pointer; font-size: 1rem; }
 
         /* Tabs */
@@ -125,6 +134,7 @@
     <div class="header">
         <h1>📋 Job Application & Networking Tracker</h1>
         <div class="header-actions">
+            <span class="last-updated-badge" id="last-updated-badge">Last Updated: —</span>
             <button class="btn btn-secondary btn-sm" onclick="exportAll()">⬇ Export All</button>
             <label class="btn btn-secondary btn-sm" style="cursor:pointer">⬆ Import <input type="file" accept=".json" onchange="importAll(event)" style="display:none"></label>
             <button class="theme-toggle" id="theme-toggle">🌙</button>
@@ -338,6 +348,7 @@
 // ======================== DATA LAYER ========================
 const APP_KEY = 'rd_job_tracker';
 const CONTACT_KEY = 'rd_contacts';
+const META_KEY = 'rd_tracker_meta';
 
 const defaultApps = [
     { id:1, portfolio:'RD-Profile', role:'Technical Support Director', company:'Boulevard', date:'2026-06-10', link:'https://rdammala.github.io/RD-Profile/', status:'Applied', comments:'' },
@@ -381,6 +392,33 @@ function loadApps() {
 function saveApps() { localStorage.setItem(APP_KEY, JSON.stringify(apps)); }
 function loadContacts() { const s = localStorage.getItem(CONTACT_KEY); contacts = s ? JSON.parse(s) : []; }
 function saveContacts() { localStorage.setItem(CONTACT_KEY, JSON.stringify(contacts)); }
+
+function markLastUpdated() {
+    const meta = { lastUpdated: new Date().toISOString() };
+    localStorage.setItem(META_KEY, JSON.stringify(meta));
+    renderLastUpdated();
+}
+
+function renderLastUpdated() {
+    const badge = document.getElementById('last-updated-badge');
+    if (!badge) return;
+    const raw = localStorage.getItem(META_KEY);
+    if (!raw) {
+        badge.textContent = 'Last Updated: —';
+        return;
+    }
+    try {
+        const meta = JSON.parse(raw);
+        if (!meta.lastUpdated) {
+            badge.textContent = 'Last Updated: —';
+            return;
+        }
+        const dt = new Date(meta.lastUpdated);
+        badge.textContent = `Last Updated: ${dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} ${dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+    } catch {
+        badge.textContent = 'Last Updated: —';
+    }
+}
 
 // ======================== TABS ========================
 function switchTab(tab) {
@@ -453,8 +491,6 @@ function openAppModal(id) {
 }
 function closeAppModal() { document.getElementById('app-modal-overlay').classList.remove('active'); }
 function editApp(id) { openAppModal(id); }
-function deleteApp(id) { if (!confirm('Delete this application?')) return; apps = apps.filter(d=>d.id!==id); saveApps(); renderApps(); }
-
 function saveApp() {
     const eid = document.getElementById('app-edit-id').value;
     const entry = {
@@ -469,7 +505,15 @@ function saveApp() {
     if (!entry.role || !entry.company) { alert('Role and Company are required.'); return; }
     if (eid) { const i = apps.findIndex(d=>d.id===parseInt(eid)); if (i!==-1) apps[i] = {...apps[i],...entry}; }
     else { entry.id = apps.length ? Math.max(...apps.map(d=>d.id))+1 : 1; apps.push(entry); }
-    saveApps(); closeAppModal(); renderApps();
+    saveApps(); markLastUpdated(); closeAppModal(); renderApps();
+}
+
+function deleteApp(id) {
+    if (!confirm('Delete this application?')) return;
+    apps = apps.filter(d=>d.id!==id);
+    saveApps();
+    markLastUpdated();
+    renderApps();
 }
 
 // ======================== CONTACTS ========================
@@ -591,7 +635,13 @@ function openContactModal(id) {
 }
 function closeContactModal() { document.getElementById('contact-modal-overlay').classList.remove('active'); stopRecording(); }
 function editContact(id) { openContactModal(id); }
-function deleteContact(id) { if (!confirm('Delete this contact?')) return; contacts = contacts.filter(d=>d.id!==id); saveContacts(); renderContacts(); }
+function deleteContact(id) {
+    if (!confirm('Delete this contact?')) return;
+    contacts = contacts.filter(d=>d.id!==id);
+    saveContacts();
+    markLastUpdated();
+    renderContacts();
+}
 
 function saveContact() {
     const eid = document.getElementById('c-edit-id').value;
@@ -617,7 +667,7 @@ function saveContact() {
         entry.created = new Date().toISOString().split('T')[0];
         contacts.push(entry);
     }
-    saveContacts(); closeContactModal(); renderContacts();
+    saveContacts(); markLastUpdated(); closeContactModal(); renderContacts();
 }
 
 // ======================== VOICE RECORDING + SPEECH-TO-TEXT ========================
@@ -793,6 +843,7 @@ function importAll(event) {
             if (d.applications) { apps = d.applications; saveApps(); }
             else if (Array.isArray(d)) { apps = d; saveApps(); }
             if (d.contacts) { contacts = d.contacts; saveContacts(); }
+            markLastUpdated();
             renderApps(); renderContacts();
             alert('Data imported successfully.');
         } catch (err) { alert('Invalid JSON file.'); }
@@ -830,7 +881,7 @@ function esc(s) { const d = document.createElement('div'); d.textContent = s||''
 function fmtDate(d) { if (!d) return '—'; const dt = new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
 
 // ======================== INIT ========================
-loadApps(); loadContacts(); renderApps(); renderContacts();
+loadApps(); loadContacts(); renderApps(); renderContacts(); renderLastUpdated();
 </script>
 </body>
 </html>
