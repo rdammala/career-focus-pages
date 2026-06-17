@@ -349,14 +349,35 @@ const defaultApps = [
     { id:7, portfolio:'Application-SRE-Manager', role:'Application SRE & Ops Manager', company:'IRIS Software Group', date:'2026-06-15', link:'https://rdammala.github.io/Application-SRE-Manager/', status:'Applied', comments:'' },
     { id:8, portfolio:'Senior-IT-Systems-Operations-Manager', role:'Sr. IT Systems Operations Manager', company:'ExtraHop', date:'2026-06-15', link:'https://rdammala.github.io/Senior-IT-Systems-Operations-Manager/', status:'Applied', comments:'' },
     { id:9, portfolio:'TPM-Infrastructure', role:'Technical Program Manager, Infrastructure', company:'Figma', date:'2026-06-16', link:'https://rdammala.github.io/TPM-Infrastructure/', status:'Applied', comments:'' },
-    ,
+    { id:10, portfolio:'SRE-Observability-Engineering', role:'Senior SRE & Observability Engineering Leader', company:'Microsoft Tech (General)', date:'2026-06-16', link:'https://rdammala.github.io/SRE-Observability-Engineering/', status:'Applied', comments:'' },
     { id:11, portfolio:'Platform-Monitoring-Engineer-Incident-Manager', role:'Platform Monitoring Engineer / Incident Manager', company:'Adyen', date:'2026-06-17', link:'https://rdammala.github.io/Platform-Monitoring-Engineer-Incident-Manager/', status:'Applied', comments:'' }
 ];
 
 let apps = [], contacts = [];
 let appSort = { field:'date', dir:-1 };
 
-function loadApps() { const s = localStorage.getItem(APP_KEY); apps = s ? JSON.parse(s) : [...defaultApps]; if (!s) saveApps(); }
+function loadApps() {
+    const s = localStorage.getItem(APP_KEY);
+    if (!s) {
+        apps = [...defaultApps];
+        saveApps();
+        return;
+    }
+    try {
+        const storedApps = JSON.parse(s);
+        const byPortfolio = new Map(storedApps.map(a => [a.portfolio, a]));
+        defaultApps.forEach((d) => {
+            if (!byPortfolio.has(d.portfolio)) {
+                storedApps.push(d);
+            }
+        });
+        apps = storedApps;
+        saveApps();
+    } catch {
+        apps = [...defaultApps];
+        saveApps();
+    }
+}
 function saveApps() { localStorage.setItem(APP_KEY, JSON.stringify(apps)); }
 function loadContacts() { const s = localStorage.getItem(CONTACT_KEY); contacts = s ? JSON.parse(s) : []; }
 function saveContacts() { localStorage.setItem(CONTACT_KEY, JSON.stringify(contacts)); }
