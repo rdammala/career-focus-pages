@@ -1,5 +1,9 @@
 # Resume & Portfolio Generation Workflow
 
+## Change Log
+- Time zone standard: **All change log timestamps are recorded in PST/PDT (Pacific Time).**
+- 2026-06-17 07:24 PM PST/PDT: Added Portfolio UX Baseline and Tracker Reliability Rules (defaultApps merge behavior, Last Updated local-time handling, and `rd_tracker_meta`/`lastUpdatedMs` data key guidance).
+
 ## Trigger
 User provides: JD + LinkedIn link + Career portal link
 
