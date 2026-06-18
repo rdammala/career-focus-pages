@@ -89,13 +89,26 @@ User provides: JD + LinkedIn link + Career portal link
   4. Change file sensitivity from "Confidential-Internal" to "Public" (so recipients can open)
   5. These are intentional quality-gate checkpoints — do NOT automate them
 
+### 11. Portfolio UX Baseline (MANDATORY)
+- Every role-based portfolio must include a **Download Resume** button in the hero section pointing to `Rajesh_Dammala_Resume.pdf` in that repo.
+- Every role-based portfolio must include a **Dark/Light mode toggle** with localStorage persistence.
+- Every role-based portfolio must use the **RD tab icon** (`favicon.svg`) instead of default globe favicon.
+- After publishing to GitHub Pages, verify these 3 items live on the public URL.
+
+### 12. Tracker Reliability Rules (MANDATORY)
+- Keep `defaultApps` syntactically valid; do not leave trailing/standalone commas that break array parsing.
+- `loadApps()` must **merge missing `defaultApps` entries into existing localStorage data** so new applications appear for returning users.
+- Tracker header must show **Last Updated** badge using local system time (not UTC-only display).
+- Last-updated metadata key: `rd_tracker_meta` with `lastUpdatedMs` (epoch ms).
+- If `rd_tracker_meta` is missing, seed it from the newest available app/contact date on init.
+
 ## Job Application Tracker Details
 - **3 tabs**: Applications, Networking Contacts, Portfolio Guide
 - **Applications**: Table with portfolio, role, company, date, link, status, comments; search/filter/sort
 - **Contacts**: Card grid with name, company, email, multi-phone (Call/WhatsApp/Other labels), LinkedIn, source, resume shared, comments, voice note + auto-transcript
 - **Portfolio Guide**: All 9 portfolios with role fit descriptions and clickable links
 - **Resume Shared dropdown** includes all 9 portfolios with role hints + General Resume
-- **Data**: localStorage (`rd_job_tracker`, `rd_contacts`, `tracker_theme`); export/import as JSON
+- **Data**: localStorage (`rd_job_tracker`, `rd_contacts`, `tracker_theme`, `rd_tracker_meta` with `lastUpdatedMs`); export/import as JSON
 - **Voice notes**: MediaRecorder API + Web Speech API for auto-transcription; editable transcript saved to contact
 - **GitHub repo**: `career-focus-pages` (master branch)
 
